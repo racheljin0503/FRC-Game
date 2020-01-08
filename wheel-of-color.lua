@@ -24,9 +24,16 @@ local function gotoMenu()
 	composer.gotoScene("menu")
 end
 
+local function addSpin()
+	wheel:applyTorque(5000)
+end
 
 local function spin()
-	wheel:applyTorque(5000)
+	timer.performWithDelay(750, addSpin, 5)
+end
+
+local function stop()
+	wheel:applyTorque(-25000)
 end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -66,6 +73,10 @@ function scene:create( event )
 	local spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
 	spinButton:addEventListener("tap", spin)
 	spinButton:setFillColor(0, .45, 0)
+
+	local stopButton = display.newText(uiGroup, "Stop", display.contentCenterX, display.contentCenterY + 300, native.systemFont, 50)
+	stopButton:addEventListener("tap", stop)
+	stopButton:setFillColor(.8, 0, 0)
 
 end
 
