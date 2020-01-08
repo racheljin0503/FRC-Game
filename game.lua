@@ -24,11 +24,20 @@ function scene:create( event )
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
 	backGroup = display.newGroup()  -- Display group for the background image
-	-- background png
+	sceneGroup:insert( backGroup )  -- Insert into the scene's view group
+
+	mainGroup = display.newGroup()  -- Display group for the ship, asteroids, lasers, etc.
+	sceneGroup:insert( mainGroup )  -- Insert into the scene's view group
 	
-	local background = display.newImageRect( backGroup, "background.png", 800, 1400 )
+	-- background png
+	local background = display.newImageRect(backGroup, "background.png", 800, 1400)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
+
+	-- platform png
+	local platform = display.newImageRect(mainGroup, "platform.png", 350, 150)
+	platform.x = display.contentCenterX
+	platform.y = display.contentCenterY
 
 end
 
