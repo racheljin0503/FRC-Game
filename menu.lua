@@ -31,10 +31,10 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local playButton = display.newText(sceneGroup, "Play", display.contentCenterX, display.contentCenterY, native.systemFont, 30)
+	local playButton = display.newText(sceneGroup, "Play", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
 	playButton:setFillColor(0, 0, .7)
 
-	local colorWheel = display.newText(sceneGroup, "Daily Reward", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 30)
+	local colorWheel = display.newText(sceneGroup, "Daily Reward", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 50)
 	colorWheel:setFillColor(0, 0, .6)
 
 

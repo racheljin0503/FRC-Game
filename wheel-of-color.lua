@@ -23,6 +23,11 @@ local uiGroup
 local function gotoMenu()
 	composer.gotoScene("menu")
 end
+
+
+local function spin()
+	wheel:applyTorque(5000)
+end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -42,19 +47,25 @@ function scene:create( event )
 	uiGroup = display.newGroup()
 	sceneGroup:insert(uiGroup)
 
-	background = display.newImageRect(backGroup, "background.png", 1000, 1000)
+	background = display.newImageRect(backGroup, "background.png", display.actualContentWidth, display.actualContentHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
 	wheel = display.newImageRect(mainGroup, "ColorWheel.png", 300, 300)
+	physics.addBody(wheel, "dynamic")
 	wheel.x = display.contentCenterX
 	wheel.y = display.contentCenterY
 
-	local menuButton = display.newText(uiGroup, "Menu", display.contentCenterX, display.contentCenterY, native.systemFont, 30)
+	local menuButton = display.newText(uiGroup, "Menu", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
 	menuButton.x = display.contentCenterX - 80
 	menuButton.y = 25
 	menuButton:setFillColor(0, 0, .7)
 	menuButton:addEventListener("tap", gotoMenu)
+
+
+	local spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
+	spinButton:addEventListener("tap", spin)
+	spinButton:setFillColor(0, .45, 0)
 
 end
 
