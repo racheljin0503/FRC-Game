@@ -8,7 +8,9 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-
+local physics = require( "physics" )
+physics.start()
+physics.setGravity( 0, 0 )
 
 
 -- -----------------------------------------------------------------------------------
@@ -20,6 +22,13 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
+
+	backGroup = display.newGroup()  -- Display group for the background image
+	-- background png
+	
+	local background = display.newImageRect( backGroup, "background.png", 800, 1400 )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
 
 end
 
