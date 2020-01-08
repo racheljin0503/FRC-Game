@@ -7,10 +7,22 @@ local scene = composer.newScene()
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+local physics = require("physics")
+physics.start()
+physics.setGravity(0, 0)
 
 
 
+local background
+local wheel
 
+local backGroup
+local mainGroup
+local uiGroup
+
+local function gotoMenu()
+	composer.gotoScene("menu")
+end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -20,6 +32,29 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
+
+	backGroup = display.newGroup() 
+	sceneGroup:insert(backGroup) 
+
+	mainGroup = display.newGroup() 
+	sceneGroup:insert(mainGroup)
+
+	uiGroup = display.newGroup()
+	sceneGroup:insert(uiGroup)
+
+	background = display.newImageRect(backGroup, "background.png", 1000, 1000)
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
+
+	wheel = display.newImageRect(mainGroup, "ColorWheel.png", 300, 300)
+	wheel.x = display.contentCenterX
+	wheel.y = display.contentCenterY
+
+	local menuButton = display.newText(uiGroup, "Menu", display.contentCenterX, display.contentCenterY, native.systemFont, 30)
+	menuButton.x = display.contentCenterX - 80
+	menuButton.y = 25
+	menuButton:setFillColor(0, 0, .7)
+	menuButton:addEventListener("tap", gotoMenu)
 
 end
 
@@ -51,7 +86,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-
+		physics.pause()
 	end
 end
 

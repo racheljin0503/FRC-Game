@@ -14,6 +14,10 @@ local function gotoGame()
 	composer.gotoScene("game")
 end
 
+local function gotoWheel()
+	composer.gotoScene("wheel-of-color")
+end
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -30,7 +34,12 @@ function scene:create( event )
 	local playButton = display.newText(sceneGroup, "Play", display.contentCenterX, display.contentCenterY, native.systemFont, 30)
 	playButton:setFillColor(0, 0, .7)
 
+	local colorWheel = display.newText(sceneGroup, "Daily Reward", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 30)
+	colorWheel:setFillColor(0, 0, .6)
+
+
 	playButton:addEventListener("tap", gotoGame)
+	colorWheel:addEventListener("tap", gotoWheel)
 end
 
 
