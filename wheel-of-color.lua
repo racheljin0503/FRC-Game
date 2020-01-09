@@ -15,6 +15,8 @@ physics.setGravity(0, 0)
 
 local background
 local wheel
+local stopButton
+local spinButton
 
 local backGroup
 local mainGroup
@@ -28,13 +30,27 @@ local function addSpin()
 	wheel:applyTorque(5000)
 end
 
-local function spin()
-	timer.performWithDelay(750, addSpin, 5)
+local function removeSpin()
+	display.remove(spinButton)
 end
 
 local function stop()
 	wheel:applyTorque(-25000)
 end
+
+local function addStop()
+	stopButton = display.newText(uiGroup, "Stop", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
+	stopButton:addEventListener("tap", stop)
+	stopButton:setFillColor(.8, 0, 0)
+end
+
+local function spin()
+	timer.performWithDelay(750, addSpin, 5)
+	timer.performWithDelay(100, removeSpin)
+	timer.performWithDelay(6000, addStop)
+end
+
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -70,13 +86,10 @@ function scene:create( event )
 	menuButton:addEventListener("tap", gotoMenu)
 
 
-	local spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
+	spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
 	spinButton:addEventListener("tap", spin)
 	spinButton:setFillColor(0, .45, 0)
 
-	local stopButton = display.newText(uiGroup, "Stop", display.contentCenterX, display.contentCenterY + 300, native.systemFont, 50)
-	stopButton:addEventListener("tap", stop)
-	stopButton:setFillColor(.8, 0, 0)
 
 end
 
