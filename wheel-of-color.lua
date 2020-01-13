@@ -35,7 +35,7 @@ local function removeSpin()
 end
 
 local function stop()
-	wheel:applyTorque(-25000)
+	wheel:applyTorque(-5000)
 end
 
 local function addStop()
@@ -45,9 +45,10 @@ local function addStop()
 end
 
 local function spin()
-	timer.performWithDelay(750, addSpin, 5)
+	timer.performWithDelay(250, addSpin, 5)
+	timer.performWithDelay(1250, stop, 5)
 	timer.performWithDelay(100, removeSpin)
-	timer.performWithDelay(6000, addStop)
+	-- timer.performWithDelay(6000, addStop)
 end
 
 
