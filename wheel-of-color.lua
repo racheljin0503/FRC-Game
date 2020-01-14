@@ -35,19 +35,17 @@ local function removeSpin()
 end
 
 local function stop()
-	wheel:applyTorque(-5000)
+	wheel:applyTorque(-2500)
 end
 
 local function addStop()
-	stopButton = display.newText(uiGroup, "Stop", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
-	stopButton:addEventListener("tap", stop)
-	stopButton:setFillColor(.8, 0, 0)
+	timer.performWithDelay(500, stop, 10)
 end
 
 local function spin()
-	timer.performWithDelay(250, addSpin, 5)
-	timer.performWithDelay(1250, stop, 5)
-	timer.performWithDelay(100, removeSpin)
+	timer.performWithDelay(500, addSpin, 5)
+	timer.performWithDelay(3000, addStop)
+	timer.performWithDelay(1500, removeSpin)
 	-- timer.performWithDelay(6000, addStop)
 end
 
@@ -85,7 +83,6 @@ function scene:create( event )
 	menuButton.y = 25
 	menuButton:setFillColor(0, 0, .7)
 	menuButton:addEventListener("tap", gotoMenu)
-
 
 	spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
 	spinButton:addEventListener("tap", spin)
