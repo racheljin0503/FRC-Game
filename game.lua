@@ -10,7 +10,7 @@ local scene = composer.newScene()
 
 local physics = require("physics")
 physics.start()
-physics.setGravity(0, 0)
+physics.setGravity(0, 3)
 
 local background
 local player 
@@ -22,6 +22,8 @@ local backGroup
 local mainGroup
 local uiGroup
 
+
+local passTimer
 local gameLoopTimer
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -62,16 +64,39 @@ local function switch()
 	end
 end
 
-local function gameLoop()
-	switch()
-
+local function spawn()
 	local separate = 10 * math.random(2, 15)
 	local separateX = 10 * math.random(1, 60)
 	block = display.newRect(separateX, total, 100, 30)
 	block:setFillColor(0, 1, 0)
-	physics.addBody(block, "static")
+	physics.addBody(block, "static", {bounce = 0})
 
 	total = total - separate
+	block.collType = "pass"
+end
+
+local function playerThru()
+	local jumpx, jumpy = player:getLinearVelocity()
+	if (jumpy < 0) then
+		player.isSensor = true
+	else 
+		player.isSensor = false
+	end
+end
+-- local function preCollisionEvent(self, event)
+-- 	local collideObject = event.other
+-- 	local jump = player:getLinearVelocity()
+-- 	if (collideObject.collType == "pass") then 
+-- 		event.contact.isEnabled = false
+-- 	end
+-- end
+
+
+
+
+local function gameLoop()
+	switch()
+	spawn()
 end
 
 -- create()
@@ -94,13 +119,18 @@ function scene:create( event )
 	
 	player = display.newCircle(display.contentCenterX, display.contentCenterY, 25)
 	player:setFillColor(0, .2, .9)
+	player:toFront()
 
 	block = display.newRect(display.contentCenterX, player.y + 150, 100, 30)
 	block:setFillColor(0, 1, 0)
 	physics.addBody(block, "static")
+	block.collType = "pass"
 
 	physics.addBody(player, "dynamic", {bounce = 2})
 	player:addEventListener("touch", dragPlayer)
+
+	-- player.preCollision = preCollisionEvent
+	-- player:addEventListener("preCollision")
 end
 
 
@@ -116,7 +146,8 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 		physics.start()
-		gameLoopTimer = timer.performWithDelay(500, gameLoop, 20)
+		gameLoopTimer = timer.performWithDelay(500, gameLoop, 0)
+		passTimer = timer.performWithDelay(10, playerThru, 0)
 	end
 end
 
