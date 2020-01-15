@@ -8,10 +8,12 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-
-
 local function gotoGame()
 	composer.gotoScene("game")
+end
+
+local function gotoHighscores()
+	composer.gotoScene("highscores")
 end
 
 -- -----------------------------------------------------------------------------------
@@ -23,14 +25,22 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
-	local background = display.newImageRect(sceneGroup, "background.png", display.pixelWidth, display.pixelHeight)
+	local background = display.newImageRect(sceneGroup, "menu bg.png", display.pixelWidth, display.pixelHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY, native.systemFont, 100)
+	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, 50, native.systemFont, 100)
 	playButton:setFillColor(0, 0, .7)
 
+	local spinnerButton = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, 150, native.systemFont, 50)
+	spinnerButton:setFillColor(0, 0, .7)
+
+	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, 230, native.systemFont, 50)
+	highscoresButton:setFillColor(0, 0, .7)
+
 	playButton:addEventListener("tap", gotoGame)
+	spinnerButton:addEventListener("tap", gotoGame)
+	highscoresButton:addEventListener("tap", gotoHighscores)
 end
 
 
