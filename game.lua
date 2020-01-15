@@ -71,7 +71,7 @@ function scene:create( event )
 	sceneGroup:insert( mainGroup )  -- Insert into the scene's view group
 	
 	-- background png
-	local background = display.newImageRect(backGroup, "background.png", 800, 1400)
+	local background = display.newImageRect(backGroup, "whitebg.png", 800, 1400)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
