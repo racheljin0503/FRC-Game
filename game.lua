@@ -58,7 +58,7 @@ local function switch()
 		player.x = dif
 	end
 	if (dif < -1 * display.actualContentWidth) then
-		player.x = (dif * -1 ) - display.actualContentWidth
+		player.x =  display.actualContentWidth - ((-1 * dif) - display.actualContentWidth)
 	end
 end
 
