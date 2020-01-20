@@ -15,6 +15,8 @@ physics.setGravity(0, 3)
 local background
 local player 
 local block
+local deathLimit
+local scrollSpeed = 100
 
 local total = display.actualContentHeight / 2
 
@@ -25,6 +27,7 @@ local uiGroup
 
 local passTimer
 local gameLoopTimer
+local scrollTimer
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -64,13 +67,34 @@ local function switch()
 	end
 end
 
-local function spawn()
-	local separate = 10 * math.random(2, 15)
-	local separateX = 10 * math.random(1, 60)
-	block = display.newRect(separateX, total, 100, 30)
-	block:setFillColor(0, 1, 0)
-	physics.addBody(block, "static", {bounce = 0})
+local function death()
+	if (player.y >= deathLimit) then
+		display.remove(player)
+		physics.pause()
+		timer.cancel(passTimer)
+		timer.cancel(gameLoopTimer)
+		composer.removeScene("game")
+		print("Dead")
+		composer.gotoScene("menu")
+	end
+end
 
+local function screenScroll()
+	local dif = 100
+	deathLimit = 800
+	transition.to(backGroup, {y = backGroup.y + dif, time = 1000})
+	-- print("death", deathLimit)
+	print(newMid, " ------------ ")
+end
+
+local function spawn()
+	local separate = 10 * math.random(3, 15)
+	local separateX = 10 * math.random(1, 60)
+	block = display.newRect(backGroup, separateX, total, 100, 30)
+	block:setFillColor(0, 1, 0)
+	physics.addBody(block, "dynamic", {bounce = 0})
+	block.gravityScale = 0
+	
 	total = total - separate
 	block.collType = "pass"
 end
@@ -83,20 +107,13 @@ local function playerThru()
 		player.isSensor = false
 	end
 end
--- local function preCollisionEvent(self, event)
--- 	local collideObject = event.other
--- 	local jump = player:getLinearVelocity()
--- 	if (collideObject.collType == "pass") then 
--- 		event.contact.isEnabled = false
--- 	end
--- end
-
-
-
 
 local function gameLoop()
 	switch()
 	spawn()
+	screenScroll()
+	death()
+	print("x: ", player.x, "y: ", player.y)
 end
 
 -- create()
@@ -121,18 +138,15 @@ function scene:create( event )
 	player:setFillColor(0, .2, .9)
 	player:toFront()
 
-	block = display.newRect(display.contentCenterX, player.y + 150, 100, 30)
+	block = display.newRect(backGroup, display.contentCenterX, player.y + 150, 100, 30)
 	block:setFillColor(0, 1, 0)
 	physics.addBody(block, "static")
 	block.collType = "pass"
 
-	physics.addBody(player, "dynamic", {bounce = 2})
+	physics.addBody(player, "dynamic", {bounce = 1.3})
 	player:addEventListener("touch", dragPlayer)
 
-	-- player.preCollision = preCollisionEvent
-	-- player:addEventListener("preCollision")
 end
-
 
 -- show()
 function scene:show( event )
@@ -146,7 +160,7 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 		physics.start()
-		gameLoopTimer = timer.performWithDelay(500, gameLoop, 0)
+		gameLoopTimer = timer.performWithDelay(500, gameLoop, 50)
 		passTimer = timer.performWithDelay(10, playerThru, 0)
 	end
 end
@@ -163,7 +177,10 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-
+		physics.pause()
+		timer.cancel(passTimer)
+		timer.cancel(gameLoopTimer)
+		composer.removeScene("game")
 	end
 end
 
@@ -175,7 +192,6 @@ function scene:destroy( event )
 	-- Code here runs prior to the removal of scene's view
 
 end
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
