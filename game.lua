@@ -10,12 +10,12 @@ local scene = composer.newScene()
 
 local physics = require("physics")
 physics.start()
-physics.setGravity(0, 3)
+physics.setGravity(0, 5)
 
 local background
 local player 
 local block
-local deathLimit
+local deathLimit = 900
 local scrollSpeed = 100
 
 local total = display.actualContentHeight / 2
@@ -28,6 +28,7 @@ local uiGroup
 local passTimer
 local gameLoopTimer
 local scrollTimer
+local spawnTimer
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -65,6 +66,9 @@ local function switch()
 	if (dif < -1 * display.actualContentWidth) then
 		player.x =  display.actualContentWidth - ((-1 * dif) - display.actualContentWidth)
 	end
+	if(player.y <= 0) then
+		player.y = 0
+	end
 end
 
 local function death()
@@ -73,6 +77,10 @@ local function death()
 		physics.pause()
 		timer.cancel(passTimer)
 		timer.cancel(gameLoopTimer)
+		timer.cancel(scrollTimer)
+		timer.cancel(spawnTimer)
+		Runtime:removeEventListener("collision", onCollision)
+
 		composer.removeScene("game")
 		print("Dead")
 		composer.gotoScene("menu")
@@ -80,23 +88,25 @@ local function death()
 end
 
 local function screenScroll()
-	local dif = 100
-	deathLimit = 800
-	transition.to(backGroup, {y = backGroup.y + dif, time = 1000})
-	-- print("death", deathLimit)
-	print(newMid, " ------------ ")
+	local dif = (background.height / 2) + (display.actualContentHeight / 1.5)
+
+	transition.to(backGroup, {y = backGroup.y + dif, time = 50000})
 end
 
-local function spawn()
+local function spawnBlock()
 	local separate = 10 * math.random(3, 15)
 	local separateX = 10 * math.random(1, 60)
-	block = display.newRect(backGroup, separateX, total, 100, 30)
+	block = display.newRect(mainGroup, separateX, total, 100, 30)
 	block:setFillColor(0, 1, 0)
 	physics.addBody(block, "dynamic", {bounce = 0})
+	block:setLinearVelocity(0, 70)
 	block.gravityScale = 0
+	block.collType = "pass"
+	block.myName = "block"
+	block.isFixedRotation = true
+
 	
 	total = total - separate
-	block.collType = "pass"
 end
 
 local function playerThru()
@@ -110,11 +120,15 @@ end
 
 local function gameLoop()
 	switch()
-	spawn()
-	screenScroll()
 	death()
-	print("x: ", player.x, "y: ", player.y)
 end
+
+
+local function pushPlayer()
+    player:applyLinearImpulse(0, -.30, player.x, player.y)
+
+end
+
 
 -- create()
 function scene:create( event )
@@ -138,13 +152,22 @@ function scene:create( event )
 	player:setFillColor(0, .2, .9)
 	player:toFront()
 
-	block = display.newRect(backGroup, display.contentCenterX, player.y + 150, 100, 30)
+	block = display.newRect(mainGroup, display.contentCenterX, player.y + 150, 100, 30)
 	block:setFillColor(0, 1, 0)
-	physics.addBody(block, "static")
-	block.collType = "pass"
+	physics.addBody(block, "dynamic", {bounce = 0})
 
-	physics.addBody(player, "dynamic", {bounce = 1.3})
+	block.collType = "pass"
+	block:setLinearVelocity(0, 10)
+	block.gravityScale = 0
+	block.isFixedRotation = true
+	block.myName = "block"
+
+
+	physics.addBody(player, "dynamic", {bounce = 0})
 	player:addEventListener("touch", dragPlayer)
+	player:addEventListener("tap", pushPlayer)
+
+	player.myName = "player"
 
 end
 
@@ -160,8 +183,11 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 		physics.start()
-		gameLoopTimer = timer.performWithDelay(500, gameLoop, 50)
-		passTimer = timer.performWithDelay(10, playerThru, 0)
+		gameLoopTimer = timer.performWithDelay(10, gameLoop, 0)
+		passTimer = timer.performWithDelay(50, playerThru, 0)
+		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
+		spawnTimer = timer.performWithDelay(300, spawnBlock, 100)
+
 	end
 end
 
@@ -180,7 +206,12 @@ function scene:hide( event )
 		physics.pause()
 		timer.cancel(passTimer)
 		timer.cancel(gameLoopTimer)
+		timer.cancel(scrollTimer)
+		timer.cancel(spawnTimer)
+		Runtime:removeEventListener("collision", onCollision)
+
 		composer.removeScene("game")
+
 	end
 end
 
