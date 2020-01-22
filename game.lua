@@ -10,7 +10,7 @@ local scene = composer.newScene()
 
 local physics = require("physics")
 physics.start()
-physics.setGravity(0, 5)
+physics.setGravity(0, 4)
 
 local background
 local player 
@@ -29,6 +29,9 @@ local passTimer
 local gameLoopTimer
 local scrollTimer
 local spawnTimer
+
+local energyScore = 0
+local energyText
 
 local canJump = true
 -- -----------------------------------------------------------------------------------
@@ -98,14 +101,34 @@ end
 local function spawnBlock()
 	local separate = 10 * math.random(3, 15)
 	local separateX = 10 * math.random(1, 60)
-	block = display.newRect(mainGroup, separateX, total, 100, 30)
-	block:setFillColor(0, 1, 0)
-	physics.addBody(block, "dynamic", {bounce = 0})
-	block:setLinearVelocity(0, 65)
-	block.gravityScale = 0
-	block.collType = "pass"
-	block.myName = "block"
-	block.isFixedRotation = true
+	local spawnCoin = math.random(0, 10)
+	if (spawnCoin >= 3) then
+		block = display.newRect(mainGroup, separateX, total, 100, 30)
+		block:setFillColor(0, 1, 0)
+		physics.addBody(block, "dynamic", {bounce = 0})
+		block:setLinearVelocity(0, 55)
+		block.gravityScale = 0
+		block.collType = "pass"
+		block.myName = "block"
+		block.isFixedRotation = true
+	else
+		block = display.newRect(mainGroup, separateX, total, 100, 30)
+		block:setFillColor(0, 1, 0)
+		physics.addBody(block, "dynamic", {bounce = 0})
+		block:setLinearVelocity(0, 55)
+		block.gravityScale = 0
+		block.collType = "pass"
+		block.myName = "block"
+		block.isFixedRotation = true
+
+		coin = display.newImageRect(mainGroup, "coinLol.png", 40, 40)
+		coin.x = separateX
+		coin.y = total - 50
+		physics.addBody(coin, "dynamic", {bounce = 0})
+		coin.gravityScale = 0
+		coin:setLinearVelocity(0, 55)
+		coin.myName = "coin"
+	end
 
 	
 	total = total - separate
@@ -128,7 +151,7 @@ end
 
 local function pushPlayer()
 	if (canJump == true) then
-    player:applyLinearImpulse(0, -.30, player.x, player.y)
+    player:applyLinearImpulse(0, -.50, player.x, player.y)
 	end
 end
 
@@ -143,6 +166,12 @@ local function onCollision(event)
         (obj1.myName == "block" and obj2.myName == "player"))
 		then 
 			canJump = true
+		elseif (obj1.myName == "player" and obj2.myName == "coin") 
+		then
+			display.remove(obj2)
+		elseif (obj1.myName == "coin" and obj2.myName == "player")
+		then
+			display.remove(obj1)
 		end
 	else
 		canJump = false
@@ -167,6 +196,9 @@ function scene:create( event )
 	background = display.newImageRect(backGroup, "gameBack.png", 600, 9000)
 	background.x = display.contentCenterX
 	background.y = -4500 + display.actualContentHeight
+
+	energyText = display.newText(uiGroup, "Energy Collected "..energyScore, 300, 100, native.systemFont, 36)
+	energyText:setFillColor(0, .1, 0)
 	
 	player = display.newCircle(display.contentCenterX, display.contentCenterY, 25)
 	player:setFillColor(0, .2, .9)
