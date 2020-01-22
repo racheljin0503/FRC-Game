@@ -1,10 +1,5 @@
------------------------------------------------------------------------------------------
---
--- main.lua
---
------------------------------------------------------------------------------------------
-
--- Your code here
+local globalData = require("globalData")
+local json = require("json")
 
 local composer = require("composer")
 

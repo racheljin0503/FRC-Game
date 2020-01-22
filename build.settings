@@ -18,6 +18,7 @@ settings =
 	--
 	android =
 	{
+			googlePlayGamesAppId = "YOUR_APPLICATION_ID",
 		usesPermissions =
 		{
 			"android.permission.INTERNET",
@@ -42,7 +43,13 @@ settings =
 	--
 	plugins =
 	{
+		["CoranaProvider.gameNetwork.apple"] =
+		{
+			publisherId = "com.coranalabs",
+			supportedPlatforms = { android=true
 
+			},
+		},
 	},
 
 	--
