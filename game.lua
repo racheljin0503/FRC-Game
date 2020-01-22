@@ -29,6 +29,8 @@ local passTimer
 local gameLoopTimer
 local scrollTimer
 local spawnTimer
+
+local canJump = true
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -99,7 +101,7 @@ local function spawnBlock()
 	block = display.newRect(mainGroup, separateX, total, 100, 30)
 	block:setFillColor(0, 1, 0)
 	physics.addBody(block, "dynamic", {bounce = 0})
-	block:setLinearVelocity(0, 70)
+	block:setLinearVelocity(0, 65)
 	block.gravityScale = 0
 	block.collType = "pass"
 	block.myName = "block"
@@ -125,8 +127,26 @@ end
 
 
 local function pushPlayer()
+	if (canJump == true) then
     player:applyLinearImpulse(0, -.30, player.x, player.y)
+	end
+end
 
+
+local function onCollision(event)
+    if (event.phase == "began") then 
+
+        local obj1 = event.object1
+        local obj2 = event.object2
+
+        if ((obj1.myName == "player" and obj2.myName == "block") or 
+        (obj1.myName == "block" and obj2.myName == "player"))
+		then 
+			canJump = true
+		end
+	else
+		canJump = false
+	end
 end
 
 
@@ -187,6 +207,8 @@ function scene:show( event )
 		passTimer = timer.performWithDelay(50, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(300, spawnBlock, 100)
+		Runtime:addEventListener("collision", onCollision)
+
 
 	end
 end
@@ -208,6 +230,7 @@ function scene:hide( event )
 		timer.cancel(gameLoopTimer)
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
+		Runtime:removeEventListener("collision", onCollision)
 		Runtime:removeEventListener("collision", onCollision)
 
 		composer.removeScene("game")
