@@ -54,6 +54,7 @@ local score = 0
 local energy = 25
 local died = false
 
+
 local asteroidsTable = {}
 
 local ship
@@ -62,15 +63,18 @@ local livesText
 local scoreText
 local energyText
 
+
+
 -- Set up display groups
 local backGroup = display.newGroup()  -- Display group for the background image
 local mainGroup = display.newGroup()  -- Display group for the ship, asteroids, lasers, etc.
 local uiGroup = display.newGroup()    -- Display group for UI objects like the score
 
 -- Load the background
-local background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
+ background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
 background.x = display.contentCenterX
 background.y = display.contentCenterY
+
 
 ship = display.newImageRect( mainGroup, objectSheet, 4, 98, 79 )
 ship.x = display.contentCenterX
@@ -80,9 +84,22 @@ ship.myName = "ship"
 
 -- Display lives and score
 livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, native.systemFont, 36 )
-scoreText = display.newText( uiGroup, "Score: " .. score, 250, 80, native.systemFont, 36 )
+scoreText = display.newText( uiGroup, "Score: " .. score, 300, 80, native.systemFont, 36 )
 energyText = display.newText( uiGroup, "energy:" .. energy, 500, 80, native.systemFont, 36 )
--- Hide the status bar
+
+energyBar = display.newImageRect( "battery.png", 90, 130)
+energyBar.x = 500
+energyBar.y = 1
+
+--[[ bar = display.newImageRect( "bar.png", 90, 10)
+bar.x = 500
+bar.y = 1]]
+
+-- bar2 = display.newImageRect( "bar.png", 100, 100)
+-- bar.x = 500
+-- bar.y = 1
+
+--Hide the status bar
 display.setStatusBar( display.HiddenStatusBar )
 
 
@@ -138,9 +155,6 @@ local function fireLaser( event )
 end
 
 background:addEventListener( "tap", fireLaser )
-
-
-
 
 
 
@@ -261,5 +275,56 @@ end
 Runtime:addEventListener( "collision", onCollision )
 
 
+ 
+  local  prButton = display.newImageRect("pause.png", 75, 80)
+    prButton.x = 90
+    prButton.y = 7
+
+    
+
+    function pause()
+        
+        display.remove(prButton)
+        -- pause = true
+       
+        resumeButton = display.newImageRect("resume.png", 75, 80)
+        resumeButton.x = 55
+        resumeButton.y = 7
+       
+        physics.pause()
+        transition.pause()
+        
+        -- if(pause == true) then
+            -- prButton:removeEventListener("tap", pause)
+            resumeButton:addEventListener("tap", continue)
+        -- end    
+    end
+
+    function continue()
+
+        display.remove(resumeButton)
+
+        prButton = display.newImageRect("pause.png", 75, 80)
+        prButton.x = 55
+        prButton.y = 7
+
+        -- pause = false
+
+        -- resumeButton = display.newImageRect("resume.png", 75, 75)
+        -- resumeButton.x = 550
+        -- resumeButton.y = 10
+       
+        physics.start()
+        transition.resume()
+        
+        -- if(pause == false) then
+        --     resumeButton = prButton
+            prButton:addEventListener("tap", pause)        
+        -- end    
+
+    end
+    
 
 
+    prButton:addEventListener("tap", pause)
+ 
