@@ -24,6 +24,7 @@ local backGroup
 local mainGroup
 local uiGroup
 
+local blockTable = {}
 
 local passTimer
 local gameLoopTimer
@@ -33,7 +34,8 @@ local spawnTimer
 local energyScore = 0
 local energyText
 
-local canJump = true
+local canJump = 2
+local jumpText
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -98,12 +100,18 @@ local function screenScroll()
 	transition.to(backGroup, {y = backGroup.y + dif, time = 50000})
 end
 
+local function updateText()
+	jumpText.text = "Jumps Available: "..canJump
+    energyText.text = "Energy collected: "..energyScore
+end
+
 local function spawnBlock()
 	local separate = 10 * math.random(3, 15)
 	local separateX = 10 * math.random(1, 60)
 	local spawnCoin = math.random(0, 10)
 	if (spawnCoin >= 3) then
 		block = display.newRect(mainGroup, separateX, total, 100, 30)
+		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
 		physics.addBody(block, "dynamic", {bounce = 0})
 		block:setLinearVelocity(0, 55)
@@ -111,8 +119,10 @@ local function spawnBlock()
 		block.collType = "pass"
 		block.myName = "block"
 		block.isFixedRotation = true
+		block:toFront()
 	else
 		block = display.newRect(mainGroup, separateX, total, 100, 30)
+		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
 		physics.addBody(block, "dynamic", {bounce = 0})
 		block:setLinearVelocity(0, 55)
@@ -120,6 +130,7 @@ local function spawnBlock()
 		block.collType = "pass"
 		block.myName = "block"
 		block.isFixedRotation = true
+		block:toFront()
 
 		coin = display.newImageRect(mainGroup, "coinLol.png", 40, 40)
 		coin.x = separateX
@@ -146,12 +157,28 @@ end
 local function gameLoop()
 	switch()
 	death()
+	updateText()
 end
 
 
 local function pushPlayer()
-	if (canJump == true) then
-    player:applyLinearImpulse(0, -.50, player.x, player.y)
+	if (canJump > 0) then
+	player:applyLinearImpulse(0, -.30, player.x, player.y)
+	canJump = canJump - 1
+	end
+end
+
+local function removeBlock()
+	for i = #blockTable, 1, -1 do
+        local thisBlock = blockTable[i]
+
+        if (thisBlock.x < -100 or
+            thisBlock.x > display.contentWidth + 100 or 
+            thisBlock.y > display.actualContentHeight + 100)
+        then 
+            display.remove(thiBlock)
+            table.remove(blockTable, i)
+        end
 	end
 end
 
@@ -165,16 +192,16 @@ local function onCollision(event)
         if ((obj1.myName == "player" and obj2.myName == "block") or 
         (obj1.myName == "block" and obj2.myName == "player"))
 		then 
-			canJump = true
-		elseif (obj1.myName == "player" and obj2.myName == "coin") 
-		then
-			display.remove(obj2)
-		elseif (obj1.myName == "coin" and obj2.myName == "player")
-		then
-			display.remove(obj1)
+			canJump = 2
 		end
-	else
-		canJump = false
+
+		if(obj1.myName == "player" and obj2.myName == "coin") then
+			display.remove(obj2)
+			energyScore = energyScore + 1
+		elseif (obj1.myName == "coin" and obj2.myName == "player") then
+			display.remove(obj1)
+			energyScore = energyScore + 1
+		end
 	end
 end
 
@@ -197,8 +224,11 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = -4500 + display.actualContentHeight
 
-	energyText = display.newText(uiGroup, "Energy Collected "..energyScore, 300, 100, native.systemFont, 36)
+	energyText = display.newText(uiGroup, "Energy Collected: "..energyScore, 150, 50, native.systemFont, 30)
 	energyText:setFillColor(0, .1, 0)
+
+	jumpText = display.newText(uiGroup, "Jumps Available: "..canJump, 150, 100, native.systemFont, 30)
+	jumpText:setFillColor(0, .1, 0)
 	
 	player = display.newCircle(display.contentCenterX, display.contentCenterY, 25)
 	player:setFillColor(0, .2, .9)
@@ -216,8 +246,8 @@ function scene:create( event )
 
 
 	physics.addBody(player, "dynamic", {bounce = 0})
-	player:addEventListener("touch", dragPlayer)
-	player:addEventListener("tap", pushPlayer)
+	-- player:addEventListener("touch", dragPlayer)
+	backGroup:addEventListener("tap", pushPlayer)
 
 	player.myName = "player"
 
