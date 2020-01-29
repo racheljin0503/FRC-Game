@@ -78,21 +78,6 @@ local function switch()
 	end
 end
 
-local function death()
-	if (player.y >= deathLimit) then
-		display.remove(player)
-		physics.pause()
-		timer.cancel(passTimer)
-		timer.cancel(gameLoopTimer)
-		timer.cancel(scrollTimer)
-		timer.cancel(spawnTimer)
-		Runtime:removeEventListener("collision", onCollision)
-
-		composer.removeScene("game")
-		print("Dead")
-		composer.gotoScene("menu")
-	end
-end
 
 local function screenScroll()
 	local dif = (background.height / 2) + (display.actualContentHeight / 1.5)
@@ -103,6 +88,33 @@ end
 local function updateText()
 	jumpText.text = "Jumps Available: "..canJump
     energyText.text = "Energy collected: "..energyScore
+end
+
+
+local function death()
+	if (player.y >= deathLimit) then
+		display.remove(player)
+		physics.pause()
+		timer.cancel(passTimer)
+		timer.cancel(gameLoopTimer)
+		timer.cancel(scrollTimer)
+		timer.cancel(spawnTimer)
+
+		for i = #blockTable, 1, -1 do
+			local thisBlock = blockTable[i]
+				display.remove(thisBlock)
+				table.remove(blockTable, i)
+				print("block dies")
+			
+		end
+
+		-- removeAllBlocks()
+		Runtime:removeEventListener("collision", onCollision)
+
+		composer.removeScene("game")
+		print("Dead")
+		composer.gotoScene("menu")
+	end
 end
 
 local function spawnBlock()
@@ -158,6 +170,20 @@ local function gameLoop()
 	switch()
 	death()
 	updateText()
+	-- removeBlock()
+
+	for i = #blockTable, 1, -1 do
+        local thisBlock = blockTable[i]
+        
+        if (thisBlock.x < -100 or
+            thisBlock.x > display.actualContentWidth + 100 or 
+            thisBlock.y > display.actualContentHeight) 
+        then 
+            display.remove(thisBlock)
+			table.remove(blockTable, i)
+			print("block")
+        end
+	end
 end
 
 
@@ -168,19 +194,28 @@ local function pushPlayer()
 	end
 end
 
-local function removeBlock()
-	for i = #blockTable, 1, -1 do
-        local thisBlock = blockTable[i]
+-- local function removeBlock()
+-- 	for i = #blockTable, 1, -1 do
+--         local thisBlock = blockTable[i]
+        
+--         if (thisBlock.x < -100 or
+--             thisBlock.x > display.contentWidth + 100 or 
+--             thisBlock.y > display.actualContentHeight + 100)
+--         then 
+--             display.remove(thisBlock)
+--             table.remove(blockTable, i)
+--         end
+-- 	end
+-- end
 
-        if (thisBlock.x < -100 or
-            thisBlock.x > display.contentWidth + 100 or 
-            thisBlock.y > display.actualContentHeight + 100)
-        then 
-            display.remove(thiBlock)
-            table.remove(blockTable, i)
-        end
-	end
-end
+-- local function removeAllBlocks()
+-- 	for i = #blockTable, 1, -1 do
+-- 		local thisBlock = blockTable[i]
+-- 		display.remove(thisBlock)
+-- 		table.remove(blockTable, i)
+-- 	end
+-- end
+
 
 
 local function onCollision(event)
@@ -270,8 +305,6 @@ function scene:show( event )
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(300, spawnBlock, 100)
 		Runtime:addEventListener("collision", onCollision)
-
-
 	end
 end
 
