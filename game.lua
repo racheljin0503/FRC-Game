@@ -277,6 +277,7 @@ function scene:create( event )
 	backGroup = display.newGroup() 
 	sceneGroup:insert(backGroup) 
 
+
 	mainGroup = display.newGroup() 
 	sceneGroup:insert(mainGroup)
 
@@ -296,6 +297,7 @@ function scene:create( event )
 	player = display.newCircle(display.contentCenterX, display.contentCenterY, 25)
 	player:setFillColor(0, .2, .9)
 	player:toFront()
+
 
 	block = display.newRect(mainGroup, display.contentCenterX, player.y + 150, 100, 30)
 	block:setFillColor(0, 1, 0)
