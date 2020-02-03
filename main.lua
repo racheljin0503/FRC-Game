@@ -273,6 +273,7 @@ local function onCollision( event )
 
                 if ( lives == 0 ) then
                     display.remove( ship )
+                    background:removeEventListener("tap", fireLaser)
                     
 
                 else
