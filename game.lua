@@ -30,6 +30,8 @@ local passTimer
 local gameLoopTimer
 local scrollTimer
 local spawnTimer
+--Temporary
+local winTimer
 
 local energyScore = 0
 local energyText
@@ -99,6 +101,7 @@ local function death()
 		timer.cancel(gameLoopTimer)
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
+		timer.cancel(winTimer)
 
 		for i = #blockTable, 1, -1 do
 			local thisBlock = blockTable[i]
@@ -216,6 +219,31 @@ end
 -- 	end
 -- end
 
+local function uwu()
+	display.remove(player)
+	physics.pause()
+	timer.cancel(passTimer)
+	timer.cancel(gameLoopTimer)
+	timer.cancel(scrollTimer)
+	timer.cancel(spawnTimer)
+	timer.cancel(winTimer)
+
+	for i = #blockTable, 1, -1 do
+		local thisBlock = blockTable[i]
+			display.remove(thisBlock)
+			table.remove(blockTable, i)
+			print("block dies")
+		
+	end
+
+	-- removeAllBlocks()
+	Runtime:removeEventListener("collision", onCollision)
+
+	composer.removeScene("game")
+	print("won")
+	composer.gotoScene("menu")
+end
+
 
 
 local function onCollision(event)
@@ -304,6 +332,7 @@ function scene:show( event )
 		passTimer = timer.performWithDelay(50, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(300, spawnBlock, 100)
+		winTimer = timer.performWithDelay(50100,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
 	end
 end
