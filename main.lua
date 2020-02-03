@@ -51,10 +51,10 @@ local objectSheet = graphics.newImageSheet( "gameObjects.png", sheetOptions )
 -- Initialize variables
 local lives = 1
 local score = 0
-local energy = 25
 local died = false
-
-
+local width =  200
+local totalEnergy = 25
+local energy = totalEnergy
 local asteroidsTable = {}
 
 local ship
@@ -76,37 +76,36 @@ background.x = display.contentCenterX
 background.y = display.contentCenterY
 
 
+
+energyBar = display.newRect(98, 80, 60, 210)
+
+Bar = display.newRect(98, 80, width, 50)
+Bar:setFillColor(255, 0, 0)
+Bar:rotate(270)
+
+
 ship = display.newImageRect( mainGroup, objectSheet, 4, 98, 79 )
 ship.x = display.contentCenterX
 ship.y = display.contentHeight - 100
-physics.addBody( ship, "static", { radius=30 } )
+physics.addBody( ship, "static", { radius=30,  isSensor=true } )
 ship.myName = "ship"
 
 -- Display lives and score
-livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, native.systemFont, 36 )
-scoreText = display.newText( uiGroup, "Score: " .. score, 300, 80, native.systemFont, 36 )
-energyText = display.newText( uiGroup, "energy:" .. energy, 500, 80, native.systemFont, 36 )
+--livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, native.systemFont, 36 )
+scoreText = display.newText( uiGroup, "Score: " .. score, 300, 0, native.systemFont, 36 )
+energyText = display.newText( uiGroup, "" .. energy, 97, 210, native.systemFont, 36 )
 
-energyBar = display.newImageRect( "battery.png", 90, 130)
-energyBar.x = 500
-energyBar.y = 1
 
---[[ bar = display.newImageRect( "bar.png", 90, 10)
-bar.x = 500
-bar.y = 1]]
 
--- bar2 = display.newImageRect( "bar.png", 100, 100)
--- bar.x = 500
--- bar.y = 1
 
 --Hide the status bar
 display.setStatusBar( display.HiddenStatusBar )
 
 
 local function updateText()
-    livesText.text = "lives: " .. lives
+    -- livesText.text = "lives: " .. lives
     scoreText.text = "Score: " .. score
-    energyText.text = "energy: " .. energy
+    energyText.text = " " .. energy
 end
 
 
@@ -136,6 +135,8 @@ local function fireLaser( event )
     physics.addBody( newLaser, "dynamic", { isSensor=true } )
     newLaser.isBullet = true
     newLaser.myName = "laser"
+    --  newLaser.xScale = 100
+    --  newLaser.yScale = 100
 
     newLaser.x = ship.x
     newLaser.y = ship.y
@@ -146,16 +147,25 @@ local function fireLaser( event )
     } )
 
     energy = energy - 1
-    energyText.text = "energy: " .. energy
+    energyText.text = " " .. energy
+
+
+    update()
+
 
     if (energy == 0) then
         display.remove( ship )
+        background:removeEventListener( "tap", fireLaser )
+    end
+   
+end
+ 
+
+function update()
+    Bar.width = Bar.width - (width / totalEnergy)
     end
 
-end
-
-background:addEventListener( "tap", fireLaser )
-
+ background:addEventListener( "tap", fireLaser )
 
 
 local function dragShip( event )
@@ -259,10 +269,12 @@ local function onCollision( event )
 
                 -- Update lives
                 lives = lives - 1
-                livesText.text = "lives: " .. lives
+               -- livesText.text = "lives: " .. lives
 
                 if ( lives == 0 ) then
                     display.remove( ship )
+                    
+
                 else
                     ship.alpha = 0
                     timer.performWithDelay( 1000, restoreShip )
@@ -276,9 +288,9 @@ Runtime:addEventListener( "collision", onCollision )
 
 
  
-  local  prButton = display.newImageRect("pause.png", 75, 80)
-    prButton.x = 90
-    prButton.y = 7
+  local  prButton = display.newImageRect("pause button.png", 75, 80)
+    prButton.x = 550
+    prButton.y = 1
 
     
 
@@ -287,12 +299,14 @@ Runtime:addEventListener( "collision", onCollision )
         display.remove(prButton)
         -- pause = true
        
-        resumeButton = display.newImageRect("resume.png", 75, 80)
-        resumeButton.x = 55
-        resumeButton.y = 7
+        resumeButton = display.newImageRect("play button.png", 75, 80)
+        resumeButton.x = 550
+        resumeButton.y = 1
        
         physics.pause()
         transition.pause()
+
+       background:removeEventListener( "tap", fireLaser )
         
         -- if(pause == true) then
             -- prButton:removeEventListener("tap", pause)
@@ -304,9 +318,9 @@ Runtime:addEventListener( "collision", onCollision )
 
         display.remove(resumeButton)
 
-        prButton = display.newImageRect("pause.png", 75, 80)
-        prButton.x = 55
-        prButton.y = 7
+        prButton = display.newImageRect("pause button.png", 75, 80)
+        prButton.x = 550
+        prButton.y = 1
 
         -- pause = false
 
@@ -316,6 +330,7 @@ Runtime:addEventListener( "collision", onCollision )
        
         physics.start()
         transition.resume()
+        background:addEventListener("tap", fireLaser )
         
         -- if(pause == false) then
         --     resumeButton = prButton
@@ -327,4 +342,4 @@ Runtime:addEventListener( "collision", onCollision )
 
 
     prButton:addEventListener("tap", pause)
- 
+    
