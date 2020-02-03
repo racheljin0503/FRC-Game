@@ -1,18 +1,3 @@
------------------------------------------------------------------------------------------
---
--- main.lua
---
------------------------------------------------------------------------------------------
-
--- Your code here
-
--- local composer = require("composer")
-
--- display.setStatusBar(display.HiddenStatusBar)
-
--- math.randomseed(os.time())
-
--- composer.gotoScene("astroid shooter 1.lua")
 
 local physics = require( "physics" )
 physics.start()
