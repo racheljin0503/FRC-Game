@@ -25,6 +25,7 @@ local mainGroup
 local uiGroup
 
 local blockTable = {}
+local coinTable = {}
 
 local passTimer
 local gameLoopTimer
@@ -149,6 +150,7 @@ local function spawnBlock()
 		block:toFront()
 
 		coin = display.newImageRect(mainGroup, "coinLol.png", 40, 40)
+		table.insert(coinTable, coin)
 		coin.x = separateX
 		coin.y = total - 50
 		physics.addBody(coin, "dynamic", {bounce = 0})
@@ -178,7 +180,6 @@ local function gameLoop()
 
 	for i = #blockTable, 1, -1 do
         local thisBlock = blockTable[i]
-        
         if (thisBlock.x < -100 or
             thisBlock.x > display.actualContentWidth + 100 or 
             thisBlock.y > display.actualContentHeight) 
@@ -186,6 +187,19 @@ local function gameLoop()
             display.remove(thisBlock)
 			table.remove(blockTable, i)
 			print("block")
+        end
+	end
+
+	for i = #coinTable, 1, -1 do
+        local thisCoin = coinTable[i]
+        
+        if (thisCoin.x < -100 or
+            thisCoin.x > display.actualContentWidth + 100 or 
+            thisCoin.y > display.actualContentHeight) 
+        then 
+            display.remove(thisCoin)
+			table.remove(coinTable, i)
+			print("coin")
         end
 	end
 end
@@ -236,9 +250,14 @@ local function uwu()
 			display.remove(thisBlock)
 			table.remove(blockTable, i)
 			print("block dies")
-		
 	end
 
+	for i = #coinTable, 1, -1 do
+		local thisCoin = coinTable[i]
+			display.remove(thisCoin)
+			table.remove(coinTable, i)
+			print("coin deleted")
+	end
 	-- removeAllBlocks()
 	Runtime:removeEventListener("collision", onCollision)
 
@@ -258,7 +277,7 @@ local function onCollision(event)
         if ((obj1.myName == "player" and obj2.myName == "block") or 
         (obj1.myName == "block" and obj2.myName == "player"))
 		then 
-			canJump = 200
+			canJump = 100
 		end
 
 		if(obj1.myName == "player" and obj2.myName == "coin") then

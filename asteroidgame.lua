@@ -59,6 +59,7 @@ local score = 0
 local died = false
 local width =  200
 local totalEnergy = composer.getVariable("energyScore")
+-- local totalEnergy = 5
 local energy = totalEnergy
 local asteroidsTable = {}
 
@@ -317,8 +318,8 @@ local function onCollision( event )
 
                 if ( lives == 0 ) then
                     display.remove( ship )
+                    composer.gotoScene("menu")
                     background:removeEventListener("tap", fireLaser)
-                    
 
                 else
                     ship.alpha = 0

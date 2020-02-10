@@ -120,6 +120,7 @@ function scene:hide( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		physics.pause()
+		composer.removeScene("wheel-of-color")
 	end
 end
 
