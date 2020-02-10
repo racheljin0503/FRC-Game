@@ -33,7 +33,8 @@ local spawnTimer
 --Temporary
 local winTimer
 
-local energyScore = 0
+
+energyScore = 0
 local energyText
 
 local canJump = 2
@@ -227,6 +228,8 @@ local function uwu()
 	timer.cancel(scrollTimer)
 	timer.cancel(spawnTimer)
 	timer.cancel(winTimer)
+	composer.setVariable("energyScore", energyScore)
+
 
 	for i = #blockTable, 1, -1 do
 		local thisBlock = blockTable[i]
@@ -241,7 +244,7 @@ local function uwu()
 
 	composer.removeScene("game")
 	print("won")
-	composer.gotoScene("menu")
+	composer.gotoScene("asteroidgame")
 end
 
 
@@ -255,7 +258,7 @@ local function onCollision(event)
         if ((obj1.myName == "player" and obj2.myName == "block") or 
         (obj1.myName == "block" and obj2.myName == "player"))
 		then 
-			canJump = 2
+			canJump = 200
 		end
 
 		if(obj1.myName == "player" and obj2.myName == "coin") then

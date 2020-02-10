@@ -69,7 +69,7 @@ function scene:create( event )
 	uiGroup = display.newGroup()
 	sceneGroup:insert(uiGroup)
 
-	background = display.newImageRect(backGroup, "background.png", display.actualContentWidth, display.actualContentHeight)
+	background = display.newImageRect(backGroup, "background STR.png", display.actualContentWidth, display.actualContentHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
