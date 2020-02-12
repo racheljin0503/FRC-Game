@@ -7,23 +7,48 @@ local scene = composer.newScene()
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+local physics = require("physics")
+physics.start()
+physics.setGravity(0, 0)
 
-local function gotoLevels()
-	composer.gotoScene("level1")
+
+
+local background
+local wheel
+local stopButton
+local spinButton
+
+local backGroup
+local mainGroup
+local uiGroup
+
+local function gotoMenu()
+	composer.gotoScene("menu")
 end
 
-local function gotoGame()
-	composer.gotoScene("game")
+local function addSpin()
+	wheel:applyTorque(5000)
 end
 
-
-local function gotoWheel()
-	composer.gotoScene("wheel-of-color")
+local function removeSpin()
+	display.remove(spinButton)
 end
 
-local function gotoHighscores()
-	composer.gotoScene("highscores")
+local function stop()
+	wheel:applyTorque(-2500)
 end
+
+local function addStop()
+	timer.performWithDelay(500, stop, 10)
+end
+
+local function spin()
+	timer.performWithDelay(500, addSpin, 5)
+	timer.performWithDelay(3000, addStop)
+	timer.performWithDelay(1500, removeSpin)
+	-- timer.performWithDelay(6000, addStop)
+end
+
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -33,30 +58,37 @@ end
 function scene:create( event )
 
 	local sceneGroup = self.view
+	-- Code here runs when the scene is first created but has not yet appeared on screen
 
-	-- Code here runs when the scene is first created but has not yet appeared on screend
-	
-	-- backGroup = display.newGroup()  -- Display group for the background image
-	-- sceneGroup:insert( backGroup )  -- Insert into the scene's view group
-	
-	local background = display.newImageRect(sceneGroup, "menu bg.png", display.actualContentWidth, display.actualContentHeight)
+	backGroup = display.newGroup() 
+	sceneGroup:insert(backGroup) 
+
+	mainGroup = display.newGroup() 
+	sceneGroup:insert(mainGroup)
+
+	uiGroup = display.newGroup()
+	sceneGroup:insert(uiGroup)
+
+	background = display.newImageRect(backGroup, "background STR.png", display.actualContentWidth, display.actualContentHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
+	wheel = display.newImageRect(mainGroup, "ColorWheel.png", 300, 300)
+	physics.addBody(wheel, "dynamic")
+	wheel.x = display.contentCenterX
+	wheel.y = display.contentCenterY
 
-	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
-	playButton:setFillColor(0, 0, .7)
+	local menuButton = display.newText(uiGroup, "Menu", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
+	menuButton.x = display.contentCenterX - 80
+	menuButton.y = 25
+	menuButton:setFillColor(0, 0, .7)
+	menuButton:addEventListener("tap", gotoMenu)
 
-	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 50)
-	colorWheel:setFillColor(0, 0, .7)
-  
-	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, 230, native.systemFont, 50)
-	highscoresButton:setFillColor(0, 0, .7)
+	spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
+	spinButton:addEventListener("tap", spin)
+	spinButton:setFillColor(0, .45, 0)
 
 
-	playButton:addEventListener("tap", gotoLevels)
-	spinnerButton:addEventListener("tap", gotoGame)
-	highscoresButton:addEventListener("tap", gotoHighscores)
 end
 
 
@@ -87,7 +119,8 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-
+		physics.pause()
+		composer.removeScene("wheel-of-color")
 	end
 end
 
