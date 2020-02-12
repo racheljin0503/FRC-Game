@@ -38,31 +38,31 @@ local winTimer
 energyScore = 0
 local energyText
 
-local canJump = 2
+local canJump = 5
 local jumpText
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
-local function dragPlayer(event)
-    -- sets variable as reference to the player object
-    local player = event.target
-    local phase = event.phase
+-- local function dragPlayer(event)
+--     -- sets variable as reference to the player object
+--     local player = event.target
+--     local phase = event.phase
 
-    if("began" == phase) then 
-        -- Sets touch focus on the player
-        display.currentStage:setFocus(player)
-        --[[ Stores initial offset position (dif between touch & player), 
-        (event.x is the x position of touch)]]
-        player.touchOffsetX = event.x - player.x
-    elseif("moved" == phase) then 
-        -- Moves player to new touch position 
-        player.x = event.x - player.touchOffsetX
-    elseif("ended" == phase or "cancelled" == phase) then 
-        -- Releases touch focus on player
-        display.currentStage:setFocus(nil)
-    end
-	return true -- Prevents touch to objects underneath
-end
+--     if("began" == phase) then 
+--         -- Sets touch focus on the player
+--         display.currentStage:setFocus(player)
+--         --[[ Stores initial offset position (dif between touch & player), 
+--         (event.x is the x position of touch)]]
+--         player.touchOffsetX = event.x - player.x
+--     elseif("moved" == phase) then 
+--         -- Moves player to new touch position 
+--         player.x = event.x - player.touchOffsetX
+--     elseif("ended" == phase or "cancelled" == phase) then 
+--         -- Releases touch focus on player
+--         display.currentStage:setFocus(nil)
+--     end
+-- 	return true -- Prevents touch to objects underneath
+-- end
 
 -- local function bound()
 -- 	dif = player.x
@@ -91,7 +91,9 @@ end
 
 local function updateText()
 	jumpText.text = "Jumps Available: "..canJump
-    energyText.text = "Energy collected: "..energyScore
+	energyText.text = "Energy collected: "..energyScore
+	
+
 end
 
 
@@ -110,7 +112,13 @@ local function death()
 				display.remove(thisBlock)
 				table.remove(blockTable, i)
 				print("block dies")
-			
+		end
+
+		for i = #coinTable, 1, -1 do
+			local thisCoin = coinTable[i]
+				display.remove(thisCoin)
+				table.remove(coinTable, i)
+				print("coin")
 		end
 
 		-- removeAllBlocks()
@@ -126,23 +134,23 @@ local function spawnBlock()
 	local separate = 10 * math.random(3, 15)
 	local separateX = 10 * math.random(1, 60)
 	local spawnCoin = math.random(0, 10)
-	if (spawnCoin >= 3) then
+	if (spawnCoin >= 6) then
 		block = display.newRect(mainGroup, separateX, total, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
 		physics.addBody(block, "dynamic", {bounce = 0})
-		block:setLinearVelocity(0, 55)
+		block:setLinearVelocity(0, 70)
 		block.gravityScale = 0
 		block.collType = "pass"
 		block.myName = "block"
 		block.isFixedRotation = true
 		block:toFront()
-	else
+	elseif (spawnCoin > 3) then
 		block = display.newRect(mainGroup, separateX, total, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
 		physics.addBody(block, "dynamic", {bounce = 0})
-		block:setLinearVelocity(0, 55)
+		block:setLinearVelocity(0, 75)
 		block.gravityScale = 0
 		block.collType = "pass"
 		block.myName = "block"
@@ -155,10 +163,20 @@ local function spawnBlock()
 		coin.y = total - 50
 		physics.addBody(coin, "dynamic", {bounce = 0})
 		coin.gravityScale = 0
-		coin:setLinearVelocity(0, 55)
+		coin:setLinearVelocity(0, 75)
 		coin.myName = "coin"
+	else
+		block = display.newRect(mainGroup, separateX, total, 100, 30)
+		table.insert(blockTable, block)
+		block:setFillColor(0, 1, 0)
+		physics.addBody(block, "dynamic", {bounce = 0})
+		block:setLinearVelocity(math.random(-50, 50), 0)
+		block.gravityScale = 0
+		block.collType = "pass"
+		block.myName = "block"
+		block.isFixedRotation = true
+		block:toFront()	
 	end
-
 	
 	total = total - separate
 end
@@ -189,25 +207,12 @@ local function gameLoop()
 			print("block")
         end
 	end
-
-	for i = #coinTable, 1, -1 do
-        local thisCoin = coinTable[i]
-        
-        if (thisCoin.x < -100 or
-            thisCoin.x > display.actualContentWidth + 100 or 
-            thisCoin.y > display.actualContentHeight) 
-        then 
-            display.remove(thisCoin)
-			table.remove(coinTable, i)
-			print("coin")
-        end
-	end
 end
 
 
 local function pushPlayer()
 	if (canJump > 0) then
-	player:applyLinearImpulse(0, -.30, player.x, player.y)
+	player:applyLinearImpulse(0, -.20, player.x, player.y)
 	canJump = canJump - 1
 	end
 end
@@ -261,7 +266,7 @@ local function uwu()
 	-- removeAllBlocks()
 	Runtime:removeEventListener("collision", onCollision)
 
-	composer.removeScene("game")
+	composer.removeScene("doodtwo")
 	print("won")
 	composer.gotoScene("asteroidgame")
 end
@@ -277,7 +282,7 @@ local function onCollision(event)
         if ((obj1.myName == "player" and obj2.myName == "block") or 
         (obj1.myName == "block" and obj2.myName == "player"))
 		then 
-			canJump = 100
+			canJump = 5
 		end
 
 		if(obj1.myName == "player" and obj2.myName == "coin") then
@@ -381,7 +386,7 @@ function scene:hide( event )
 		Runtime:removeEventListener("collision", onCollision)
 		Runtime:removeEventListener("collision", onCollision)
 
-		composer.removeScene("game")
+		composer.removeScene("doodtwo")
 
 	end
 end
