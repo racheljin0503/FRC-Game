@@ -9,7 +9,7 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 
 local function gotoLevels()
-	composer.gotoScene("levelmenu")
+	composer.gotoScene("level1")
 end
 
 local function gotoGame()
@@ -28,8 +28,13 @@ end
 function scene:create( event )
 
 	local sceneGroup = self.view
-	-- Code here runs when the scene is first created but has not yet appeared on screen
-	local background = display.newImageRect(sceneGroup, "menu bg.png", display.pixelWidth, display.pixelHeight)
+
+	-- Code here runs when the scene is first created but has not yet appeared on screend
+	
+	-- backGroup = display.newGroup()  -- Display group for the background image
+	-- sceneGroup:insert( backGroup )  -- Insert into the scene's view group
+	
+	local background = display.newImageRect(sceneGroup, "menu bg.png", display.actualContentWidth, display.actualContentHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 

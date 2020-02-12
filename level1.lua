@@ -8,6 +8,9 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
+local function gotoGame()
+	composer.gotoScene("game")
+end
 
 
 
@@ -27,10 +30,38 @@ function scene:create( event )
 	mainGroup = display.newGroup()  -- Display group for the ship, asteroids, lasers, etc.
 	sceneGroup:insert( mainGroup )  -- Insert into the scene's view group
 	
+
+	
+
 	-- background png
-	local background = display.newImageRect(backGroup, "whitebg.png", 800, 1400)
+	local background = display.newImageRect(backGroup, "lvl1.png", display.actualContentWidth, display.actualContentHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
+
+	local button = display.newImageRect( "button.png", 100, 107)
+	button.x = 120
+	button.y = 900
+	button:toBack()
+	button:addEventListener("tap", gotoGame)
+
+
+
+	local function fitImage( displayObject, fitWidth, fitHeight, enlarge )
+
+		-- first determine which edge is out of bounds
+		local scaleFactor = fitHeight / displayObject.height 
+		local newWidth = displayObject.width * scaleFactor
+		
+		if newWidth == fitWidth then
+			scaleFactor = fitWidth / displayObject.width 
+		end
+		if not enlarge and scaleFactor > 1 then
+			return
+		end
+		displayObject:scale( scaleFactor, scaleFactor )
+	end
+
+	fitImage( background, 800, 1400, false )
 
 end
 
