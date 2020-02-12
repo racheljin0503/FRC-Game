@@ -21,7 +21,7 @@ settings =
 			googlePlayGamesAppId = "YOUR_APPLICATION_ID",
 		usesPermissions =
 		{
-			"android.permission.INTERNET",
+			"com.android.vending.CHECK_LICENSE",
 		},
 	},
 
@@ -41,15 +41,17 @@ settings =
 	--
 	-- Plugins section
 	--
-	plugins =
-	{
-		["CoranaProvider.gameNetwork.apple"] =
-		{
-			publisherId = "com.coranalabs",
-			supportedPlatforms = { android=true
-
-			},
-		},
+	 plugins =
+    {
+        ["CoronaProvider.gameNetwork.apple"] =
+        {
+            publisherId = "com.coronalabs"
+        },
+		 ["plugin.gpgs.v2"] =
+        {
+            publisherId = "com.coronalabs",
+            supportedPlatforms = { android=true }
+        },
 	},
 
 	--
