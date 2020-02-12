@@ -113,6 +113,15 @@ local function death()
 			
 		end
 
+		for i = #coinTable, 1, -1 do
+			local thisCoin = coinTable[i]
+		
+				display.remove(thisCoin)
+				table.remove(coinTable, i)
+				print("coin")
+			
+		end
+
 		-- removeAllBlocks()
 		Runtime:removeEventListener("collision", onCollision)
 
@@ -178,30 +187,8 @@ local function gameLoop()
 	updateText()
 	-- removeBlock()
 
-	for i = #blockTable, 1, -1 do
-        local thisBlock = blockTable[i]
-        if (thisBlock.x < -100 or
-            thisBlock.x > display.actualContentWidth + 100 or 
-            thisBlock.y > display.actualContentHeight) 
-        then 
-            display.remove(thisBlock)
-			table.remove(blockTable, i)
-			print("block")
-        end
-	end
 
-	for i = #coinTable, 1, -1 do
-        local thisCoin = coinTable[i]
-        
-        if (thisCoin.x < -100 or
-            thisCoin.x > display.actualContentWidth + 100 or 
-            thisCoin.y > display.actualContentHeight) 
-        then 
-            display.remove(thisCoin)
-			table.remove(coinTable, i)
-			print("coin")
-        end
-	end
+
 end
 
 
@@ -277,7 +264,7 @@ local function onCollision(event)
         if ((obj1.myName == "player" and obj2.myName == "block") or 
         (obj1.myName == "block" and obj2.myName == "player"))
 		then 
-			canJump = 100
+			canJump = 5
 		end
 
 		if(obj1.myName == "player" and obj2.myName == "coin") then

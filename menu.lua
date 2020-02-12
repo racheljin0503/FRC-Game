@@ -44,18 +44,18 @@ function scene:create( event )
 	background.y = display.contentCenterY
 
 
-	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
+	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, 100, native.systemFont, 100)
 	playButton:setFillColor(0, 0, .7)
 
-	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 50)
+	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, 200, native.systemFont, 50)
 	colorWheel:setFillColor(0, 0, .7)
   
-	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, 230, native.systemFont, 50)
+	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, 270, native.systemFont, 50)
 	highscoresButton:setFillColor(0, 0, .7)
 
 
 	playButton:addEventListener("tap", gotoLevels)
-	spinnerButton:addEventListener("tap", gotoGame)
+	colorWheel:addEventListener("tap", gotoWheel)
 	highscoresButton:addEventListener("tap", gotoHighscores)
 end
 

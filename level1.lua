@@ -7,9 +7,13 @@ local scene = composer.newScene()
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+local button
 
 local function gotoGame()
+	display.remove(button)
+	composer.removeScene("level1") 
 	composer.gotoScene("game")
+	
 end
 
 
@@ -38,7 +42,7 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local button = display.newImageRect( "button.png", 100, 107)
+	button = display.newImageRect( "button.png", 100, 107)
 	button.x = 120
 	button.y = 900
 	button:toBack()
@@ -93,7 +97,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-
+		composer.removeScene("level1")
 	end
 end
 
