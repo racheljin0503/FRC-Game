@@ -32,7 +32,7 @@ function scene:create( event )
 	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, 50, native.systemFont, 100)
 	playButton:setFillColor(0, 0, .7)
 
-	local spinnerButton = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, 150, native.systemFont, 50)
+	-- local spinnerButton = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, 150, native.systemFont, 50)
 	spinnerButton:setFillColor(0, 0, .7)
 
 	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, 230, native.systemFont, 50)
