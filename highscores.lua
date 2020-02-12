@@ -7,6 +7,7 @@ local scene = composer.newScene()
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+
 -- Initialize variables
 local json = require( "json" )
  
@@ -50,16 +51,31 @@ function scene:create( event )
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
-	backGroup = display.newGroup()  -- Display group for the background image
-	sceneGroup:insert( backGroup )  -- Insert into the scene's view group
+	-- load the previous scores
+		loadScores()
 
-	mainGroup = display.newGroup()  -- Display group for the ship, asteroids, lasers, etc.
-	sceneGroup:insert( mainGroup )  -- Insert into the scene's view group
-	
-	-- background png
-	local background = display.newImageRect(backGroup, "whitebg.png", 800, 1400)
+		-- insert the saved score from the last game into the table, then reset it 
+		table.insert( scoresTable, composer.getVariable("finalScore"))
+		composer.setVariable( "finalScore", 0 )
+
+	-- Sort the table entries from highest to lowest
+	local function compare( a, b )
+		return a > b
+	end
+	table.sort( scoresTable, compare )
+
+	-- Save the scores
+	saveScores()
+
+	local background = display.newImageRect( sceneGroup, "background.png", 800, 1400 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
+	
+	local highScoresHeader = display.newText( sceneGroup, "High Scores", display.contentCenterX, 100, native.systemFont, 44 )
+
+	for i = 1, 10 do
+		if ( scoresTable[i] ) then
+			local yPos = 150 + ( i * 56 )
 
 	loadScores()
 	table.insert( scoresTable, composer.getVariable( "finalScore" ) )
