@@ -16,7 +16,6 @@ local filePath = system.pathForFile( "scores.json", system.DocumentsDirectory )
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
-local function loadScores()
  
     local file = io.open( filePath, "r" )
  
@@ -63,6 +62,8 @@ function scene:create( event )
 	background.y = display.contentCenterY
 
 	loadScores()
+	table.insert( scoresTable, composer.getVariable( "finalScore" ) )
+	composer.setVariable( "finalScore", 0 )
 	
 	 -- Sort the table entries from highest to lowest
 	 local function compare( a, b )
