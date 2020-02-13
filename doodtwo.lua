@@ -86,7 +86,7 @@ end
 local function screenScroll()
 	local dif = (background.height / 2) + (display.actualContentHeight / 1.5)
 
-	transition.to(backGroup, {y = backGroup.y + dif, time = 50000})
+	transition.to(backGroup, {y = backGroup.y + dif, time = 70000})
 end
 
 local function updateText()
@@ -124,7 +124,7 @@ local function death()
 		-- removeAllBlocks()
 		Runtime:removeEventListener("collision", onCollision)
 
-		composer.removeScene("game")
+		composer.removeScene("doodtwo")
 		print("Dead")
 		composer.gotoScene("menu")
 	end
@@ -145,7 +145,7 @@ local function spawnBlock()
 		block.myName = "block"
 		block.isFixedRotation = true
 		block:toFront()
-	elseif (spawnCoin > 3) then
+	elseif (spawnCoin >= 3) then
 		block = display.newRect(mainGroup, separateX, total, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
@@ -170,7 +170,7 @@ local function spawnBlock()
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
 		physics.addBody(block, "dynamic", {bounce = 0})
-		block:setLinearVelocity(math.random(-50, 50), 0)
+		block:setLinearVelocity(math.random(-50, 50), math.random(40, 60))
 		block.gravityScale = 0
 		block.collType = "pass"
 		block.myName = "block"
@@ -179,6 +179,17 @@ local function spawnBlock()
 	end
 	
 	total = total - separate
+end
+
+local function changeBlock()
+	for i = #blockTable, 1, -1 do
+		local thisBlock = blockTable[i]
+		local x, y = thisBlock:getLinearVelocity()
+        if (thisBlock.x < 0 or thisBlock.x > display.actualContentWidth) 
+        then 
+            thisBlock:setLinearVelocity(-1 * x, y)
+        end
+	end
 end
 
 local function playerThru()
@@ -194,6 +205,7 @@ local function gameLoop()
 	switch()
 	death()
 	updateText()
+	changeBlock()
 	-- removeBlock()
 
 	for i = #blockTable, 1, -1 do
@@ -353,15 +365,15 @@ function scene:show( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
-
+	
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 		physics.start()
 		gameLoopTimer = timer.performWithDelay(10, gameLoop, 0)
 		passTimer = timer.performWithDelay(50, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
-		spawnTimer = timer.performWithDelay(300, spawnBlock, 100)
-		winTimer = timer.performWithDelay(50100,uwu , 1)
+		spawnTimer = timer.performWithDelay(300, spawnBlock, 0)
+		winTimer = timer.performWithDelay(70100, uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
 	end
 end
@@ -384,8 +396,6 @@ function scene:hide( event )
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		Runtime:removeEventListener("collision", onCollision)
-		Runtime:removeEventListener("collision", onCollision)
-
 		composer.removeScene("doodtwo")
 
 	end

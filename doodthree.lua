@@ -26,11 +26,14 @@ local uiGroup
 
 local blockTable = {}
 local coinTable = {}
+local astTable = {}
 
 local passTimer
 local gameLoopTimer
 local scrollTimer
 local spawnTimer
+
+local asteroid 
 --Temporary
 local winTimer
 
@@ -86,49 +89,45 @@ end
 local function screenScroll()
 	local dif = (background.height / 2) + (display.actualContentHeight / 1.5)
 
-	transition.to(backGroup, {y = backGroup.y + dif, time = 50000})
+	transition.to(backGroup, {y = backGroup.y + dif, time = 70000})
 end
 
 local function updateText()
 	jumpText.text = "Jumps Available: "..canJump
 	energyText.text = "Energy collected: "..energyScore
-	
-
 end
-
 
 
 local function death()
 	if (player.y >= deathLimit) then
 		display.remove(player)
-
 		physics.pause()
 		timer.cancel(passTimer)
 		timer.cancel(gameLoopTimer)
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		timer.cancel(winTimer)
-	
+
 		for i = #blockTable, 1, -1 do
 			local thisBlock = blockTable[i]
 				display.remove(thisBlock)
 				table.remove(blockTable, i)
 				print("block dies")
 		end
-	
+
 		for i = #coinTable, 1, -1 do
 			local thisCoin = coinTable[i]
 				display.remove(thisCoin)
 				table.remove(coinTable, i)
 				print("coin")
 		end
-	
-		-- -- removeAllBlocks()
-		Runtime:removeEventListener("collision", onCollision)
-		composer.removeScene("doodone")
 
-		composer.gotoScene("menu")
+		-- removeAllBlocks()
+		Runtime:removeEventListener("collision", onCollision)
+
+		composer.removeScene("doodthree")
 		print("Dead")
+		composer.gotoScene("menu")
 	end
 end
 
@@ -136,23 +135,23 @@ local function spawnBlock()
 	local separate = 10 * math.random(3, 15)
 	local separateX = 10 * math.random(1, 60)
 	local spawnCoin = math.random(0, 10)
-	if (spawnCoin > 3) then
-		block = display.newRect(mainGroup, separateX, total, 100, 30)
+	if (spawnCoin >= 8) then
+		block = display.newRect(mainGroup, separateX, -100, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
 		physics.addBody(block, "dynamic", {bounce = 0})
-		block:setLinearVelocity(0, 55)
+		block:setLinearVelocity(0, 70)
 		block.gravityScale = 0
 		block.collType = "pass"
 		block.myName = "block"
 		block.isFixedRotation = true
 		block:toFront()
-	else
-		block = display.newRect(mainGroup, separateX, total, 100, 30)
+	elseif (spawnCoin > 4) then
+		block = display.newRect(mainGroup, separateX, -100, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
 		physics.addBody(block, "dynamic", {bounce = 0})
-		block:setLinearVelocity(0, 55)
+		block:setLinearVelocity(0, 75)
 		block.gravityScale = 0
 		block.collType = "pass"
 		block.myName = "block"
@@ -165,12 +164,42 @@ local function spawnBlock()
 		coin.y = total - 50
 		physics.addBody(coin, "dynamic", {bounce = 0})
 		coin.gravityScale = 0
-		coin:setLinearVelocity(0, 55)
+		coin:setLinearVelocity(0, 75)
 		coin.myName = "coin"
+	elseif (spawnCoin > 1) then
+		block = display.newRect(mainGroup, separateX, -100, 100, 30)
+		table.insert(blockTable, block)
+		block:setFillColor(0, 1, 0)
+		physics.addBody(block, "dynamic", {bounce = 0})
+		block:setLinearVelocity(math.random(-50, 50), math.random(40, 60))
+		block.gravityScale = 0
+		block.collType = "pass"
+		block.myName = "block"
+		block.isFixedRotation = true
+		block:toFront()	
+	else
+		asteroid = display.newImageRect(mainGroup, "doodast.png", 100, 100)
+		table.insert(astTable, asteroid)
+		physics.addBody(asteroid, "dynamic", {bounce = 0})
+		asteroid:setLinearVelocity(-200, 325)
+		asteroid.x = separateX + 100
+		asteroid.y = -100
+		asteroid.isSensor = true
+		asteroid.gravityScale = 0
+		asteroid:toFront()
 	end
-
 	
-	total = total - separate
+end
+
+local function changeBlock()
+	for i = #blockTable, 1, -1 do
+		local thisBlock = blockTable[i]
+		local x, y = thisBlock:getLinearVelocity()
+        if (thisBlock.x < 0 or thisBlock.x > display.actualContentWidth) 
+        then 
+            thisBlock:setLinearVelocity(-1 * x, y)
+        end
+	end
 end
 
 local function playerThru()
@@ -186,6 +215,7 @@ local function gameLoop()
 	switch()
 	death()
 	updateText()
+	changeBlock()
 	-- removeBlock()
 
 	for i = #blockTable, 1, -1 do
@@ -232,14 +262,14 @@ end
 -- end
 
 local function uwu()
-	-- display.remove(player)
-	-- physics.pause()
-	-- timer.cancel(passTimer)
-	-- timer.cancel(gameLoopTimer)
-	-- timer.cancel(scrollTimer)
-	-- timer.cancel(spawnTimer)
-	-- timer.cancel(winTimer)
-	-- composer.setVariable("energyScore", energyScore)
+	display.remove(player)
+	physics.pause()
+	timer.cancel(passTimer)
+	timer.cancel(gameLoopTimer)
+	timer.cancel(scrollTimer)
+	timer.cancel(spawnTimer)
+	timer.cancel(winTimer)
+	composer.setVariable("energyScore", energyScore)
 
 
 	for i = #blockTable, 1, -1 do
@@ -255,10 +285,17 @@ local function uwu()
 			table.remove(coinTable, i)
 			print("coin deleted")
 	end
-	-- removeAllBlocks()
-	-- Runtime:removeEventListener("collision", onCollision)
 
-	composer.removeScene("game")
+	for i = #astTable, 1, -1 do
+		local thisAst = astTable[i]
+			display.remove(thisAst)
+			table.remove(thisAst, i)
+			print("asteroid deleted")
+	end
+	-- removeAllBlocks()
+	Runtime:removeEventListener("collision", onCollision)
+
+	composer.removeScene("doodthree")
 	print("won")
 	composer.gotoScene("asteroidgame")
 end
@@ -274,7 +311,7 @@ local function onCollision(event)
         if ((obj1.myName == "player" and obj2.myName == "block") or 
         (obj1.myName == "block" and obj2.myName == "player"))
 		then 
-			canJump = 20
+			canJump = 5
 		end
 
 		if(obj1.myName == "player" and obj2.myName == "coin") then
@@ -330,6 +367,7 @@ function scene:create( event )
 
 
 	physics.addBody(player, "dynamic", {bounce = 0})
+	-- player:addEventListener("touch", dragPlayer)
 	backGroup:addEventListener("tap", pushPlayer)
 
 	player.myName = "player"
@@ -351,8 +389,8 @@ function scene:show( event )
 		gameLoopTimer = timer.performWithDelay(10, gameLoop, 0)
 		passTimer = timer.performWithDelay(50, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
-		spawnTimer = timer.performWithDelay(250, spawnBlock, 0)
-		winTimer = timer.performWithDelay(50100,uwu , 1)
+		spawnTimer = timer.performWithDelay(600, spawnBlock, 0)
+		winTimer = timer.performWithDelay(70100,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
 	end
 end
@@ -366,16 +404,16 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-		timer.cancel(gameLoopTimer)
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		physics.pause()
 		timer.cancel(passTimer)
+		timer.cancel(gameLoopTimer)
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		Runtime:removeEventListener("collision", onCollision)
-		composer.removeScene("doodone")
+		composer.removeScene("doodtwo")
 
 	end
 end
