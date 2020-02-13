@@ -420,6 +420,11 @@ function scene:destroy( event )
 
 end
 
+local function endGame()
+    composer.setVariable( "finalScore", score )
+    composer.gotoScene( "highscores", { time=800, effect="crossFade" } )
+end
+
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
 -- -----------------------------------------------------------------------------------
