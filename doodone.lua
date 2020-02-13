@@ -38,7 +38,7 @@ local winTimer
 energyScore = 0
 local energyText
 
-local canJump = 2
+local canJump = 5
 local jumpText
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -93,6 +93,7 @@ local function updateText()
     jumpText.text = "Jumps Available: "..canJump
     energyText.text = "Energy collected: "..energyScore
 end
+
 
 
 local function death()
@@ -179,7 +180,6 @@ local function gameLoop()
 
     for i = #blockTable, 1, -1 do
         local thisBlock = blockTable[i]
-        
         if (thisBlock.x < -100 or
             thisBlock.x > display.actualContentWidth + 100 or 
             thisBlock.y > display.actualContentHeight) 
