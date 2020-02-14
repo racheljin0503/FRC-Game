@@ -151,7 +151,7 @@ local function spawnBlock()
 		block:toFront()
 
 		coin = display.newImageRect(mainGroup, "coinLol.png", 40, 40)
-		table.insert(coinTable, coin)
+		table.insert(energyTable, coin)
 		coin.x = separateX
 		coin.y = total - 50
 		physics.addBody(coin, "dynamic", {bounce = 0})
@@ -244,9 +244,9 @@ local function uwu()
     -- removeAllBlocks()
     Runtime:removeEventListener("collision", onCollision)
 
-    composer.removeScene("game")
+    composer.removeScene("doodone")
     print("won")
-    composer.gotoScene("astroid shooter 1")
+    composer.gotoScene("asteroid shooter 1")
 end
 
 
@@ -260,7 +260,7 @@ local function onCollision(event)
         if ((obj1.myName == "player" and obj2.myName == "block") or 
         (obj1.myName == "block" and obj2.myName == "player"))
         then 
-            canJump = 200
+            canJump = 20
         end
 
         if(obj1.myName == "player" and obj2.myName == "coin") then
@@ -362,9 +362,8 @@ function scene:hide( event )
         timer.cancel(scrollTimer)
         timer.cancel(spawnTimer)
         Runtime:removeEventListener("collision", onCollision)
-        Runtime:removeEventListener("collision", onCollision)
 
-        composer.removeScene("game")
+        composer.removeScene("doodone")
 
     end
 end

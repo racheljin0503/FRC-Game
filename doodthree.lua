@@ -38,10 +38,10 @@ local asteroid
 local winTimer
 
 
-energyScore = 0
+energyScore = 10
 local energyText
 
-local canJump = 5
+local canJump = 3
 local jumpText
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -136,7 +136,7 @@ local function spawnBlock()
 	local separateX = 10 * math.random(1, 60)
 	local spawnCoin = math.random(0, 10)
 	if (spawnCoin >= 8) then
-		block = display.newRect(mainGroup, separateX, -100, 100, 30)
+		block = display.newRect(mainGroup, separateX, 0, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
 		physics.addBody(block, "dynamic", {bounce = 0})
@@ -147,7 +147,7 @@ local function spawnBlock()
 		block.isFixedRotation = true
 		block:toFront()
 	elseif (spawnCoin > 4) then
-		block = display.newRect(mainGroup, separateX, -100, 100, 30)
+		block = display.newRect(mainGroup, separateX, 0, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
 		physics.addBody(block, "dynamic", {bounce = 0})
@@ -161,7 +161,7 @@ local function spawnBlock()
 		coin = display.newImageRect(mainGroup, "coinLol.png", 40, 40)
 		table.insert(coinTable, coin)
 		coin.x = separateX
-		coin.y = total - 50
+		coin.y = 0
 		physics.addBody(coin, "dynamic", {bounce = 0})
 		coin.gravityScale = 0
 		coin:setLinearVelocity(0, 75)
@@ -186,7 +186,7 @@ local function spawnBlock()
 		asteroid.y = -100
 		asteroid.isSensor = true
 		asteroid.gravityScale = 0
-		asteroid:toFront()
+		asteroid:toBack()
 	end
 	
 end
@@ -297,7 +297,7 @@ local function uwu()
 
 	composer.removeScene("doodthree")
 	print("won")
-	composer.gotoScene("asteroidgame")
+	composer.gotoScene("asteroid shooter 3")
 end
 
 
@@ -311,7 +311,7 @@ local function onCollision(event)
         if ((obj1.myName == "player" and obj2.myName == "block") or 
         (obj1.myName == "block" and obj2.myName == "player"))
 		then 
-			canJump = 5
+			canJump = 3
 		end
 
 		if(obj1.myName == "player" and obj2.myName == "coin") then
@@ -389,7 +389,7 @@ function scene:show( event )
 		gameLoopTimer = timer.performWithDelay(10, gameLoop, 0)
 		passTimer = timer.performWithDelay(50, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
-		spawnTimer = timer.performWithDelay(600, spawnBlock, 0)
+		spawnTimer = timer.performWithDelay(800, spawnBlock, 0)
 		winTimer = timer.performWithDelay(70100,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
 	end
@@ -413,7 +413,7 @@ function scene:hide( event )
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		Runtime:removeEventListener("collision", onCollision)
-		composer.removeScene("doodtwo")
+		composer.removeScene("doodthree")
 
 	end
 end

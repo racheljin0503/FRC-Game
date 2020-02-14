@@ -208,7 +208,10 @@ end
 
 function update()
     Bar.width = Bar.width - (width / totalEnergy)
+    if (energy == 0) then
+        display.remove(Bar)
     end
+end
 
  background:addEventListener( "tap", fireLaser )
 

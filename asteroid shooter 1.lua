@@ -206,8 +206,8 @@ local function fireLaser( event )
         display.remove(energyBar)
         display.remove (prButton)
         background:removeEventListener( "tap", fireLaser )
-        composer.gotoScene("menu")
-
+        timer.performWithDelay(500, composer.gotoScene("menu"))
+        composer.removeScene("asteroid shooter 1")
     end
    
 end
@@ -329,6 +329,7 @@ local function onCollision( event )
                     display.remove (resumeButton) 
                     composer.gotoScene("menu")
                     background:removeEventListener("tap", fireLaser)
+                    composer.removeScene("asteroid shooter 1")
 
                 else
                     ship.alpha = 0
@@ -415,7 +416,7 @@ function scene:hide( event )
         -- Code here runs immediately after the scene goes entirely off screen
         physics.pause()
 
-        composer.removeScene("game")
+        composer.removeScene("asteroid shooter 1")
 
     end
 end
