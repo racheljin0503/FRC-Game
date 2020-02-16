@@ -57,7 +57,7 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = energyScore
+local totalEnergy = 25 --energyScore
 --composer.getVariable("energyScore")
 -- local totalEnergy = 5
 local energy = totalEnergy
@@ -70,6 +70,8 @@ local scoreText
 local energyText
 
 local prButton
+local menu
+local winText
 
 
 
@@ -79,6 +81,7 @@ local mainGroup = display.newGroup()  -- Display group for the ship, asteroids, 
 local uiGroup = display.newGroup()    -- Display group for UI objects like the score
 
 -- Load the background
+
 
 
 
@@ -104,6 +107,23 @@ function scene:create( event )
 
 end
 
+-- function tapMenu (event)
+--     composer.gotoScene("menu")
+-- end
+
+-- function win()
+
+--     display.remove( ship )
+--     display.remove(energyBar)
+--     display.remove (prButton)
+--     background:removeEventListener( "tap", fireLaser )
+--     winText = display.newText("Congractulation! you unclocked level 2", 500, 300, native.systemFont, 36)
+--     menu = display.newText("menu", 500, 500, native.systemFont, 36)
+
+--     menu:addEventListener("tap", tapMenu)
+
+-- end
+
 -- show()
 function scene:show( event )
 
@@ -116,12 +136,18 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         physics.start()
+
+--     end
+-- end
         
 
         background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 
+-- bird = display.newImageRect("bird.png", 500, 500)
+-- bird.x = 500
+-- bird.y = 500
 
 
 energyBar = display.newRect(98, 80, 60, 210)
@@ -147,6 +173,21 @@ energyText = display.newText( uiGroup, "" .. energy, 97, 210, native.systemFont,
 
 --Hide the status bar
 display.setStatusBar( display.HiddenStatusBar )
+
+
+
+ function win ()
+    display.remove( ship )
+        display.remove(energyBar)
+        --display.remove(background)
+        display.remove(Bar)
+        display.remove(newAsteroid)
+        display.remove(energyText)
+        display.remove (prButton)
+
+        background:removeEventListener( "tap", fireLaser )
+        composer.gotoScene("highscores")
+end
 
 
 local function updateText()
@@ -175,8 +216,16 @@ local function createAsteroid()
    -- newAsteroid:applyTorque( math.random( -6,6 ) )
 end
 
+local function checkwin()
+if (score >= 1000) then
+win()
+end
+end
 
-local function fireLaser( event )
+glt = timer.performWithDelay(100, checkwin, 10000)
+
+
+ function fireLaser( event )
 
     local newLaser = display.newImageRect( mainGroup, objectSheet, 5, 14, 40 )
     physics.addBody( newLaser, "dynamic", { isSensor=true } )
@@ -220,30 +269,30 @@ function update()
  background:addEventListener( "tap", fireLaser )
 
 
-local function dragShip( event )
+-- local function dragShip( event )
 
-    local ship = event.target
-    local phase = event.phase
+--     local ship = event.target
+--     local phase = event.phase
 
-    if ( "began" == phase ) then
-        -- Set touch focus on the ship
-        display.currentStage:setFocus( ship )
-        -- Store initial offset position
-        ship.touchOffsetX = event.x - ship.x
+--     if ( "began" == phase ) then
+--         -- Set touch focus on the ship
+--         display.currentStage:setFocus( ship )
+--         -- Store initial offset position
+--         ship.touchOffsetX = event.x - ship.x
 
-    elseif ( "moved" == phase ) then
-        -- Move the ship to the new touch position
-        ship.x = event.x - ship.touchOffsetX
+--     elseif ( "moved" == phase ) then
+--         -- Move the ship to the new touch position
+--         ship.x = event.x - ship.touchOffsetX
 
-    elseif ( "ended" == phase or "cancelled" == phase ) then
-        -- Release touch focus on the ship
-        display.currentStage:setFocus( nil )
-    end
+--     elseif ( "ended" == phase or "cancelled" == phase ) then
+--         -- Release touch focus on the ship
+--         display.currentStage:setFocus( nil )
+--     end
 
-    return true  -- Prevents touch propagation to underlying objects
-end
+--     return true  -- Prevents touch propagation to underlying objects
+-- end
 
-ship:addEventListener( "touch", dragShip )
+-- ship:addEventListener( "touch", dragShip )
 
 
 local function gameLoop()
@@ -327,6 +376,8 @@ local function onCollision( event )
                     display.remove( ship )
                     display.remove (prButton)
                     display.remove (resumeButton) 
+                    display.remove(energyBar)
+                    display.remove(Bar)
                     composer.gotoScene("menu")
                     background:removeEventListener("tap", fireLaser)
 
@@ -397,9 +448,15 @@ Runtime:addEventListener( "collision", onCollision )
 
 
     prButton:addEventListener("tap", pause)
-    
+
+
+
+        end
     end
-end
+          
+    
+--     end
+-- end
 
 
 -- hide()

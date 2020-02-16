@@ -221,7 +221,7 @@ local function createAsteroid()
 end
 
 local function checkwin()
-if (score >= 3000) then
+if (score >= 4000) then
 win()
 end
 end
@@ -341,7 +341,7 @@ local function gameLoop()
     end
 end
 
-gameLoopTimer = timer.performWithDelay( 500, gameLoop, 40 )
+gameLoopTimer = timer.performWithDelay( 500, gameLoop, 50 )
 
 
 local function restoreShip()
@@ -483,6 +483,81 @@ local function onCollision( event )
             timer.cancel(gm1)
             score = score + 200            
             updateText()
+
+        elseif  (obj1.myName == "slaser2" and obj2.myName == "ship") or
+        (obj1.myName == "ship" and obj2.myName == "slaser2")   then
+
+          shoot = true
+         
+          display.remove(ship)
+          background:removeEventListener("tap", fireLaser)
+          timer.cancel(gm)
+          timer.cancel(gm1)
+          timer.cancel(gm2)
+          timer.cancel(gm3)
+          display.remove(obj1)
+          display.remove(obj2)
+          display.remove(energyBar)
+          display.remove(prButton)
+          display.remove(resumeButton)
+          display.remove(Bar)
+          display.remove(spaceGun)
+          display.remove(spaceGun1)
+          display.remove(spaceGun2)
+          display.remove(spaceGun3)
+          display.remove(spaceLaser2)
+          display.remove(spaceLaser3)
+          display.remove(spaceLaser)
+          display.remove(spaceLaser1)
+         composer.gotoScene("menu")
+          
+        elseif  (obj1.myName == "slaser3" and obj2.myName == "ship") or
+        (obj1.myName == "ship" and obj2.myName == "slaser3")   then
+
+          shoot = true
+         
+          display.remove(ship)
+          background:removeEventListener("tap", fireLaser)
+          timer.cancel(gm)
+          timer.cancel(gm1)
+          timer.cancel(gm2)
+          timer.cancel(gm3)
+          display.remove(obj1)
+          display.remove(obj2)
+          display.remove(energyBar)
+          display.remove(prButton)
+          display.remove(resumeButton)
+          display.remove(Bar)
+          display.remove(spaceGun)
+          display.remove(spaceGun1)
+          display.remove(spaceGun2)
+          display.remove(spaceGun3)
+          display.remove(spaceLaser2)
+          display.remove(spaceLaser3)
+          display.remove(spaceLaser)
+          display.remove(spaceLaser1)
+         composer.gotoScene("menu")
+
+        elseif (obj1.myName == "laser" and obj2.myName == "spaceGun2") or (obj1.myName == "spaceGun2" and obj2.myName == "laser") 
+        then
+
+            display.remove(obj1)
+            display.remove(obj2)
+            timer.cancel(gm2)
+            score = score + 200
+            
+                        
+            updateText()
+            
+
+        elseif (obj1.myName == "laser" and obj2.myName == "spaceGun3") or (obj1.myName == "spaceGun3" and obj2.myName == "laser") 
+        then
+            display.remove(obj2)
+            display.remove(obj1)
+            timer.cancel(gm3)
+            score = score + 200            
+            updateText()
+          
             
         end
     end
@@ -612,10 +687,62 @@ Runtime:addEventListener( "collision", onCollision )
   end
   gm1 = timer.performWithDelay(500, spaceLaser1, 1000)
 
+  spaceGun2 = display.newImageRect("spaceinvader.png", 100, 100)
+          spaceGun2.x = 600
+          spaceGun2.y = -100    
+          physics.addBody(spaceGun2, "static", { isSensor = true} )
+          spaceGun2.myName = "spaceGun2"
+
+          function spaceLaser2 ()
+  
+  
+            spaceLaser2 = display.newImageRect("laser .png", 100, 50)
+            spaceLaser2.x = spaceGun2.x
+            spaceLaser2.y = spaceGun2.y
+            physics.addBody( spaceLaser2, "dynamic", { isSensor=true } )
+            --spaceGun:toFront()
+            spaceLaser2.myName = "slaser2"
+        
+            spaceLaser2:setLinearVelocity(-100, 0)
+            --transition.to( spaceLaser, { x = 500, y = 1000, time = 500} )
+         
+         end
+        
+         gm2 = timer.performWithDelay(500, spaceLaser2, 1000)
+
+         spaceGun3 = display.newImageRect("spaceinvader.png", 100, 100)
+         spaceGun3.x = 100
+         spaceGun3.y = 1000    
+         physics.addBody(spaceGun3, "static", { isSensor = true} )
+         spaceGun3.myName = "spaceGun3"
+
+         function spaceLaser3 ()
+ 
+ 
+           spaceLaser3 = display.newImageRect("laser .png", 100, 50)
+           spaceLaser3.x = spaceGun3.x
+           spaceLaser3.y = spaceGun3.y
+           physics.addBody( spaceLaser3, "dynamic", { isSensor=true } )
+           --spaceGun:toFront()
+           spaceLaser3.myName = "slaser3"
+       
+           spaceLaser3:setLinearVelocity(1000, 0)
+           --transition.to( spaceLaser, { x = 500, y = 1000, time = 500} )
+        
+        end
+       
+        gm3 = timer.performWithDelay(500, spaceLaser3, 1000)
+
+        
+
+
+
   function rotate()
 
     transition.to( spaceGun, { x= 1000, y= 80, time= 20000 } )
     transition.to( spaceGun1, { x= -600, y= 80, time= 20000 } )
+    transition.to( spaceGun3, { x = 100, y = - 100, time = 20000} )
+    transition.to( spaceGun2, { x = 600, y = 1000, time = 20000} )
   end
 
   glt2 = timer.performWithDelay(100, rotate, 2)
