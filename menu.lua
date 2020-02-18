@@ -12,7 +12,6 @@ local function gotoGame()
 	composer.gotoScene("lvlmenu1")
 end
 
-
 local function gotoWheel()
 	composer.gotoScene("wheel-of-color")
 end
