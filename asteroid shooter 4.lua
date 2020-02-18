@@ -59,7 +59,7 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = 25
+local totalEnergy = energyScore 
 local energy = totalEnergy
 local asteroidsTable = {}
 local gm
