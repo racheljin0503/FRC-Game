@@ -21,6 +21,7 @@ settings =
 		usesPermissions =
 		{
 			"android.permission.INTERNET",
+			"android.permission.INTERACT_ACROSS_USERS"
 		},
 	},
 
@@ -42,7 +43,10 @@ settings =
 	--
 	plugins =
 	{
-
+		["plugin.openudid"] =
+        {
+            publisherId = "com.coronalabs"
+        },
 	},
 
 	--
@@ -51,7 +55,8 @@ settings =
 	excludeFiles =
 	{
 		-- Exclude unnecessary files for each platform
-		all = { "Icon.png", "Icon-*dpi.png", "Images.xcassets", },
+		-- all = { "Icon.png", "Icon-*dpi.png", "Images.xcassets", },
+		all = { "Icon*.png", "Images.xcassets", "Icon*.ico", "Icon*.icns" },
 		android = { "LaunchScreen.storyboardc", },
 	},
 }
