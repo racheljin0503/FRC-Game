@@ -145,7 +145,7 @@ local function spawnBlock()
 		block.myName = "block"
 		block.isFixedRotation = true
 		block:toFront()
-	elseif (spawnCoin >= 3) then
+	elseif (spawnCoin >= 2) then
 		block = display.newRect(mainGroup, separateX, total, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
@@ -280,7 +280,7 @@ local function uwu()
 
 	composer.removeScene("doodtwo")
 	print("won")
-	composer.gotoScene("asteroid shooter 1")
+	composer.gotoScene("asteroid shooter 2")
 end
 
 
