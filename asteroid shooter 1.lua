@@ -12,7 +12,6 @@
 
 -- math.randomseed(os.time())
 
--- composer.gotoScene("astroid shooter 1.lua")
 
 
 local composer = require( "composer" )
@@ -58,7 +57,8 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = composer.getVariable("energyScore")
+local totalEnergy = energyScore
+--composer.getVariable("energyScore")
 -- local totalEnergy = 5
 local energy = totalEnergy
 local asteroidsTable = {}
@@ -69,6 +69,9 @@ local livesText
 local scoreText
 local energyText
 
+local prButton
+
+local menuTimer
 
 
 -- Set up display groups
@@ -78,26 +81,28 @@ local uiGroup = display.newGroup()    -- Display group for UI objects like the s
 
 -- Load the background
 
-
+local function gotoMenu()
+    composer.gotoScene("menu")
+end
 
 -- create()
 function scene:create( event )
 
-	local sceneGroup = self.view
-	-- Code here runs when the scene is first created but has not yet appeared on screen
-	backGroup = display.newGroup() 
-	sceneGroup:insert(backGroup) 
+    local sceneGroup = self.view
+    -- Code here runs when the scene is first created but has not yet appeared on screen
+    backGroup = display.newGroup() 
+    sceneGroup:insert(backGroup) 
 
 
-	mainGroup = display.newGroup() 
-	sceneGroup:insert(mainGroup)
+    mainGroup = display.newGroup() 
+    sceneGroup:insert(mainGroup)
 
-	uiGroup = display.newGroup()
-	sceneGroup:insert(uiGroup)
+    uiGroup = display.newGroup()
+    sceneGroup:insert(uiGroup)
 
-	background = display.newImageRect(backGroup, "gameBack.png", 600, 9000)
-	background.x = display.contentCenterX
-	background.y = -4500 + display.actualContentHeight
+    background = display.newImageRect(backGroup, "gameBack.png", 600, 9000)
+    background.x = display.contentCenterX
+    background.y = -4500 + display.actualContentHeight
 
 
 end
@@ -105,14 +110,14 @@ end
 -- show()
 function scene:show( event )
 
-	local sceneGroup = self.view
-	local phase = event.phase
+    local sceneGroup = self.view
+    local phase = event.phase
 
-	if ( phase == "will" ) then
-		-- Code here runs when the scene is still off screen (but is about to come on screen)
+    if ( phase == "will" ) then
+        -- Code here runs when the scene is still off screen (but is about to come on screen)
 
-	elseif ( phase == "did" ) then
-		-- Code here runs when the scene is entirely on screen
+    elseif ( phase == "did" ) then
+        -- Code here runs when the scene is entirely on screen
         physics.start()
         
 
@@ -174,7 +179,10 @@ local function createAsteroid()
 end
 
 
+
 local function fireLaser( event )
+
+
 
     local newLaser = display.newImageRect( mainGroup, objectSheet, 5, 14, 40 )
     physics.addBody( newLaser, "dynamic", { isSensor=true } )
@@ -197,9 +205,16 @@ local function fireLaser( event )
 
     update()
 
+  --  or energyScore <=0
 
-    if (energy == 0 or energyScore <=0 ) then
+    if (energy == 0 ) then
         display.remove( ship )
+        display.remove(energyBar)
+        display.remove (prButton)
+        display.remove(Bar)
+        timer.cancel(gameLoopTimer)
+        composer.gotoScene("menu")
+        composer.removeScene("asteroid shooter 1")
         background:removeEventListener( "tap", fireLaser )
     end
    
@@ -208,10 +223,7 @@ end
 
 function update()
     Bar.width = Bar.width - (width / totalEnergy)
-    if (energy == 0) then
-        display.remove(Bar)
     end
-end
 
  background:addEventListener( "tap", fireLaser )
 
@@ -321,8 +333,14 @@ local function onCollision( event )
 
                 if ( lives == 0 ) then
                     display.remove( ship )
-                    composer.gotoScene("menu")
+                    display.remove(prButton)
+                    display.remove(resumeButton) 
+                    display.remove(Bar)
+                    display.remove(energyBar)
+                    timer.cancel(gameLoopTimer)
+                    timer.performWithDelay(1000, composer.gotoScene("menu"))
                     background:removeEventListener("tap", fireLaser)
+                    composer.removeScene("asteroid shooter 1")
 
                 else
                     ship.alpha = 0
@@ -337,7 +355,7 @@ Runtime:addEventListener( "collision", onCollision )
 
 
  
-  local  prButton = display.newImageRect("pause button.png", 75, 80)
+    prButton = display.newImageRect("pause button.png", 75, 80)
     prButton.x = 550
     prButton.y = 1
 
@@ -392,40 +410,35 @@ Runtime:addEventListener( "collision", onCollision )
 
     prButton:addEventListener("tap", pause)
     
-	end
+    end
 end
 
 
 -- hide()
 function scene:hide( event )
 
-	local sceneGroup = self.view
-	local phase = event.phase
+    local sceneGroup = self.view
+    local phase = event.phase
 
-	if ( phase == "will" ) then
-		-- Code here runs when the scene is on screen (but is about to go off screen)
+    if ( phase == "will" ) then
+        -- Code here runs when the scene is on screen (but is about to go off screen)
 
-	elseif ( phase == "did" ) then
-		-- Code here runs immediately after the scene goes entirely off screen
-		physics.pause()
+    elseif ( phase == "did" ) then
+        -- Code here runs immediately after the scene goes entirely off screen
+        physics.pause()
 
-		composer.removeScene("game")
+        composer.removeScene("asteroid shooter 1")
 
-	end
+    end
 end
 
 
 -- destroy()
 function scene:destroy( event )
 
-	local sceneGroup = self.view
-	-- Code here runs prior to the removal of scene's view
+    local sceneGroup = self.view
+    -- Code here runs prior to the removal of scene's view
 
-end
-
-local function endGame()
-    composer.setVariable( "finalScore", score )
-    composer.gotoScene( "highscores", { time=800, effect="crossFade" } )
 end
 
 -- -----------------------------------------------------------------------------------

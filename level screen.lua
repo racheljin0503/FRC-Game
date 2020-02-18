@@ -8,18 +8,10 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local function gotoGame()
-	composer.gotoScene("doodfour")
-end
 
 
-local function gotoWheel()
-	composer.gotoScene("wheel-of-color")
-end
 
-local function gotoHighscores()
-	composer.gotoScene("highscores")
-end
+
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -30,23 +22,7 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
-	local background = display.newImageRect(sceneGroup, "menu bg.png", display.pixelWidth, display.pixelHeight)
-	background.x = display.contentCenterX
-	background.y = display.contentCenterY
 
-
-	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
-	playButton:setFillColor(0, 0, .7)
-
-	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 50)
-	colorWheel:setFillColor(0, 0, .7)
-  
-	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, 230, native.systemFont, 50)
-	highscoresButton:setFillColor(0, 0, .7)
-
-	playButton:addEventListener("tap", gotoGame)
-	colorWheel:addEventListener("tap", gotoWheel)
-	highscoresButton:addEventListener("tap", gotoHighscores)
 end
 
 
@@ -77,7 +53,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		composer.removeScene("menu")
+
 	end
 end
 

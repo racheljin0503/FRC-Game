@@ -1,23 +1,29 @@
------------------------------------------------------------------------------------------
---
--- main.lua
---
------------------------------------------------------------------------------------------
-
--- Your code here
-
--- local composer = require("composer")
-
--- display.setStatusBar(display.HiddenStatusBar)
-
--- math.randomseed(os.time())
-
--- composer.gotoScene("astroid shooter 1.lua")
-
 
 local composer = require( "composer" )
 
 local scene = composer.newScene()
+
+-- -----------------------------------------------------------------------------------
+-- Code outside of the scene event functions below will only be executed ONCE unless
+-- the scene is removed entirely (not recycled) via "composer.removeScene()"
+-- -----------------------------------------------------------------------------------
+
+
+
+-- -----------------------------------------------------------------------------------
+-- Scene event functions
+-- -----------------------------------------------------------------------------------
+
+-- create()
+function scene:create( event )
+
+	local sceneGroup = self.view
+	-- Code here runs when the scene is first created but has not yet appeared on screen
+
+end
+
+
+
 
 local physics = require( "physics" )
 physics.start()
@@ -49,9 +55,10 @@ local sheetOptions =
             width = 14,
             height = 40
         },
+      
     },
 }
-local objectSheet = graphics.newImageSheet( "gameObjects.png", sheetOptions )
+local objectSheet = graphics.newImageSheet( "gameObjects.png",  sheetOptions )
 
 -- Initialize variables
 local lives = 1
@@ -59,7 +66,6 @@ local score = 0
 local died = false
 local width =  200
 local totalEnergy = composer.getVariable("energyScore")
--- local totalEnergy = 5
 local energy = totalEnergy
 local asteroidsTable = {}
 
@@ -77,46 +83,7 @@ local mainGroup = display.newGroup()  -- Display group for the ship, asteroids, 
 local uiGroup = display.newGroup()    -- Display group for UI objects like the score
 
 -- Load the background
-
-
-
--- create()
-function scene:create( event )
-
-	local sceneGroup = self.view
-	-- Code here runs when the scene is first created but has not yet appeared on screen
-	backGroup = display.newGroup() 
-	sceneGroup:insert(backGroup) 
-
-
-	mainGroup = display.newGroup() 
-	sceneGroup:insert(mainGroup)
-
-	uiGroup = display.newGroup()
-	sceneGroup:insert(uiGroup)
-
-	background = display.newImageRect(backGroup, "gameBack.png", 600, 9000)
-	background.x = display.contentCenterX
-	background.y = -4500 + display.actualContentHeight
-
-
-end
-
--- show()
-function scene:show( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-
-	if ( phase == "will" ) then
-		-- Code here runs when the scene is still off screen (but is about to come on screen)
-
-	elseif ( phase == "did" ) then
-		-- Code here runs when the scene is entirely on screen
-        physics.start()
-        
-
-        background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
+ background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 
@@ -139,10 +106,24 @@ ship.myName = "ship"
 --livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, native.systemFont, 36 )
 scoreText = display.newText( uiGroup, "Score: " .. score, 300, 0, native.systemFont, 36 )
 energyText = display.newText( uiGroup, "" .. energy, 97, 210, native.systemFont, 36 )
+    
+bird = display.newImageRect("bird.png", 500, 500)
+bird.x = 1000
+bird.y = 100
 
+function createBird()
+    bird = display.newImageRect("bird.png", 500, 500)
+    bird.x = 1000
+    bird.y = math.random(0, 600)
+    physics.addBody(bird, "dynamic",{ isSensor = true})
 
-
-
+    bird:setLinearVelocity(-100, 0)
+    --transition.to( bird, { x=-100, y=100, time=5000 } )
+    
+  
+ end
+createBird()
+glt =  timer.performWithDelay( 2500, createBird, 10 )
 --Hide the status bar
 display.setStatusBar( display.HiddenStatusBar )
 
@@ -159,6 +140,7 @@ local function createAsteroid()
     local newAsteroid = display.newImageRect( mainGroup, objectSheet, 1, 102, 85 )
     table.insert( asteroidsTable, newAsteroid )
     physics.addBody( newAsteroid, "dynamic", { radius=40, bounce=0.8 } )
+   
     newAsteroid.myName = "asteroid"
 
 
@@ -174,9 +156,9 @@ local function createAsteroid()
 end
 
 
-local function fireLaser( event )
+ function fireLaser( event )
 
-    local newLaser = display.newImageRect( mainGroup, objectSheet, 5, 14, 40 )
+     newLaser = display.newImageRect( mainGroup, objectSheet, 5, 14, 40 )
     physics.addBody( newLaser, "dynamic", { isSensor=true } )
     newLaser.isBullet = true
     newLaser.myName = "laser"
@@ -191,14 +173,14 @@ local function fireLaser( event )
         onComplete = function() display.remove( newLaser ) end
     } )
 
+
     energy = energy - 1
     energyText.text = " " .. energy
 
 
     update()
 
-
-    if (energy == 0 or energyScore <=0 ) then
+    if (energy == 0) then
         display.remove( ship )
         background:removeEventListener( "tap", fireLaser )
     end
@@ -208,10 +190,7 @@ end
 
 function update()
     Bar.width = Bar.width - (width / totalEnergy)
-    if (energy == 0) then
-        display.remove(Bar)
     end
-end
 
  background:addEventListener( "tap", fireLaser )
 
@@ -290,7 +269,8 @@ local function onCollision( event )
 
         local obj1 = event.object1
         local obj2 = event.object2
-
+       -- print("obj1=="..obj1.myName)
+        --print("obj2=="..obj2.myName)
         if ( ( obj1.myName == "laser" and obj2.myName == "asteroid" ) or
              ( obj1.myName == "asteroid" and obj2.myName == "laser" ) )
         then
@@ -299,18 +279,20 @@ local function onCollision( event )
             display.remove( obj2 )
 
             for i = #asteroidsTable, 1, -1 do
-                if ( asteroidsTable[i] == obj1 or asteroidsTable[i] == obj2) then
+             if ( asteroidsTable[i] == obj1 or asteroidsTable[i] == obj2) then
                     table.remove( asteroidsTable, i )
                     break
-                end
+             end
             end
+
+
 
             -- Increase score
             score = score + 100
             scoreText.text = "Score: " .. score
 
-        elseif ( ( obj1.myName == "ship" and obj2.myName == "asteroid" ) or
-                 ( obj1.myName == "asteroid" and obj2.myName == "ship" ) )
+        elseif ( ( obj1.myName == "asteroid" and obj2.myName == "ship" ) or
+                 ( obj1.myName == "ship" and obj2.myName == "asteroid" ) )
         then
             if ( died == false ) then
                 died = true
@@ -321,8 +303,8 @@ local function onCollision( event )
 
                 if ( lives == 0 ) then
                     display.remove( ship )
-                    composer.gotoScene("menu")
                     background:removeEventListener("tap", fireLaser)
+                    
 
                 else
                     ship.alpha = 0
@@ -334,6 +316,22 @@ local function onCollision( event )
 end
 
 Runtime:addEventListener( "collision", onCollision )
+
+local function birdCollision (event)
+
+    local obj1 = event.object1
+    local obj2 = event.object2
+
+    if((obj1.myName == "laser" and obj2.myName == "bird") or
+    (obj1.myName == "bird" and obj2.myName == "laser")) then
+        
+        print(bird.myName)
+
+        transition.pause()
+        physics.pause()
+    end
+end
+Runtime:addEventListener("collision", birdCollision)
 
 
  
@@ -391,7 +389,21 @@ Runtime:addEventListener( "collision", onCollision )
 
 
     prButton:addEventListener("tap", pause)
-    
+
+
+
+-- show()
+function scene:show( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+
+	if ( phase == "will" ) then
+		-- Code here runs when the scene is still off screen (but is about to come on screen)
+
+	elseif ( phase == "did" ) then
+		-- Code here runs when the scene is entirely on screen
+
 	end
 end
 
@@ -407,9 +419,6 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		physics.pause()
-
-		composer.removeScene("game")
 
 	end
 end
@@ -423,10 +432,6 @@ function scene:destroy( event )
 
 end
 
-local function endGame()
-    composer.setVariable( "finalScore", score )
-    composer.gotoScene( "highscores", { time=800, effect="crossFade" } )
-end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
