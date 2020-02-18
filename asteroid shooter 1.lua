@@ -71,6 +71,7 @@ local energyText
 
 local prButton
 
+local menuTimer
 
 
 -- Set up display groups
@@ -80,7 +81,9 @@ local uiGroup = display.newGroup()    -- Display group for UI objects like the s
 
 -- Load the background
 
-
+local function gotoMenu()
+    composer.gotoScene("menu")
+end
 
 -- create()
 function scene:create( event )
@@ -176,7 +179,10 @@ local function createAsteroid()
 end
 
 
+
 local function fireLaser( event )
+
+
 
     local newLaser = display.newImageRect( mainGroup, objectSheet, 5, 14, 40 )
     physics.addBody( newLaser, "dynamic", { isSensor=true } )
@@ -205,9 +211,11 @@ local function fireLaser( event )
         display.remove( ship )
         display.remove(energyBar)
         display.remove (prButton)
-        background:removeEventListener( "tap", fireLaser )
-        timer.performWithDelay(500, composer.gotoScene("menu"))
+        display.remove(Bar)
+        timer.cancel(gameLoopTimer)
+        composer.gotoScene("menu")
         composer.removeScene("asteroid shooter 1")
+        background:removeEventListener( "tap", fireLaser )
     end
    
 end
@@ -325,9 +333,12 @@ local function onCollision( event )
 
                 if ( lives == 0 ) then
                     display.remove( ship )
-                    display.remove (prButton)
-                    display.remove (resumeButton) 
-                    composer.gotoScene("menu")
+                    display.remove(prButton)
+                    display.remove(resumeButton) 
+                    display.remove(Bar)
+                    display.remove(energyBar)
+                    timer.cancel(gameLoopTimer)
+                    timer.performWithDelay(1000, composer.gotoScene("menu"))
                     background:removeEventListener("tap", fireLaser)
                     composer.removeScene("asteroid shooter 1")
 

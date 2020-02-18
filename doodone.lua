@@ -34,7 +34,6 @@ local spawnTimer
 --Temporary
 local winTimer
 
-
 energyScore = 0
 local energyText
 
@@ -303,7 +302,6 @@ function scene:create( event )
     player:setFillColor(0, .2, .9)
     player:toFront()
 
-
     block = display.newRect(mainGroup, display.contentCenterX, player.y + 150, 100, 30)
     block:setFillColor(0, 1, 0)
     physics.addBody(block, "dynamic", {bounce = 0})
@@ -339,11 +337,10 @@ function scene:show( event )
 		passTimer = timer.performWithDelay(50, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(250, spawnBlock, 0)
-		winTimer = timer.performWithDelay(50100,uwu , 1)
+		winTimer = timer.performWithDelay(50100, uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
 	end
 end
-
 
 -- hide()
 function scene:hide( event )

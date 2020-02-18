@@ -280,7 +280,7 @@ local function uwu()
 
 	composer.removeScene("doodtwo")
 	print("won")
-	composer.gotoScene("asteroidgame")
+	composer.gotoScene("asteroid shooter 1")
 end
 
 
