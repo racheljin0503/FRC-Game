@@ -281,8 +281,10 @@ glt2 = timer.performWithDelay(100, checkwin, 10000)
         display.remove(energyBar)
         display.remove (prButton)
         display.remove(bird)
+        display.remove(pup)
         background:removeEventListener( "tap", fireLaser )
-        -- composer.gotoScene("menu")
+      --  composer.removeScene("asteroid shooter 2")
+        composer.gotoScene("menu")
 
     end
    
@@ -412,10 +414,11 @@ local function onCollision( event )
                     display.remove(energyBar)
                     display.remove(Bar)
                     display.remove(bird)
-                    
+                    display.remove(pup)
+                    composer.removeScene("asteroid shooter 2")
                     --print("dead")
                     background:removeEventListener("tap", fireLaser)
-                    -- composer.gotoScene("menu")
+                    composer.gotoScene("menu")
 
                 else
                     ship.alpha = 0
