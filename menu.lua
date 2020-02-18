@@ -9,7 +9,7 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 
 local function gotoGame()
-	composer.gotoScene("doodfour")
+	composer.gotoScene("doodone")
 end
 
 
