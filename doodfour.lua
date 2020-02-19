@@ -251,9 +251,19 @@ end
 
 
 local function pushPlayer()
-	if (canJump > 0) then
-	player:applyLinearImpulse(0, -.20, player.x, player.y)
-	canJump = canJump - 1
+	local jumpx, jumpy = player:getLinearVelocity()
+	if (canJump > 0 and jumpy > 150) then
+		player:applyLinearImpulse(0, -.31, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0 and jumpy > 0) then
+		player:applyLinearImpulse(0, -.22, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0 and jumpy > -150) then
+		player:applyLinearImpulse(0, -.16, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0) then
+		player:applyLinearImpulse(0, -.1, player.x, player.y)
+		canJump = canJump - 1
 	end
 end
 
@@ -457,7 +467,7 @@ function scene:show( event )
 		gameLoopTimer = timer.performWithDelay(10, gameLoop, 0)
 		passTimer = timer.performWithDelay(50, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
-		spawnTimer = timer.performWithDelay(850, spawnBlock, 0)
+		spawnTimer = timer.performWithDelay(800, spawnBlock, 0)
 		astTimer = timer.performWithDelay(math.random(5000, 10000), spawnAst, 0)
 		winTimer = timer.performWithDelay(80100,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)

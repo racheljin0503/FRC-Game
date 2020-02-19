@@ -73,7 +73,6 @@ local prButton
 local menu
 local winText
 
-local menuTimer
 
 
 -- Set up display groups
@@ -83,9 +82,7 @@ local uiGroup = display.newGroup()    -- Display group for UI objects like the s
 
 -- Load the background
 
-local function goToLevels()
-    composer.gotoScene("lvlmenu2")
-end
+
 
 
 -- create()
@@ -110,24 +107,7 @@ function scene:create( event )
 
 end
 
--- function tapMenu (event)
---     composer.gotoScene("menu")
--- end
 
--- function win()
-
---     display.remove( ship )
---     display.remove(energyBar)
---     display.remove (prButton)
---     background:removeEventListener( "tap", fireLaser )
---     winText = display.newText("Congractulation! you unclocked level 2", 500, 300, native.systemFont, 36)
---     menu = display.newText("menu", 500, 500, native.systemFont, 36)
-
---     menu:addEventListener("tap", tapMenu)
-
--- end
-
--- show()
 function scene:show( event )
 
     local sceneGroup = self.view
@@ -140,8 +120,6 @@ function scene:show( event )
         -- Code here runs when the scene is entirely on screen
         physics.start()
 
---     end
--- end
         
 
         background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
@@ -187,9 +165,8 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove(newAsteroid)
         display.remove(energyText)
         display.remove (prButton)
-
+        display.remove(bird)
         background:removeEventListener( "tap", fireLaser )
-        composer.removeScene("astroid shooter 1")
         composer.gotoScene("highscores")
 end
 
@@ -199,6 +176,48 @@ local function updateText()
     scoreText.text = "Score: " .. score
     energyText.text = " " .. energy
 end
+
+ 
+-- bird = display.newImageRect("bird.png", 500, 500)
+-- bird.x = 500
+-- bird.y = 500
+
+function createBird()
+    bird = display.newImageRect("bird.png", 500, 500)
+    bird.x = 1000
+    bird.y = math.random(0, 600)
+    physics.addBody(bird, "dynamic",{ radius = 20, isSensor = true})
+    bird.myName = "bird"
+    bird:setLinearVelocity(-100, 0)
+    if(energy <= 0) then
+        display.remove(bird)
+    end
+    --transition.to( bird, { x=-100, y=100, time=5000 } )
+    
+  
+ end
+
+ --createBird()
+       
+glt =  timer.performWithDelay( 15000, createBird, 100 )
+
+
+
+function createPup()
+
+        pup = display.newImageRect("power up.png", 500, 500)
+        pup.x = 1000
+        pup.y = math.random(0, 600)
+        physics.addBody(pup, "dynamic",{ radius = 20, isSensor = true})
+        pup.myName = "pup"
+    
+        pup:setLinearVelocity(-100, 0)
+        
+        
+      
+     end
+    
+    glt1 =  timer.performWithDelay( 10000, createPup, 10 )
 
 
 local function createAsteroid()
@@ -221,18 +240,15 @@ local function createAsteroid()
 end
 
 local function checkwin()
-if (score >= 1000) then
+if (score >= 1500) then
 win()
 end
 end
 
-glt = timer.performWithDelay(100, checkwin, 10000)
+glt2 = timer.performWithDelay(100, checkwin, 10000)
 
 
-
-local function fireLaser( event )
-
-
+ function fireLaser( event )
 
     local newLaser = display.newImageRect( mainGroup, objectSheet, 5, 14, 40 )
     physics.addBody( newLaser, "dynamic", { isSensor=true } )
@@ -258,26 +274,20 @@ local function fireLaser( event )
   --  or energyScore <=0
 
     if (energy == 0 ) then
+        timer.cancel(glt)
+        timer.cancel(glt1)
+        physics.removeBody(bird)
         display.remove( ship )
         display.remove(energyBar)
         display.remove (prButton)
-        display.remove(Bar)
-        timer.cancel(gameLoopTimer)
-        composer.gotoScene("youdied")
-        composer.removeScene("asteroid shooter 1")
+        display.remove(bird)
+        display.remove(pup)
         background:removeEventListener( "tap", fireLaser )
+      --  composer.removeScene("asteroid shooter 2")
+        composer.gotoScene("menu")
+
     end
    
-    if (score == 1000) then
-        display.remove( ship )
-        display.remove(energyBar)
-        display.remove (prButton)
-        display.remove(Bar)
-        timer.cancel(gameLoopTimer)
-        composer.gotoScene("lvlmenu2")
-        composer.removeScene("asteroid shooter 1")
-        background:removeEventListener( "tap", fireLaser )
-    end
 end
  
 
@@ -298,10 +308,12 @@ function update()
 --         display.currentStage:setFocus( ship )
 --         -- Store initial offset position
 --         ship.touchOffsetX = event.x - ship.x
+--        -- ship.touchOffsetY = event.y - ship.y
 
 --     elseif ( "moved" == phase ) then
 --         -- Move the ship to the new touch position
 --         ship.x = event.x - ship.touchOffsetX
+--         --hip.y = event.y - ship.touchOffsetY
 
 --     elseif ( "ended" == phase or "cancelled" == phase ) then
 --         -- Release touch focus on the ship
@@ -337,7 +349,7 @@ local function gameLoop()
     end
 end
 
-gameLoopTimer = timer.performWithDelay( 500, gameLoop, 15 )
+gameLoopTimer = timer.performWithDelay( 500, gameLoop, 20 )
 
 
 local function restoreShip()
@@ -392,21 +404,51 @@ local function onCollision( event )
                -- livesText.text = "lives: " .. lives
 
                 if ( lives == 0 ) then
+
+                    timer.cancel(glt)
+                    timer.cancel(glt1)
+                    physics.removeBody(bird)
                     display.remove( ship )
-                    display.remove(prButton)
-                    display.remove(resumeButton) 
-                    display.remove(Bar)
+                    display.remove (prButton)
+                    display.remove (resumeButton) 
                     display.remove(energyBar)
-                    timer.cancel(gameLoopTimer)
-                    timer.performWithDelay(1000, composer.gotoScene("menu"))
+                    display.remove(Bar)
+                    display.remove(bird)
+                    display.remove(pup)
+                    composer.removeScene("asteroid shooter 2")
+                    --print("dead")
                     background:removeEventListener("tap", fireLaser)
-                    composer.removeScene("asteroid shooter 1")
+                    composer.gotoScene("menu")
 
                 else
                     ship.alpha = 0
                     timer.performWithDelay( 1000, restoreShip )
                 end
             end
+        elseif (obj1.myName == "bird" and obj2.myName == "laser") or
+                (obj1.myName == "laser" and obj2.myName == "bird") then
+
+                    display.remove(obj1)
+                    display.remove(obj2)
+                    display.remove( ship )
+                    display.remove (prButton)
+                    display.remove (resumeButton) 
+                    display.remove(energyBar)
+                    display.remove(Bar)
+                    display.remove(bird)
+                    background:removeEventListener("tap", fireLaser)
+                    composer.gotoScene("menu")
+
+                elseif (obj1.myName == "laser" and obj2.myName == "pup") or
+                        (obj1.myName == "pup" and obj2.myName == "laser") then
+                
+                            display.remove(obj1)
+                            display.remove(obj2)
+                
+                            energy = energy + 2
+                            updateText()
+                            Bar.width = Bar.width + 2 * (width / totalEnergy) 
+
         end
     end
 end
@@ -493,7 +535,7 @@ function scene:hide( event )
         -- Code here runs immediately after the scene goes entirely off screen
         physics.pause()
 
-        composer.removeScene("asteroid shooter 1")
+        composer.removeScene("game")
 
     end
 end

@@ -275,9 +275,19 @@ end
 
 
 local function pushPlayer()
-	if (canJump > 0) then
-	player:applyLinearImpulse(0, -.20, player.x, player.y)
-	canJump = canJump - 1
+	local jumpx, jumpy = player:getLinearVelocity()
+	if (canJump > 0 and jumpy > 150) then
+		player:applyLinearImpulse(0, -.31, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0 and jumpy > 0) then
+		player:applyLinearImpulse(0, -.22, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0 and jumpy > -150) then
+		player:applyLinearImpulse(0, -.16, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0) then
+		player:applyLinearImpulse(0, -.1, player.x, player.y)
+		canJump = canJump - 1
 	end
 end
 

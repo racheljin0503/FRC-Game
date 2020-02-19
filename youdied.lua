@@ -7,70 +7,14 @@ local scene = composer.newScene()
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
-local physics = require("physics")
-physics.start()
-physics.setGravity(0, 0)
 
-
-
-local background
-local wheel
-local stopButton
-local spinButton
-
-local backGroup
-local mainGroup
-local uiGroup
-
-local function gotoMenu()
-	composer.gotoScene("menu")
+local function gotoMenu1()
+	composer.gotoScene( "menu")-- { time=800, effect="crossFade" } )
 end
 
-local function addSpin()
-	wheel:applyTorque(5000)
+local function gotoHighscores()
+	composer.gotoScene("highscores")
 end
-
-local function removeSpin()
-	display.remove(spinButton)
-end
-
-local function stop()
-	wheel:applyTorque(-2500)
-end
-
-local function addStop()
-	timer.performWithDelay(500, stop, 10)
-end
-
-local function reward()
-	num = math.random(1, 100)
-	if (num > 60) then
-		return "small"
-	elseif (num > 40) then
-		return "med"
-	elseif(num > 25) then
-		return "large"
-	elseif(num > 15) then
-		return "great"
-	elseif (num > 5) then
-		return "rare"
-	else
-		return "epic"
-	end
-end
-
-local function printReward()
-	reward()s
-end
-
-local function spin()
-	display.remove(spinButton)
-	timer.performWithDelay(500, addSpin, 5)
-	timer.performWithDelay(3000, addStop)
-	timer.performWithDelay(8000, print("ok"))
-	-- timer.performWithDelay(6000, addStop)
-end
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -81,36 +25,23 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
-
-	backGroup = display.newGroup() 
-	sceneGroup:insert(backGroup) 
-
-	mainGroup = display.newGroup() 
-	sceneGroup:insert(mainGroup)
-
-	uiGroup = display.newGroup()
-	sceneGroup:insert(uiGroup)
-
-	background = display.newImageRect(backGroup, "background STR.png", display.actualContentWidth, display.actualContentHeight)
+	local background = display.newImageRect(sceneGroup, "menu bg.png", display.pixelWidth, display.pixelHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	wheel = display.newImageRect(mainGroup, "ColorWheel.png", 300, 300)
-	physics.addBody(wheel, "dynamic")
-	wheel.x = display.contentCenterX
-	wheel.y = display.contentCenterY
+	local deathmessage = display.newText(sceneGroup, "YOU DIED!", display.contentCenterX, display.contentCenterY - 375, native.systemFont, 100)
+	deathmessage:setFillColor(0, 0, .7)
 
-	local menuButton = display.newText(uiGroup, "Menu", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
-	menuButton.x = display.contentCenterX - 80
-	menuButton.y = 25
-	menuButton:setFillColor(0, 0, .7)
-	menuButton:addEventListener("tap", gotoMenu)
+	local menuButton = display.newText( sceneGroup, "BACK TO MENU", display.contentCenterX, display.contentCenterY - 275, native.systemFont, 50)
+    menuButton:setFillColor( 0, 0, .7)
+  
+	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, display.contentCenterY - 200, native.systemFont, 50)
+	highscoresButton:setFillColor(0, 0, .7)
 
-	spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
-	spinButton:addEventListener("tap", spin)
-	spinButton:setFillColor(0, .45, 0)
-
-
+	menuButton:addEventListener("tap", gotoMenu1)
+	highscoresButton:addEventListener("tap", gotoHighscores)
+		
+	
 end
 
 
@@ -141,8 +72,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		physics.pause()
-		composer.removeScene("wheel-of-color")
+		composer.removeScene("youdied")
 	end
 end
 
