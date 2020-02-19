@@ -9,7 +9,7 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 
 local function gotoGame()
-	composer.gotoScene("doodone")
+	composer.gotoScene("asteroid shooter 5")
 end
 
 
@@ -19,6 +19,10 @@ end
 
 local function gotoHighscores()
 	composer.gotoScene("highscores")
+end
+
+local function gotoAbout()
+	composer.gotoScene("about")
 end
 
 -- -----------------------------------------------------------------------------------
@@ -38,15 +42,19 @@ function scene:create( event )
 	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
 	playButton:setFillColor(0, 0, .7)
 
-	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 50)
+	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 45)
 	colorWheel:setFillColor(0, 0, .7)
   
 	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, 230, native.systemFont, 50)
 	highscoresButton:setFillColor(0, 0, .7)
 
+	local about = display.newText(sceneGroup, "about", display.contentCenterX, 650, native.systemFont, 50)
+	about:setFillColor(0, 0, .7)
+
 	playButton:addEventListener("tap", gotoGame)
 	colorWheel:addEventListener("tap", gotoWheel)
 	highscoresButton:addEventListener("tap", gotoHighscores)
+	about:addEventListener("tap", gotoAbout)
 end
 
 

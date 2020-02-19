@@ -1,10 +1,10 @@
--- -----------------------------------------------------------------------------------------
--- --
--- -- main.lua
--- --
--- -----------------------------------------------------------------------------------------
+-- -- -----------------------------------------------------------------------------------------
+-- -- --
+-- -- -- main.lua
+-- -- --
+-- -- -----------------------------------------------------------------------------------------
 
---Your code here
+-- --Your code here
 
 local composer = require("composer")
 
@@ -13,6 +13,11 @@ display.setStatusBar(display.HiddenStatusBar)
 math.randomseed(os.time())
 
 composer.gotoScene("menu")
+
+
+-- local composer = require( "composer" )
+
+-- local scene = composer.newScene()
 
 
 -- local physics = require( "physics" )
@@ -55,23 +60,87 @@ composer.gotoScene("menu")
 -- local score = 0
 -- local died = false
 -- local width =  200
--- local totalEnergy = 25
+-- local totalEnergy = 50 --( this is the value of doodle jump energy collected)
 -- local energy = totalEnergy
 -- local asteroidsTable = {}
--- local gm
 
 -- local ship
 -- local gameLoopTimer
+-- local glt
+-- local glt1
+-- local gm
+-- local gm1
 -- local livesText
 -- local scoreText
 -- local energyText
 
+-- function tapMenu (event)
+--     composer.gotoScene("menu")
+-- end
 
+-- function dead()
+--     display.remove( ship )
+--     composer.gotoScene("menu")
+--     display.remove(energyBar)
+--     display.remove (prButton)
+--     background:removeEventListener( "tap", fireLaser )
+--      -- (this can be leaderboard or highscores)
+-- end
+
+-- function win()
+
+--     display.remove( ship )
+--     display.remove(energyBar)
+--     display.remove (prButton)
+--     background:removeEventListener( "tap", fireLaser )
+--     winText = display.newText("Congractulation! you unclocked level 5", 500, 300, native.systemFont, 36)
+--     menu = display.newText("menu", 500, 500, native.systemFont, 36)
+
+--     menu:addEventListener("tap", tapMenu)
+
+-- end
 
 -- -- Set up display groups
 -- local backGroup = display.newGroup()  -- Display group for the background image
 -- local mainGroup = display.newGroup()  -- Display group for the ship, asteroids, lasers, etc.
 -- local uiGroup = display.newGroup()    -- Display group for UI objects like the score
+
+
+-- function scene:create( event )
+
+--     local sceneGroup = self.view
+--     -- Code here runs when the scene is first created but has not yet appeared on screen
+--     backGroup = display.newGroup() 
+--     sceneGroup:insert(backGroup) 
+
+
+--     mainGroup = display.newGroup() 
+--     sceneGroup:insert(mainGroup)
+
+--     uiGroup = display.newGroup()
+--     sceneGroup:insert(uiGroup)
+
+--     background = display.newImageRect(backGroup, "gameBack.png", 600, 9000)
+--     background.x = display.contentCenterX
+--     background.y = -4500 + display.actualContentHeight
+
+
+-- end
+
+-- -- show()
+-- function scene:show( event )
+
+--     local sceneGroup = self.view
+--     local phase = event.phase
+
+--     if ( phase == "will" ) then
+--         -- Code here runs when the scene is still off screen (but is about to come on screen)
+
+--     elseif ( phase == "did" ) then
+--         -- Code here runs when the scene is entirely on screen
+--         physics.start()
+        
+
 
 -- -- Load the background
 --  background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
@@ -79,10 +148,9 @@ composer.gotoScene("menu")
 -- background.y = display.contentCenterY
 
 
-
 -- energyBar = display.newRect(300, 70, 60, 210)
-
 -- energyBar:rotate(90)
+-- --
 
 -- Bar = display.newRect(300, 70, width, 50)
 -- Bar:setFillColor(255, 0, 0)
@@ -109,19 +177,36 @@ composer.gotoScene("menu")
 --     bird.x = 1000
 --     bird.y = math.random(0, 600)
 --     physics.addBody(bird, "dynamic",{ isSensor = true})
+--     bird.myName = "bird"
 
 --     bird:setLinearVelocity(-100, 0)
 --     --transition.to( bird, { x=-100, y=100, time=5000 } )
     
   
 --  end
+--         --createBird()
+-- glt =  timer.performWithDelay( 10000, createBird, 100 )
+
+-- function createPup()
+--     pup = display.newImageRect("power up.png", 500, 500)
+--     pup.x = 1000
+--     pup.y = math.random(0, 600)
+--     physics.addBody(pup, "dynamic",{ isSensor = true})
+--     pup.myName = "pup"
+
+--     pup:setLinearVelocity(-100, 0)
+--     --transition.to( bird, { x=-100, y=100, time=5000 } )
+    
+  
+--  end
 -- createBird()
--- glt =  timer.performWithDelay( 10000, createBird, 10 )
+-- glt1 =  timer.performWithDelay( 5000, createPup, 10 )
+
 -- --Hide the status bar
 -- display.setStatusBar( display.HiddenStatusBar )
 
 
--- local function updateText()
+--  function updateText()
 --     -- livesText.text = "lives: " .. lives
 --     scoreText.text = "Score: " .. score
 --     energyText.text = " " .. energy
@@ -162,7 +247,7 @@ composer.gotoScene("menu")
 --     newLaser.y = ship.y
 --     newLaser:toBack()
 
---     transition.to( newLaser, { x=event.x, y=event.y, time=300,
+--     transition.to( newLaser, { x=event.x , y=event.y + 100, time=300,
 --         onComplete = function() display.remove( newLaser ) end
 --     } )
 
@@ -181,9 +266,11 @@ composer.gotoScene("menu")
 -- end
  
 
--- function update()
---     Bar.width = Bar.width - (width / totalEnergy)
---     end
+    
+--     -- function plusUpdate()
+--     --     Bar.width = Bar.width + (width / totalEnergy)
+--     -- end
+
 
 --  background:addEventListener( "tap", fireLaser )
 
@@ -237,7 +324,7 @@ composer.gotoScene("menu")
 --     end
 -- end
 
--- gameLoopTimer = timer.performWithDelay( 500, gameLoop, 30 )
+-- gameLoopTimer = timer.performWithDelay( 500, gameLoop, 40 )
 
 
 -- local function restoreShip()
@@ -308,6 +395,15 @@ composer.gotoScene("menu")
 --         then
 --             display.remove(ship)
 --             background:removeEventListener("tap", fireLaser)
+--            -- composer.gotoScene("menu")
+
+            
+--         elseif (obj1.myName == "slaser1" and obj2.myName == "ship") or (obj1.myName == "ship" and obj2.myName == "slaser1") 
+--         then
+
+--             display.remove(ship)
+--             background:removeEventListener("tap", fireLaser)
+--             --composer.gotoScene("menu")
 
 
 --         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun") or (obj1.myName == "spaceGun" and obj2.myName == "laser") 
@@ -317,25 +413,49 @@ composer.gotoScene("menu")
 --             display.remove(spaceLaser)
 --             timer.cancel(gm)
 --             score = score + 200
-
---         elseif (obj1.myName == "slaser1" and obj2.myName == "ship") or (obj1.myName == "ship" and obj2.myName == "slaser1") 
---         then
-
---             display.remove(ship)
+--             --energy = energy + 1
+                        
+--             updateText()
+            
+--             --Bar.width = Bar.width +  (width / totalEnergy)
+--            -- update()
 
 --         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun1") or (obj1.myName == "spaceGun1" and obj2.myName == "laser") 
 --         then
 --             display.remove(spaceGun1)
 --             display.remove(spaceLaser1)
 --             timer.cancel(gm1)
---             score = score + 200
+--             score = score + 200            
+--             updateText()
             
-            
+
+--             elseif (obj1.myName == "laser" and obj2.myName == "pup") or
+--                     (obj1.myName == "pup" and obj2.myName == "laser") then
+
+--                         display.remove(obj1)
+--                         display.remove(obj2)
+
+--                     energy = energy + 3
+--                     updateText()
+--                     Bar.width = Bar.width + 3 * (width / totalEnergy) 
+
 --         end
 --     end
 -- end
 
 -- Runtime:addEventListener( "collision", onCollision )
+
+
+
+--     function update()
+--         Bar.width = Bar.width - ( width / totalEnergy )
+--     end
+
+--     -- function pUpdate()
+--     --     Bar.width = Bar.width + ( width / totalEnergy + 5) 
+--     -- end
+
+
 
 
  
@@ -356,9 +476,10 @@ composer.gotoScene("menu")
        
 --         physics.pause()
 --         transition.pause()
---         timer.cancel(gm)
+--        timer.cancel(gm)
 --         timer.cancel(gm1)
 --         timer.cancel(glt)
+--         timer.cancel(glt1)
 --         timer.cancel(gameLoopTimer)
 
 --        background:removeEventListener( "tap", fireLaser )
@@ -457,4 +578,5 @@ composer.gotoScene("menu")
 --   transition.to( spaceLaser1, { x = 200, y = 1000, time = 500} )
 
 -- end
+
 
