@@ -73,6 +73,7 @@ local prButton
 local menu
 local winText
 
+local menuTimer
 
 
 -- Set up display groups
@@ -82,7 +83,9 @@ local uiGroup = display.newGroup()    -- Display group for UI objects like the s
 
 -- Load the background
 
-
+local function gotoMenu()
+    composer.gotoScene("menu")
+end
 
 
 -- create()
@@ -226,7 +229,10 @@ end
 glt = timer.performWithDelay(100, checkwin, 10000)
 
 
- function fireLaser( event )
+
+local function fireLaser( event )
+
+
 
     local newLaser = display.newImageRect( mainGroup, objectSheet, 5, 14, 40 )
     physics.addBody( newLaser, "dynamic", { isSensor=true } )
@@ -255,9 +261,11 @@ glt = timer.performWithDelay(100, checkwin, 10000)
         display.remove( ship )
         display.remove(energyBar)
         display.remove (prButton)
-        background:removeEventListener( "tap", fireLaser )
+        display.remove(Bar)
+        timer.cancel(gameLoopTimer)
         composer.gotoScene("menu")
-
+        composer.removeScene("asteroid shooter 1")
+        background:removeEventListener( "tap", fireLaser )
     end
    
 end
@@ -375,12 +383,14 @@ local function onCollision( event )
 
                 if ( lives == 0 ) then
                     display.remove( ship )
-                    display.remove (prButton)
-                    display.remove (resumeButton) 
-                    display.remove(energyBar)
+                    display.remove(prButton)
+                    display.remove(resumeButton) 
                     display.remove(Bar)
-                    composer.gotoScene("menu")
+                    display.remove(energyBar)
+                    timer.cancel(gameLoopTimer)
+                    timer.performWithDelay(1000, composer.gotoScene("menu"))
                     background:removeEventListener("tap", fireLaser)
+                    composer.removeScene("asteroid shooter 1")
 
                 else
                     ship.alpha = 0
@@ -473,7 +483,7 @@ function scene:hide( event )
         -- Code here runs immediately after the scene goes entirely off screen
         physics.pause()
 
-        composer.removeScene("game")
+        composer.removeScene("asteroid shooter 1")
 
     end
 end

@@ -208,7 +208,10 @@ end
 
 function update()
     Bar.width = Bar.width - (width / totalEnergy)
+    if (energy == 0) then
+        display.remove(Bar)
     end
+end
 
  background:addEventListener( "tap", fireLaser )
 
@@ -418,6 +421,11 @@ function scene:destroy( event )
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
 
+end
+
+local function endGame()
+    composer.setVariable( "finalScore", score )
+    composer.gotoScene( "highscores", { time=800, effect="crossFade" } )
 end
 
 -- -----------------------------------------------------------------------------------

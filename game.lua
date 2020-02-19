@@ -7,69 +7,10 @@ local scene = composer.newScene()
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
-local physics = require("physics")
+
+local physics = require( "physics" )
 physics.start()
-physics.setGravity(0, 0)
-
-
-
-local background
-local wheel
-local stopButton
-local spinButton
-
-local backGroup
-local mainGroup
-local uiGroup
-
-local function gotoMenu()
-	composer.gotoScene("menu")
-end
-
-local function addSpin()
-	wheel:applyTorque(5000)
-end
-
-local function removeSpin()
-	display.remove(spinButton)
-end
-
-local function stop()
-	wheel:applyTorque(-2500)
-end
-
-local function addStop()
-	timer.performWithDelay(500, stop, 10)
-end
-
-local function reward()
-	num = math.random(1, 100)
-	if (num > 60) then
-		return "small"
-	elseif (num > 40) then
-		return "med"
-	elseif(num > 25) then
-		return "large"
-	elseif(num > 15) then
-		return "great"
-	elseif (num > 5) then
-		return "rare"
-	else
-		return "epic"
-	end
-end
-
-local function printReward()
-	reward()s
-end
-
-local function spin()
-	display.remove(spinButton)
-	timer.performWithDelay(500, addSpin, 5)
-	timer.performWithDelay(3000, addStop)
-	timer.performWithDelay(8000, print("ok"))
-	-- timer.performWithDelay(6000, addStop)
-end
+physics.setGravity( 0, 0 )
 
 
 -- -----------------------------------------------------------------------------------
@@ -82,36 +23,45 @@ function scene:create( event )
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
-	backGroup = display.newGroup() 
-	sceneGroup:insert(backGroup) 
+	backGroup = display.newGroup()  -- Display group for the background image
+	sceneGroup:insert( backGroup )  -- Insert into the scene's view group
 
-	mainGroup = display.newGroup() 
-	sceneGroup:insert(mainGroup)
-
-	uiGroup = display.newGroup()
-	sceneGroup:insert(uiGroup)
-
-	background = display.newImageRect(backGroup, "background STR.png", display.actualContentWidth, display.actualContentHeight)
+	mainGroup = display.newGroup()  -- Display group for the ship, asteroids, lasers, etc.
+	sceneGroup:insert( mainGroup )  -- Insert into the scene's view group
+	
+	-- background png
+	local background = display.newImageRect(backGroup, "background.png", 800, 1400)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	wheel = display.newImageRect(mainGroup, "ColorWheel.png", 300, 300)
-	physics.addBody(wheel, "dynamic")
-	wheel.x = display.contentCenterX
-	wheel.y = display.contentCenterY
-
-	local menuButton = display.newText(uiGroup, "Menu", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
-	menuButton.x = display.contentCenterX - 80
-	menuButton.y = 25
-	menuButton:setFillColor(0, 0, .7)
-	menuButton:addEventListener("tap", gotoMenu)
-
-	spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
-	spinButton:addEventListener("tap", spin)
-	spinButton:setFillColor(0, .45, 0)
-
+	-- platform png
+	local platform = display.newImageRect(mainGroup, "platform.png", 350, 150)
+	platform.x = display.contentCenterX
+	platform.y = display.contentCenterY
 
 end
+
+-- jumping code?
+
+local function newboy()
+	local p = loader:spriteWithUniqueName("char_jump2")
+	
+	local function pCollision(self, event)
+		object = event.other				
+		if event.phase == "began" then
+			vx, vy = self:getLinearVelocity()
+			if vy > 0 then
+				if object.tag == LevelHelper_TAG.CLOUD then
+					self:setLinearVelocity(0, -350)
+				end
+			end
+		end
+	end
+	p.collision = pCollision
+	p:addEventListener("collision", p)
+	return p
+end
+
 
 
 -- show()
@@ -141,8 +91,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		physics.pause()
-		composer.removeScene("wheel-of-color")
+
 	end
 end
 
