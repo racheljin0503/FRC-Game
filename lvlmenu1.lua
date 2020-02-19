@@ -12,7 +12,7 @@ function gotoGame()
 	display.remove(level1)
 	display.remove(button)
 	composer.removeScene("lvlmenu1")
-	composer.gotoScene("doodthree")
+	composer.gotoScene("doodfive")
 end
 
 local level1
