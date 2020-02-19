@@ -38,7 +38,7 @@ local winTimer
 energyScore = 0
 local energyText
 
-local canJump = 5
+local canJump = 4
 local jumpText
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -145,7 +145,7 @@ local function spawnBlock()
 		block.myName = "block"
 		block.isFixedRotation = true
 		block:toFront()
-	elseif (spawnCoin >= 3) then
+	elseif (spawnCoin >= 2) then
 		block = display.newRect(mainGroup, separateX, total, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
@@ -223,9 +223,19 @@ end
 
 
 local function pushPlayer()
-	if (canJump > 0) then
-	player:applyLinearImpulse(0, -.20, player.x, player.y)
-	canJump = canJump - 1
+	local jumpx, jumpy = player:getLinearVelocity()
+	if (canJump > 0 and jumpy > 150) then
+		player:applyLinearImpulse(0, -.3, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0 and jumpy > 0) then
+		player:applyLinearImpulse(0, -.2, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0 and jumpy > -150) then
+		player:applyLinearImpulse(0, -.15, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0) then
+		player:applyLinearImpulse(0, -.09, player.x, player.y)
+		canJump = canJump - 1
 	end
 end
 
@@ -280,7 +290,7 @@ local function uwu()
 
 	composer.removeScene("doodtwo")
 	print("won")
-	composer.gotoScene("asteroid shooter 1")
+	composer.gotoScene("asteroid shooter 2")
 end
 
 
@@ -294,7 +304,7 @@ local function onCollision(event)
         if ((obj1.myName == "player" and obj2.myName == "block") or 
         (obj1.myName == "block" and obj2.myName == "player"))
 		then 
-			canJump = 5
+			canJump = 4
 		end
 
 		if(obj1.myName == "player" and obj2.myName == "coin") then

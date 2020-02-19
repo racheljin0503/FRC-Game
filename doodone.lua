@@ -152,7 +152,7 @@ local function spawnBlock()
 	local separate = 10 * math.random(3, 15)
 	local separateX = 10 * math.random(5, 55)
 	local spawnCoin = math.random(0, 10)
-	if (spawnCoin >= 4) then
+	if (spawnCoin >= 3) then
 		block = display.newRect(mainGroup, separateX, 0, 100, 30)
 		table.insert(blockTable, block)
 		block:setFillColor(0, 1, 0)
@@ -223,15 +223,26 @@ local function gameLoop()
 	switch()
 	death()
 	updateText()
+	-- playerThru()
 	-- changeBlock()
 	-- removeBlock()
 end
 
 
 local function pushPlayer()
-	if (canJump > 0) then
-	player:applyLinearImpulse(0, -.20, player.x, player.y)
-	canJump = canJump - 1
+	local jumpx, jumpy = player:getLinearVelocity()
+	if (canJump > 0 and jumpy > 150) then
+		player:applyLinearImpulse(0, -.3, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0 and jumpy > 0) then
+		player:applyLinearImpulse(0, -.19, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0 and jumpy > -150) then
+		player:applyLinearImpulse(0, -.1, player.x, player.y)
+		canJump = canJump - 1
+	elseif (canJump > 0) then
+		player:applyLinearImpulse(0, -.05, player.x, player.y)
+		canJump = canJump - 1
 	end
 end
 
@@ -330,43 +341,6 @@ local function onCollision(event)
             end
 		end
 
-		-- if (obj1.myName == "player" and obj2.myName == "red") then 
-		-- 	display.remove(obj2)
-		-- 	canJump = 0
-		-- 	for i = #redTable, 1, -1 do
-		-- 		if (redTable[i] == obj2) then
-		-- 			table.remove(redTable, i)
-		-- 			break
-		-- 		end
-		-- 	end
-		-- elseif (obj1.myName == "red" and obj2.myName == "player") then
-		-- 	display.remove(obj1)
-		-- 	canJump = 0
-		-- 	for i = #redTable, 1, -1 do
-		-- 		if (redTable[i] == obj1) then 
-		-- 			table.remove(redTable, i)
-		-- 			break
-		-- 		end
-		-- 	end
-		-- end
-
-		-- if (obj1.myName == "Ast" and obj2.myName == "block") then
-		-- 	display.remove(obj2) 
-		-- 	for i = #blockTable, 1, -1 do
-        --         if (blockTable[i] == obj2) then 
-        --             table.remove(blockTable, i)
-        --             break
-        --         end
-        --     end
-		-- elseif (obj1.myName == "block" and obj2.myName == "Ast") then
-		-- 	display.remove(obj1)
-		-- 	for i = #blockTable, 1, -1 do
-        --         if (blockTable[i] == obj1) then 
-        --             table.remove(blockTable, i)
-        --             break
-        --         end
-		-- 	end
-		-- end
 	end
 end
 
@@ -433,9 +407,9 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 		physics.start()
 		gameLoopTimer = timer.performWithDelay(10, gameLoop, 0)
-		passTimer = timer.performWithDelay(50, playerThru, 0)
+		passTimer = timer.performWithDelay(10, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
-		spawnTimer = timer.performWithDelay(700, spawnBlock, 0)
+		spawnTimer = timer.performWithDelay(800, spawnBlock, 0)
 		-- astTimer = timer.performWithDelay(math.random(5000, 10000), spawnAst, 0)
 		winTimer = timer.performWithDelay(50100,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)

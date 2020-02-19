@@ -42,10 +42,32 @@ local function addStop()
 	timer.performWithDelay(500, stop, 10)
 end
 
+local function reward()
+	num = math.random(1, 100)
+	if (num > 60) then
+		return "small"
+	elseif (num > 40) then
+		return "med"
+	elseif(num > 25) then
+		return "large"
+	elseif(num > 15) then
+		return "great"
+	elseif (num > 5) then
+		return "rare"
+	else
+		return "epic"
+	end
+end
+
+local function printReward()
+	reward()s
+end
+
 local function spin()
+	display.remove(spinButton)
 	timer.performWithDelay(500, addSpin, 5)
 	timer.performWithDelay(3000, addStop)
-	timer.performWithDelay(1500, removeSpin)
+	timer.performWithDelay(8000, print("ok"))
 	-- timer.performWithDelay(6000, addStop)
 end
 
