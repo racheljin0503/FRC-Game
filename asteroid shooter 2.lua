@@ -445,9 +445,9 @@ local function onCollision( event )
                             display.remove(obj1)
                             display.remove(obj2)
                 
-                            energy = energy + 3
+                            energy = energy + 2
                             updateText()
-                            Bar.width = Bar.width + 3 * (width / totalEnergy) 
+                            Bar.width = Bar.width + 2 * (width / totalEnergy) 
 
         end
     end

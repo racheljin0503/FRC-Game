@@ -271,12 +271,23 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
 
   --  or energyScore <=0
 
-    if (energy == 0 ) then
-        display.remove( ship )
+    if (energy < 0 ) then
+        display.remove(ship)
+        background:removeEventListener("tap", fireLaser)
+        timer.cancel(gm)
+        timer.cancel(gm1)
+        timer.cancel(glt1)
+        display.remove(obj1)
+        display.remove(obj2)
         display.remove(energyBar)
-        display.remove (prButton)
-        background:removeEventListener( "tap", fireLaser )
-        composer.gotoScene("menu")
+        display.remove(prButton)
+        display.remove(resumeButton)
+        display.remove(Bar)
+        display.remove(spaceGun)
+        display.remove(spaceGun1)
+        display.remove(pup)
+        composer.removeScene("asteroid shooter 4")
+       composer.gotoScene("menu")
 
     end
    
@@ -397,14 +408,21 @@ local function onCollision( event )
 
                 if ( lives == 0 )  then
 
-                    display.remove( ship )
-                    display.remove (prButton)
-                    display.remove (resumeButton) 
-                    display.remove(energyBar)
-                    display.remove(Bar)
-                    composer.gotoScene("menu")
-                    background:removeEventListener("tap", fireLaser)
-
+                    timer.cancel(gm)
+                    timer.cancel(gm1)
+                   display.remove( ship )
+                   display.remove (prButton)
+                   display.remove (resumeButton) 
+                   display.remove(energyBar)
+                   display.remove(Bar)
+                   display.remove(pup)
+                   display.remove(spaceGun)
+                   display.remove (spaceGun1)
+                   timer.cancel(glt1)
+                   background:removeEventListener("tap", fireLaser)
+                    composer.removeScene("asteroid shooter 4")
+                   composer.gotoScene("menu")
+        
                 else
                     ship.alpha = 0
                     timer.performWithDelay( 1000, restoreShip )
@@ -417,19 +435,19 @@ local function onCollision( event )
             display.remove(obj1)
             display.remove(obj2)
 
-            energy = energy + 3
+            energy = energy + 4
             updateText()
-            Bar.width = Bar.width + 3 * (width / totalEnergy) 
+            Bar.width = Bar.width + 4 * (width / totalEnergy) 
 
          elseif (obj1.myName == "slaser" and obj2.myName == "ship") or
           (obj1.myName == "ship" and obj2.myName == "slaser")   then
 
             shoot = true
-           
             display.remove(ship)
             background:removeEventListener("tap", fireLaser)
             timer.cancel(gm)
             timer.cancel(gm1)
+            timer.cancel(glt1)
             display.remove(obj1)
             display.remove(obj2)
             display.remove(energyBar)
@@ -438,10 +456,9 @@ local function onCollision( event )
             display.remove(Bar)
             display.remove(spaceGun)
             display.remove(spaceGun1)
-            display.remove(spaceLaser)
-            display.remove(spaceLaser1)
+            display.remove(pup)
+            composer.removeScene("asteroid shooter 4")
            composer.gotoScene("menu")
-            
             
         elseif (obj1.myName == "slaser1" and obj2.myName == "ship") or (obj1.myName == "ship" and obj2.myName == "slaser1") 
         then
@@ -449,19 +466,20 @@ local function onCollision( event )
             shoot = true
             display.remove(ship)
             background:removeEventListener("tap", fireLaser)
-            timer.cancel(gm1)
             timer.cancel(gm)
+            timer.cancel(gm1)
+            timer.cancel(glt1)
             display.remove(obj1)
             display.remove(obj2)
             display.remove(energyBar)
             display.remove(prButton)
             display.remove(resumeButton)
             display.remove(Bar)
-            display.remove(spaceGun1)
             display.remove(spaceGun)
-            display.remove(spaceLaser)
-            display.remove(spaceLaser1)
-            composer.gotoScene("menu")
+            display.remove(spaceGun1)
+            display.remove(pup)
+            composer.removeScene("asteroid shooter 4")
+           composer.gotoScene("menu")
 
 
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun") or (obj1.myName == "spaceGun" and obj2.myName == "laser") 

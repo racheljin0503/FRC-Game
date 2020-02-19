@@ -72,8 +72,13 @@ local energyText
 local prButton
 local menu
 local winText
+local f = true
+local f1 = true
 
-
+local spaceGun
+local spaceGun1
+local spaceLaser
+local spaceLaser1
 
 -- Set up display groups
 local backGroup = display.newGroup()  -- Display group for the background image
@@ -271,10 +276,19 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
   --  or energyScore <=0
 
     if (energy == 0 ) then
+        timer.cancel(gm)
+        timer.cancel(gm1)
         display.remove( ship )
-        display.remove(energyBar)
         display.remove (prButton)
-        background:removeEventListener( "tap", fireLaser )
+        display.remove (resumeButton) 
+        display.remove(energyBar)
+        display.remove(Bar)
+        display.remove(pup)
+        display.remove(spaceGun)
+        display.remove (spaceGun1)
+        timer.cancel(glt1)
+        background:removeEventListener("tap", fireLaser)
+         composer.removeScene("asteroid shooter 3")
         composer.gotoScene("menu")
 
     end
@@ -383,29 +397,42 @@ local function onCollision( event )
             scoreText.text = "Score: " .. score
 
         elseif ( ( obj1.myName == "ship" and obj2.myName == "asteroid" ) or
-                 ( obj1.myName == "asteroid" and obj2.myName == "ship" ) )
-        then
-            if ( died == false ) then
-                died = true
+        ( obj1.myName == "asteroid" and obj2.myName == "ship" ) )
+then
+   if ( died == false ) then
+       died = true
 
-                -- Update lives
-                lives = lives - 1
-               -- livesText.text = "lives: " .. lives
+       -- Update lives
+       lives = lives - 1
+      -- livesText.text = "lives: " .. lives
 
-                if ( lives == 0 ) then
-                    display.remove( ship )
-                    display.remove (prButton)
-                    display.remove (resumeButton) 
-                    display.remove(energyBar)
-                    display.remove(Bar)
-                    composer.gotoScene("menu")
-                    background:removeEventListener("tap", fireLaser)
+       if ( lives == 0 ) then
 
-                else
-                    ship.alpha = 0
-                    timer.performWithDelay( 1000, restoreShip )
-                end
-            end
+          timer.cancel(gm)
+            timer.cancel(gm1)
+           display.remove( ship )
+           display.remove (prButton)
+           display.remove (resumeButton) 
+           display.remove(energyBar)
+           display.remove(Bar)
+           display.remove(pup)
+           display.remove(spaceGun)
+           display.remove (spaceGun1)
+           timer.cancel(glt1)
+           background:removeEventListener("tap", fireLaser)
+            composer.removeScene("asteroid shooter 3")
+           composer.gotoScene("menu")
+
+
+       else
+           ship.alpha = 0
+           timer.performWithDelay( 1000, restoreShip )
+       end
+   end
+
+
+
+
         elseif (obj1.myName == "laser" and obj2.myName == "pup") or
         (obj1.myName == "pup" and obj2.myName == "laser") then
 
@@ -419,10 +446,13 @@ local function onCollision( event )
          elseif (obj1.myName == "slaser" and obj2.myName == "ship") or
           (obj1.myName == "ship" and obj2.myName == "slaser")   then
            
+            f = false
+
             display.remove(ship)
             background:removeEventListener("tap", fireLaser)
             timer.cancel(gm)
             timer.cancel(gm1)
+            timer.cancel(glt1)
             display.remove(obj1)
             display.remove(obj2)
             display.remove(energyBar)
@@ -431,27 +461,36 @@ local function onCollision( event )
             display.remove(Bar)
             display.remove(spaceGun)
             display.remove(spaceGun1)
+            display.remove(pup)
+            composer.removeScene("asteroid shooter 4")
            composer.gotoScene("menu")
+            
 
             
         elseif (obj1.myName == "slaser1" and obj2.myName == "ship") or (obj1.myName == "ship" and obj2.myName == "slaser1") 
         then
 
+            f1 = false
+
             display.remove(ship)
             background:removeEventListener("tap", fireLaser)
-            timer.cancel(gm1)
             timer.cancel(gm)
+            timer.cancel(gm1)
+            timer.cancel(glt1)
             display.remove(obj1)
             display.remove(obj2)
             display.remove(energyBar)
             display.remove(prButton)
             display.remove(resumeButton)
             display.remove(Bar)
-            display.remove(spaceGun1)
             display.remove(spaceGun)
-            composer.gotoScene("menu")
+            display.remove(spaceGun1)
+            display.remove(pup)
+            composer.removeScene("asteroid shooter 4")
+           composer.gotoScene("menu")
+            
 
-
+  
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun") or (obj1.myName == "spaceGun" and obj2.myName == "laser") 
         then
 
@@ -538,7 +577,7 @@ Runtime:addEventListener( "collision", onCollision )
     
     function bangBang ()
 
-      spaceGun = display.newImageRect("spaceinvader.png", 100, 100)
+       spaceGun = display.newImageRect("spaceinvader.png", 100, 100)
         spaceGun.x = 200
         spaceGun.y = -500    
         physics.addBody(spaceGun, "static", { isSensor = true} )
@@ -553,7 +592,7 @@ Runtime:addEventListener( "collision", onCollision )
  function spaceLaser ()
 
 
-    spaceLaser = display.newImageRect("laser .png", 100, 50)
+     spaceLaser = display.newImageRect("laser .png", 100, 50)
     spaceLaser.x = spaceGun.x
     spaceLaser.y = spaceGun.y
     physics.addBody( spaceLaser, "dynamic", { isSensor=true } )
@@ -568,7 +607,7 @@ Runtime:addEventListener( "collision", onCollision )
  
  function bangBang1 ()
 
-    spaceGun1 = display.newImageRect("spaceinvader.png", 100, 100)
+     spaceGun1 = display.newImageRect("spaceinvader.png", 100, 100)
       spaceGun1.x = 500
       spaceGun1.y = -500    
       physics.addBody(spaceGun1, "static", { isSensor = true} )
@@ -583,7 +622,7 @@ bangBang1()
 function spaceLaser1 ()
 
 
-  spaceLaser1 = display.newImageRect("laser .png", 100, 50)
+   spaceLaser1 = display.newImageRect("laser .png", 100, 50)
   spaceLaser1.x = spaceGun1.x
   spaceLaser1.y = spaceGun1.y
   physics.addBody( spaceLaser1, "dynamic", { isSensor=true } )
