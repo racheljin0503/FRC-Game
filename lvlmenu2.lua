@@ -8,17 +8,15 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local function gotoGame()
-	composer.gotoScene("lvlmenu1")
+function gotoGame()
+	display.remove(level2)
+	display.remove(button)
+	composer.removeScene("lvlmenu2")
+	composer.gotoScene("doodtwo")
 end
 
-local function gotoWheel()
-	composer.gotoScene("wheel-of-color")
-end
-
-local function gotoHighscores()
-	composer.gotoScene("highscores")
-end
+local level1
+local button
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -29,23 +27,37 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
-	local background = display.newImageRect(sceneGroup, "menu bg.png", display.pixelWidth, display.pixelHeight)
-	background.x = display.contentCenterX
-	background.y = display.contentCenterY
+
+	level1 = display.newImageRect(sceneGroup, "lvl2.png", display.actualContentWidth, display.actualContentHeight)
+	level1.x = display.contentCenterX
+	level1.y = display.contentCenterY
+
+	button = display.newImageRect(sceneGroup, "circle button.png", 100, 107)
+	button.x = 500
+	button.y = 800
+	button:toBack()
+	button:addEventListener("tap", gotoGame)
 
 
-	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY - 375, native.systemFont, 100)
-	playButton:setFillColor(0, 0, .7)
 
-	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY - 275, native.systemFont, 50)
-	colorWheel:setFillColor(0, 0, .7)
-  
-	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, display.contentCenterY - 200, native.systemFont, 50)
-	highscoresButton:setFillColor(0, 0, .7)
+	-- local function fitImage( displayObject, fitWidth, fitHeight, enlarge )
 
-	playButton:addEventListener("tap", gotoGame)
-	colorWheel:addEventListener("tap", gotoWheel)
-	highscoresButton:addEventListener("tap", gotoHighscores)
+	-- 	-- first determine which edge is out of bounds
+	-- 	local scaleFactor = fitHeight / displayObject.height 
+	-- 	local newWidth = displayObject.width * scaleFactor
+
+	-- 	if newWidth == fitWidth then
+	-- 		scaleFactor = fitWidth / displayObject.width 
+	-- 	end
+	-- 	if not enlarge and scaleFactor > 1 then
+	-- 		return
+	-- 	end
+	-- 	displayObject:scale( scaleFactor, scaleFactor )
+	-- end
+
+	-- fitImage( level1, 800, 1400, false )
+
+
 end
 
 
@@ -76,14 +88,14 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		composer.removeScene("menu")
+		composer.removeScene("lvlmenu1")
 	end
 end
 
 
 -- destroy()
 function scene:destroy( event )
-
+	--composer.removeScene("lvlmenu1")
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
 

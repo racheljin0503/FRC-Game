@@ -8,12 +8,8 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local function gotoGame()
-	composer.gotoScene("lvlmenu1")
-end
-
-local function gotoWheel()
-	composer.gotoScene("wheel-of-color")
+local function gotoMenu1()
+	composer.gotoScene( "menu")-- { time=800, effect="crossFade" } )
 end
 
 local function gotoHighscores()
@@ -33,19 +29,19 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
+	local deathmessage = display.newText(sceneGroup, "YOU DIED!", display.contentCenterX, display.contentCenterY - 375, native.systemFont, 100)
+	deathmessage:setFillColor(0, 0, .7)
 
-	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY - 375, native.systemFont, 100)
-	playButton:setFillColor(0, 0, .7)
-
-	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY - 275, native.systemFont, 50)
-	colorWheel:setFillColor(0, 0, .7)
+	local menuButton = display.newText( sceneGroup, "BACK TO MENU", display.contentCenterX, display.contentCenterY - 275, native.systemFont, 50)
+    menuButton:setFillColor( 0, 0, .7)
   
 	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, display.contentCenterY - 200, native.systemFont, 50)
 	highscoresButton:setFillColor(0, 0, .7)
 
-	playButton:addEventListener("tap", gotoGame)
-	colorWheel:addEventListener("tap", gotoWheel)
+	menuButton:addEventListener("tap", gotoMenu1)
 	highscoresButton:addEventListener("tap", gotoHighscores)
+		
+	
 end
 
 
@@ -76,7 +72,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		composer.removeScene("menu")
+		composer.removeScene("youdied")
 	end
 end
 
