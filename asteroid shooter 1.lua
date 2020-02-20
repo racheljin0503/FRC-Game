@@ -188,7 +188,7 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove(energyText)
         display.remove (prButton)
 
-        background:removeEventListener( "tap", fireLaser )
+        -- background:removeEventListener( "tap", fireLaser )
         composer.removeScene("astroid shooter 1")
         composer.gotoScene("highscores")
 end
@@ -266,6 +266,8 @@ local function fireLaser( event )
         composer.gotoScene("youdied")
         composer.removeScene("asteroid shooter 1")
         background:removeEventListener( "tap", fireLaser )
+        composer.setVariable("finalScore", energy)
+
     end
    
     if (score == 1000) then
@@ -277,6 +279,8 @@ local function fireLaser( event )
         composer.gotoScene("lvlmenu2")
         composer.removeScene("asteroid shooter 1")
         background:removeEventListener( "tap", fireLaser )
+        composer.setVariable("finalScore", energy)
+
     end
 end
  
@@ -399,6 +403,8 @@ local function onCollision( event )
                     display.remove(energyBar)
                     timer.cancel(gameLoopTimer)
                     timer.performWithDelay(1000, composer.gotoScene("menu"))
+                    composer.setVariable("finalScore", energy)
+
                     background:removeEventListener("tap", fireLaser)
                     composer.removeScene("asteroid shooter 1")
 
