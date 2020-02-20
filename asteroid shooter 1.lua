@@ -88,6 +88,22 @@ local function goToLevels()
 end
 
 
+ function win()
+    composer.setVariable( "finalScore", score )
+    -- print('scoreChange')
+    display.remove( ship )
+        display.remove(energyBar)
+        --display.remove(background)
+        display.remove(Bar)
+        display.remove(newAsteroid)
+        display.remove(energyText)
+        display.remove (prButton)
+
+        -- background:removeEventListener( "tap", fireLaser )
+        composer.removeScene("astroid shooter 1")
+        composer.gotoScene("highscores")
+end
+
 -- create()
 function scene:create( event )
 
@@ -221,9 +237,9 @@ local function createAsteroid()
 end
 
 local function checkwin()
-if (score >= 1000) then
-win()
-end
+    if (score >= 1000) then
+        win()
+    end
 end
 
 glt = timer.performWithDelay(100, checkwin, 10000)
@@ -396,17 +412,17 @@ local function onCollision( event )
                -- livesText.text = "lives: " .. lives
 
                 if ( lives == 0 ) then
+                    composer.setVariable( "finalScore", score )
                     display.remove( ship )
                     display.remove(prButton)
                     display.remove(resumeButton) 
                     display.remove(Bar)
                     display.remove(energyBar)
                     timer.cancel(gameLoopTimer)
-                    timer.performWithDelay(1000, composer.gotoScene("menu"))
-                    composer.setVariable("finalScore", energy)
-
+                    -- timer.performWithDelay(1000, gotoMenu)
                     background:removeEventListener("tap", fireLaser)
-                    composer.removeScene("asteroid shooter 1")
+                    -- composer.removeScene("asteroid shooter 1")
+                    composer.gotoScene("highscores")
 
                 else
                     ship.alpha = 0
