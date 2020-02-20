@@ -17,6 +17,7 @@ local player
 local block
 local asteroid 
 local redBlock
+local spike
 
 local deathLimit = 900
 local scrollSpeed = 100
@@ -31,11 +32,13 @@ local blockTable = {}
 local coinTable = {}
 local astTable = {}
 local redTable = {}
+local spikeTable = {}
 
 local passTimer
 local gameLoopTimer
 local scrollTimer
 local spawnTimer
+local spikeTimer
 
 
 --Temporary
@@ -104,13 +107,14 @@ end
 
 local function death()
 	if (player.y >= deathLimit) then
+		timer.cancel(gameLoopTimer)
 		display.remove(player)
 		physics.pause()
 		timer.cancel(passTimer)
-		timer.cancel(gameLoopTimer)
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		timer.cancel(winTimer)
+		timer.cancel(spikeTimer)
 
 		for i = #blockTable, 1, -1 do
 			local thisBlock = blockTable[i]
@@ -129,16 +133,23 @@ local function death()
 		for i = #astTable, 1, -1 do
 			local thisAst = astTable[i]
 				display.remove(thisAst)
-				table.remove(thisAst, i)
+				table.remove(astTable, i)
 				print("asteroid deleted")
 		end
 
 		for i = #redTable, 1, -1 do
 			local thisRed = redTable[i]
 				display.remove(thisRed)
-				table.remove(thisRed, i)
+				table.remove(redTable, i)
 				print("red block deleted")
-		end
+        end
+        
+        for i = #spikeTable, 1, -1 do 
+            local thisSpike = spikeTable[i]
+            display.remove(thisSpike)
+            table.remove(spikeTable, i)
+            print("spike dies")
+        end
 		-- removeAllBlocks()
 		Runtime:removeEventListener("collision", onCollision)
 
@@ -149,7 +160,7 @@ local function death()
 end
 
 local function spawnBlock()
-	local separate = 10 * math.random(3, 15)
+ 	local separate = 10 * math.random(3, 15)
 	local separateX = 10 * math.random(5, 55)
 	local spawnCoin = math.random(0, 10)
 	if (spawnCoin >= 7) then
@@ -206,6 +217,19 @@ local function spawnBlock()
 		redBlock.myName = "red"
 
 	end
+end
+
+local function spawnSpike()
+    local random = math.random(10, 60)
+    
+    spike = display.newImageRect (mainGroup, "spike.png", 100, 100)
+    spike.x = random * 10
+	spike.y = 0
+	table.insert(spikeTable, spike)
+    physics.addBody(spike, "dynamic")
+	spike:setLinearVelocity(0, 100)
+	spike.myName ="spike"
+	spike:rotate(180)
 end
 
 local function spawnAst()
@@ -297,6 +321,7 @@ local function uwu()
 	timer.cancel(scrollTimer)
 	timer.cancel(spawnTimer)
 	timer.cancel(winTimer)
+	timer.cancel(spikeTimer)
 	composer.setVariable("energyScore", energyScore)
 
 
@@ -342,6 +367,61 @@ local function onCollision(event)
 			canJump = 3
 		end
 
+	    if (obj1.myName == "player" and obj2.myName == "spike") or (obj1.myName == "spike" and obj2.myName == "player") then 
+			timer.cancel(gameLoopTimer)
+			display.remove(player)
+			physics.pause()
+			timer.cancel(passTimer)
+			timer.cancel(scrollTimer)
+			timer.cancel(spawnTimer)
+			timer.cancel(winTimer)
+			timer.cancel(spikeTimer)
+	
+			for i = #blockTable, 1, -1 do
+				local thisBlock = blockTable[i]
+					display.remove(thisBlock)
+					table.remove(blockTable, i)
+					print("block dies")
+			end
+	
+			for i = #coinTable, 1, -1 do
+				local thisCoin = coinTable[i]
+					display.remove(thisCoin)
+					table.remove(coinTable, i)
+					print("coin deleted")
+			end
+	
+			for i = #astTable, 1, -1 do
+				local thisAst = astTable[i]
+					display.remove(thisAst)
+					table.remove(astTable, i)
+					print("asteroid deleted")
+			end
+	
+			for i = #redTable, 1, -1 do
+				local thisRed = redTable[i]
+					display.remove(thisRed)
+					table.remove(redTable, i)
+					print("red block deleted")
+			end
+			
+			for i = #spikeTable, 1, -1 do 
+				local thisSpike = spikeTable[i]
+					display.remove(thisSpike)
+					table.remove(spikeTable, i)
+					print("spike dies")
+			end
+			-- removeAllBlocks()
+			Runtime:removeEventListener("collision", onCollision)
+	
+			composer.removeScene("doodfive")
+			print("Dead")
+			composer.gotoScene("menu")
+		end
+
+
+	
+		 
 		if(obj1.myName == "player" and obj2.myName == "coin") then
 			display.remove(obj2)
 			energyScore = energyScore + 1
@@ -401,7 +481,6 @@ local function onCollision(event)
 		end
 	end
 end
-
 
 -- create()
 function scene:create( event )
@@ -469,7 +548,8 @@ function scene:show( event )
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(850, spawnBlock, 0)
 		astTimer = timer.performWithDelay(math.random(5000, 10000), spawnAst, 0)
-		winTimer = timer.performWithDelay(90100,uwu , 1)
+        winTimer = timer.performWithDelay(90100,uwu , 1)
+        spikeTimer = timer.performWithDelay(math.random(4000, 5000), spawnSpike, 0)
 		Runtime:addEventListener("collision", onCollision)
 	end
 end
@@ -490,7 +570,8 @@ function scene:hide( event )
 		timer.cancel(passTimer)
 		timer.cancel(gameLoopTimer)
 		timer.cancel(scrollTimer)
-		timer.cancel(spawnTimer)
+        timer.cancel(spawnTimer)
+        timer.cancel(spawnTimer)
 		Runtime:removeEventListener("collision", onCollision)
 		composer.removeScene("doodfive")
 

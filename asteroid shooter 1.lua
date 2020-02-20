@@ -83,8 +83,8 @@ local uiGroup = display.newGroup()    -- Display group for UI objects like the s
 
 -- Load the background
 
-local function gotoMenu()
-    composer.gotoScene("menu")
+local function goToLevels()
+    composer.gotoScene("lvlmenu2")
 end
 
 
@@ -263,11 +263,21 @@ local function fireLaser( event )
         display.remove (prButton)
         display.remove(Bar)
         timer.cancel(gameLoopTimer)
-        -- composer.gotoScene("menu")
+        composer.gotoScene("youdied")
         composer.removeScene("asteroid shooter 1")
         background:removeEventListener( "tap", fireLaser )
     end
    
+    if (score == 1000) then
+        display.remove( ship )
+        display.remove(energyBar)
+        display.remove (prButton)
+        display.remove(Bar)
+        timer.cancel(gameLoopTimer)
+        composer.gotoScene("lvlmenu2")
+        composer.removeScene("asteroid shooter 1")
+        background:removeEventListener( "tap", fireLaser )
+    end
 end
  
 
