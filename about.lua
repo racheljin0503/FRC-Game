@@ -45,10 +45,10 @@ function scene:show( event )
     about1.x = display.contentCenterX
     about1.y = display.contentCenterY - 400
 
-    back = display.newText("back", display.contentCenterX - 200, display.contentCenterY - 450, native.systemFont, 50)
+    back = display.newText("back", display.contentCenterX - 200, display.contentCenterY - 450, "Ubuntu", 50)
 
-    inspireText = display.newText("Titan Rise was inspired", display.contentCenterX, display.contentCenterY, native.systemFont, 36)
-
+    inspireText = display.newText("Titan Rise was inspired", display.contentCenterX, display.contentCenterY, "Ubuntu", 36)
+    print(native.getFontNames())
 
     end
 end
