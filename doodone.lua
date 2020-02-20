@@ -411,7 +411,7 @@ function scene:show( event )
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(800, spawnBlock, 0)
 		-- astTimer = timer.performWithDelay(math.random(5000, 10000), spawnAst, 0)
-		winTimer = timer.performWithDelay(50100,uwu , 1)
+		winTimer = timer.performWithDelay(5010,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
 	end
 end
