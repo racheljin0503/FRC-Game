@@ -83,10 +83,26 @@ local uiGroup = display.newGroup()    -- Display group for UI objects like the s
 
 -- Load the background
 
-local function gotoMenu()
-    composer.gotoScene("menu")
+local function goToLevels()
+    composer.gotoScene("lvlmenu2")
 end
 
+
+ function win()
+    composer.setVariable( "finalScore", score )
+    -- print('scoreChange')
+    display.remove( ship )
+        display.remove(energyBar)
+        --display.remove(background)
+        display.remove(Bar)
+        display.remove(newAsteroid)
+        display.remove(energyText)
+        display.remove (prButton)
+
+        -- background:removeEventListener( "tap", fireLaser )
+        composer.removeScene("astroid shooter 1")
+        composer.gotoScene("highscores")
+end
 
 -- create()
 function scene:create( event )
@@ -189,6 +205,7 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove (prButton)
 
         --background:removeEventListener( "tap", fireLaser )
+        -- background:removeEventListener( "tap", fireLaser )
         composer.removeScene("astroid shooter 1")
         composer.gotoScene("highscores")
 end
@@ -221,9 +238,9 @@ local function createAsteroid()
 end
 
 local function checkwin()
-if (score >= 1000) then
-win()
-end
+    if (score >= 1000) then
+        win()
+    end
 end
 
 glt = timer.performWithDelay(100, checkwin, 10000)
@@ -263,11 +280,25 @@ local function fireLaser( event )
         display.remove (prButton)
         display.remove(Bar)
         timer.cancel(gameLoopTimer)
-        composer.gotoScene("menu")
+        composer.gotoScene("youdied")
         composer.removeScene("asteroid shooter 1")
         background:removeEventListener( "tap", fireLaser )
+        composer.setVariable("finalScore", energy)
+
     end
    
+    if (score == 1000) then
+        display.remove( ship )
+        display.remove(energyBar)
+        display.remove (prButton)
+        display.remove(Bar)
+        timer.cancel(gameLoopTimer)
+        composer.gotoScene("lvlmenu2")
+        composer.removeScene("asteroid shooter 1")
+        background:removeEventListener( "tap", fireLaser )
+        composer.setVariable("finalScore", energy)
+
+    end
 end
  
 
@@ -382,15 +413,17 @@ local function onCollision( event )
                -- livesText.text = "lives: " .. lives
 
                 if ( lives == 0 ) then
+                    composer.setVariable( "finalScore", score )
                     display.remove( ship )
                     display.remove(prButton)
                     display.remove(resumeButton) 
                     display.remove(Bar)
                     display.remove(energyBar)
                     timer.cancel(gameLoopTimer)
-                    timer.performWithDelay(1000, composer.gotoScene("menu"))
+                    -- timer.performWithDelay(1000, gotoMenu)
                     background:removeEventListener("tap", fireLaser)
-                    composer.removeScene("asteroid shooter 1")
+                    -- composer.removeScene("asteroid shooter 1")
+                    composer.gotoScene("highscores")
 
                 else
                     ship.alpha = 0
