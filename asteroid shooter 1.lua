@@ -188,7 +188,7 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove(energyText)
         display.remove (prButton)
 
-        background:removeEventListener( "tap", fireLaser )
+        --background:removeEventListener( "tap", fireLaser )
         composer.removeScene("astroid shooter 1")
         composer.gotoScene("highscores")
 end

@@ -4,7 +4,12 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 
 
+local function gotoMenu()
+    composer.gotoScene("menu")
+end
 
+local back
+local background
 
 function scene:create( event )
 
@@ -37,19 +42,94 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
 
+
+  
+local function gotolink( event )
+    system.openURL( "https://www.firstinspires.org/" )
+end
+
+local function gotolink1(event)
+    system.openURL("https://www.technotitans.org/donate.html")
+end
         function gotoMenu()
+            display.remove(technotitans)
+            display.remove(first)
             composer.gotoScene("menu")
         end
 
-    about1 = display.newImageRect("about .png", 700, 500)
-    about1.x = display.contentCenterX
-    about1.y = display.contentCenterY - 400
 
-    back = display.newText("back", display.contentCenterX - 200, display.contentCenterY - 450, native.systemFont, 50)
+    about1 = display.newImageRect(mainGroup, "aboutBackground1.png", 600, 1060)
+    about1.x = display.contentCenterX 
+    about1.y = display.contentCenterY 
 
-    inspireText = display.newText("Titan Rise was inspired", display.contentCenterX, display.contentCenterY, native.systemFont, 36)
+    about1 = display.newImageRect(mainGroup, "about123.png", 700, 700)
+    about1.x = display.contentCenterX 
+    about1.y = display.contentCenterY - 220
+
+    back = display.newImageRect(mainGroup, "back.png", 600, 600)
+    back.x = display.contentCenterX - 180
+    back.y = display.contentCenterY - 245
+
+    credits = display.newImageRect(mainGroup, "credit.png", 700, 700)
+    credits.x = display.contentCenterX + 200
+    credits.y = display.contentCenterY - 220
+    --about1:setFillColor(0, 0, 0)
+    donate = display.newImageRect(mainGroup, "donate.png", 2000, 600)
+    donate.x = display.contentCenterX + 5
+    donate.y = display.contentCenterY + 255
+
+    technotitans = display.newImageRect("technoTitan.png", 290, 170)
+    technotitans.x = display.contentCenterX - 140
+    technotitans.y = display.contentCenterY + 400
+ 
+    first = display.newImageRect("first.png", 150, 150)
+    first.x = display.contentCenterX+160
+    first.y = display.contentCenterY + 400
+
+    text = display.newText(uiGroup, "Titan Rise was by the 2020 FIRST Robotics \n Competition. Learn more about FIRST at", display.contentCenterX, display.contentCenterY - 200, Ubuntu, 26)
+
+    text1 = display.newText(uiGroup, "The Techno Titans strive to spread the \n message of FIRST. Thank you for \n downloading our game and we hope \nyou’re ready to RISE!", display.contentCenterX, display.contentCenterY - 30, Ubuntu, 28.5)
+
+    text2 = display.newText(uiGroup, " Brought to you by Team 1683, \n           the Techno Titans", display.contentCenterX, display.contentCenterY + 150, Ubuntu, 35)
+    text2:setFillColor(255, 0, 0)
 
 
+    -- text = display.newImageRect(uiGroup, "text.png", 500, 500)
+    -- text.x = display.contentCenterX 
+    -- text.y = display.contentCenterY + 500
+   -- The Techno Titans strive to spread the message of FIRST. Thank you for
+ --downloading our game and we hope you’re ready to RISE! 
+
+--  Brought to you by Team 1683, the techno 
+-- titans 
+
+
+    inspireText = display.newText(uiGroup, '  www.firstinspires.org', display.contentCenterX - 100, display.contentCenterY - 150, native.systemFont, 30)
+    inspireText:setFillColor(0, 0, .7)
+
+   -- credits = display.newText(uiGroup, 'credits', display.contentCenterX + 200, display.contentCenterY - 440, native.systemFont, 50)
+    
+    function createCredit( event )
+        display.remove(technotitans)
+        display.remove(first)
+        composer.gotoScene("credits")
+    end
+  
+
+
+    --about1:addEventListener("tap", removeCredit)
+    
+
+
+   
+
+    credits:addEventListener("tap", createCredit)
+
+    inspireText:addEventListener("tap", gotolink)
+
+    donate:addEventListener("tap", gotolink1)
+
+    back:addEventListener("tap", gotoMenu)
     end
 end
 
@@ -67,7 +147,7 @@ function scene:hide( event )
         -- Code here runs immediately after the scene goes entirely off screen
         physics.pause()
 
-        composer.removeScene("game")
+        composer.removeScene("about")
 
     end
 end
