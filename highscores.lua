@@ -28,9 +28,11 @@ local function loadScores()
 	end
 
 	if ( scoresTable == nil or #scoresTable == 0 ) then
+
 		scoresTable = {0}
 	end
 end
+
 
 
 local function saveScores()

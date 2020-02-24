@@ -57,7 +57,8 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = 10--composer.getVariable("energyScore")
+local energy = composer.getVariable("energyScore")
+local totalEnergy = composer.getVariable("energyScore")
 local energy = totalEnergy
 local asteroidsTable = {}
 local powerTable = {}
@@ -103,11 +104,11 @@ local function spawnPower()
 end
 
 local function LASER()
-    bigLaser = display.newImageRect(mainGroup, "laserf.png", 250, 350)
-    -- bigLaser:rotate(100)
+    bigLaser = display.newImageRect(mainGroup, "laserf.png", 500, 500)
+    bigLaser:rotate(100)
     bigLaser.myName = "BIG"
-    bigLaser.xScale = 1
-    bigLaser.yScale = 1
+    bigLaser.xScale = 2
+    bigLaser.yScale = 2
     bigLaser.x = ship.x
     bigLaser.y = ship.y
     transition.to( bigLaser, { x = display.contentCenterX, y= -1000, time=1000,
@@ -122,6 +123,7 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
     backGroup = display.newGroup() 
     sceneGroup:insert(backGroup) 
+
 
     mainGroup = display.newGroup() 
     sceneGroup:insert(mainGroup)
@@ -220,8 +222,6 @@ display.setStatusBar( display.HiddenStatusBar )
 
         background:removeEventListener( "tap", fireLaser )
         composer.gotoScene("highscores")
-        composer.setVariable("finalScore", score)
-
 end
 
 
@@ -318,7 +318,7 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
         background:removeEventListener("tap", fireLaser)
          composer.removeScene("asteroid shooter 3")
         composer.gotoScene("menu")
-        composer.setVariable("finalScore", score)
+
         
 	for i = #powerTable, 1, -1 do
 		local thispower = powerTable[i]
@@ -459,8 +459,6 @@ then
            background:removeEventListener("tap", fireLaser)
             composer.removeScene("asteroid shooter 3")
            composer.gotoScene("menu")
-           composer.setVariable("finalScore", score)
-
 
            for i = #powerTable, 1, -1 do
             local thispower = powerTable[i]
@@ -510,10 +508,8 @@ then
             display.remove(spaceGun)
             display.remove(spaceGun1)
             display.remove(pup)
-            composer.removeScene("asteroid shooter 3")
+            composer.removeScene("asteroid shooter 4")
            composer.gotoScene("menu")
-           composer.setVariable("finalScore", score)
-
 
            for i = #powerTable, 1, -1 do
             local thispower = powerTable[i]
@@ -544,10 +540,8 @@ then
             display.remove(spaceGun)
             display.remove(spaceGun1)
             display.remove(pup)
-            composer.removeScene("asteroid shooter 3")
+            composer.removeScene("asteroid shooter 4")
            composer.gotoScene("menu")
-           composer.setVariable("finalScore", score)
-
             
            for i = #powerTable, 1, -1 do
             local thispower = powerTable[i]
