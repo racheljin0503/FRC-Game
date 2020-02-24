@@ -89,18 +89,27 @@ end
 
  function win()
     composer.setVariable( "finalScore", score )
+    print("work")
+    timer.cancel(glt)
+    display.remove( ship )
+    display.remove(energyBar)
+    display.remove (prButton)
+    display.remove(Bar)
+    timer.cancel(gameLoopTimer)
+
     -- print('scoreChange')
     display.remove( ship )
-        display.remove(energyBar)
-        --display.remove(background)
-        display.remove(Bar)
-        display.remove(newAsteroid)
-        display.remove(energyText)
-        display.remove (prButton)
+    display.remove(energyBar)
+    --display.remove(background)
+    display.remove(Bar)
+    display.remove(newAsteroid)
+    display.remove(energyText)
+    display.remove(prButton)
 
-        -- background:removeEventListener( "tap", fireLaser )
-        composer.removeScene("astroid shooter 1")
-        composer.gotoScene("highscores")
+    -- background:removeEventListener( "tap", fireLaser )
+    composer.removeScene("asteroid shooter 1")
+    composer.gotoScene("highscores")
+    
 end
 
 -- create()
@@ -155,7 +164,7 @@ function scene:show( event )
         -- Code here runs when the scene is entirely on screen
         physics.start()
 
---     end
+    -- end
 -- end
         
 
@@ -194,21 +203,21 @@ display.setStatusBar( display.HiddenStatusBar )
 
 
 
- function win ()
-    display.remove( ship )
-        display.remove(energyBar)
-        --display.remove(background)
-        display.remove(Bar)
-        display.remove(newAsteroid)
-        display.remove(energyText)
-        display.remove (prButton)
+--  function win()
+--     display.remove( ship )
+--         display.remove(energyBar)
+--         --display.remove(background)
+--         display.remove(Bar)
+--         display.remove(newAsteroid)
+--         display.remove(energyText)
+--         display.remove (prButton)
 
-        -- background:removeEventListener( "tap", fireLaser )
-        composer.removeScene("astroid shooter 1")
-        composer.gotoScene("lvlmenu1")
-        composer.setVariable("finalScore", score)
+--         -- background:removeEventListener( "tap", fireLaser )
+--         composer.removeScene("astroid shooter 1")
+--         composer.gotoScene("lvlmenu1")
+--         composer.setVariable("finalScore", score)
 
-end
+-- end
 
 
 local function updateText()
@@ -243,7 +252,7 @@ local function checkwin()
     end
 end
 
-glt = timer.performWithDelay(100, checkwin, 10000)
+glt = timer.performWithDelay(100, checkwin, 0)
 
 
 
@@ -275,11 +284,14 @@ local function fireLaser( event )
   --  or energyScore <=0
 
     if (energy == 0 ) then
+        print("0 energy")
+
         display.remove( ship )
         display.remove(energyBar)
         display.remove (prButton)
         display.remove(Bar)
         timer.cancel(gameLoopTimer)
+        timer.cancel(glt)
         composer.gotoScene("menu")
         composer.removeScene("asteroid shooter 1")
         background:removeEventListener( "tap", fireLaser )
@@ -288,10 +300,14 @@ local function fireLaser( event )
     end
    
     if (score == 1000) then
+        print("1000")
+
         display.remove( ship )
         display.remove(energyBar)
         display.remove (prButton)
         display.remove(Bar)
+        timer.cancel(glt)
+
         timer.cancel(gameLoopTimer)
         composer.gotoScene("lvlmenu1")
         composer.removeScene("asteroid shooter 1")
@@ -414,6 +430,7 @@ local function onCollision( event )
 
                 if ( lives == 0 ) then
                     composer.setVariable( "finalScore", score )
+                    print("work")
                     display.remove( ship )
                     display.remove(prButton)
                     display.remove(resumeButton) 

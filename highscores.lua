@@ -35,9 +35,9 @@ end
 
 local function saveScores()
 
-
-	table.remove( scoresTable, 1 )
-
+	-- for i = #scoresTable, 1, -1 do
+	-- 	table.remove( scoresTable, i )
+	-- end
 
 	local file = io.open( filePath, "w" )
 

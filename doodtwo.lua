@@ -229,16 +229,16 @@ end
 local function pushPlayer()
 	local jumpx, jumpy = player:getLinearVelocity()
 	if (canJump > 0 and jumpy > 150) then
-		player:applyLinearImpulse(0, -.3, player.x, player.y)
+		player:applyLinearImpulse(0, -1.2, player.x, player.y)
 		canJump = canJump - 1
 	elseif (canJump > 0 and jumpy > 0) then
-		player:applyLinearImpulse(0, -.2, player.x, player.y)
+		player:applyLinearImpulse(0, -.75, player.x, player.y)
 		canJump = canJump - 1
 	elseif (canJump > 0 and jumpy > -150) then
-		player:applyLinearImpulse(0, -.15, player.x, player.y)
+		player:applyLinearImpulse(0, -.4, player.x, player.y)
 		canJump = canJump - 1
 	elseif (canJump > 0) then
-		player:applyLinearImpulse(0, -.09, player.x, player.y)
+		player:applyLinearImpulse(0, -.3, player.x, player.y)
 		canJump = canJump - 1
 	end
 end
@@ -383,9 +383,13 @@ function scene:create( event )
 	jumpText = display.newText(uiGroup, "Jumps Available: "..canJump, 150, 100, native.systemFont, 30)
 	jumpText:setFillColor(0, .1, 0)
 	
-	player = display.newCircle(display.contentCenterX, display.contentCenterY, 25)
-	player:setFillColor(0, .2, .9)
+	player = display.newImageRect(mainGroup, "bot.png", 50, 80)
+	player.x = display.contentCenterX
+	player.y = display.contentCenterY
+	player.xScale = 1.6
+	player.yScale = 1.6
 	player:toFront()
+	physics.addBody(player, "dynamic", {bounce = 0, radius = 55})
 
 
 	block = display.newRect(mainGroup, display.contentCenterX, player.y + 150, 100, 30)
@@ -399,7 +403,6 @@ function scene:create( event )
 	block.myName = "block"
 
 
-	physics.addBody(player, "dynamic", {bounce = 0})
 	-- player:addEventListener("touch", dragPlayer)
 	backGroup:addEventListener("tap", pushPlayer)
 
