@@ -136,7 +136,8 @@ end
 
 
 local function gotoMenu()
-	composer.gotoScene( "menu", { time=800, effect="crossFade" } )
+	composer.gotoScene( "menu" )
+	composer.removeScene("highscores")
 end
 
 
@@ -181,7 +182,8 @@ function scene:create( event )
             rankNum:setFillColor( 0 )
             rankNum.anchorX = 1
 
-            local thisScore = display.newText( sceneGroup, scoresTable[i], display.contentCenterX-30, yPos, native.systemFont, 36 )
+			local thisScore = display.newText( sceneGroup, scoresTable[i], display.contentCenterX-30, yPos, native.systemFont, 36 )
+			thisScore: setFillColor(0)
             thisScore.anchorX = 0
         end
     end
@@ -231,6 +233,7 @@ function scene:destroy( event )
 	-- Code here runs prior to the removal of scene's view
 
 end
+
 
 
 -- -----------------------------------------------------------------------------------
