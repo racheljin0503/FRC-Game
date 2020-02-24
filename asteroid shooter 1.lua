@@ -208,7 +208,7 @@ display.setStatusBar( display.HiddenStatusBar )
         --background:removeEventListener( "tap", fireLaser )
         -- background:removeEventListener( "tap", fireLaser )
         composer.removeScene("astroid shooter 1")
-        composer.gotoScene("lvlmenu2")
+        composer.gotoScene("lvlmenu1")
 end
 
 
