@@ -871,7 +871,7 @@ function scene:hide( event )
         -- Code here runs immediately after the scene goes entirely off screen
         physics.pause()
 
-        composer.removeScene("game")
+        composer.removeScene("asteroid shooter 5")
 
     end
 end

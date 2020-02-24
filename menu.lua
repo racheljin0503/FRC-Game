@@ -47,7 +47,7 @@ function scene:create( event )
 	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, display.contentCenterY - 200, native.systemFont, 50)
 	highscoresButton:setFillColor(0, 0, .7)
 
-	local about = display.newText(sceneGroup, "about", display.contentCenterX, 650, native.systemFont, 50)
+	local about = display.newText(sceneGroup, "ABOUT", display.contentCenterX, 650, native.systemFont, 50)
 	about:setFillColor(0, 0, .7)
 
 	playButton:addEventListener("tap", gotoGame)

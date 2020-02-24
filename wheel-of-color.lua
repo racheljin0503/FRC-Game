@@ -60,7 +60,7 @@ local function reward()
 end
 
 local function printReward()
-	reward()s
+	reward()
 end
 
 local function spin()
