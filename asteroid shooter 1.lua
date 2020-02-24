@@ -1,3 +1,4 @@
+
 -----------------------------------------------------------------------------------------
 --
 -- main.lua
@@ -83,7 +84,7 @@ local uiGroup = display.newGroup()    -- Display group for UI objects like the s
 
 -- Load the background
 
-local function goToLevels()
+local function gotoMenu()
     composer.gotoScene("lvlmenu2")
 end
 
@@ -207,7 +208,7 @@ display.setStatusBar( display.HiddenStatusBar )
         --background:removeEventListener( "tap", fireLaser )
         -- background:removeEventListener( "tap", fireLaser )
         composer.removeScene("astroid shooter 1")
-        composer.gotoScene("highscores")
+        composer.gotoScene("lvlmenu2")
 end
 
 
@@ -280,7 +281,7 @@ local function fireLaser( event )
         display.remove (prButton)
         display.remove(Bar)
         timer.cancel(gameLoopTimer)
-        composer.gotoScene("youdied")
+        composer.gotoScene("menu")
         composer.removeScene("asteroid shooter 1")
         background:removeEventListener( "tap", fireLaser )
         composer.setVariable("finalScore", energy)

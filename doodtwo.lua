@@ -100,11 +100,12 @@ end
 
 local function death()
 	if (player.y >= deathLimit) then
+		timer.cancel(gameLoopTimer)
 		display.remove(player)
 		display.remove(msg)
 		physics.pause()
 		timer.cancel(passTimer)
-		timer.cancel(gameLoopTimer)
+		
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		timer.cancel(winTimer)
