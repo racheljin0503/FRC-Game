@@ -104,7 +104,7 @@ end
 
 local function LASER()
     bigLaser = display.newImageRect(mainGroup, "laserf.png", 500, 500)
-    bigLaser:rotate(100)
+    -- bigLaser:rotate(100)
     bigLaser.myName = "BIG"
     bigLaser.xScale = 2
     bigLaser.yScale = 2
@@ -122,7 +122,6 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
     backGroup = display.newGroup() 
     sceneGroup:insert(backGroup) 
-
 
     mainGroup = display.newGroup() 
     sceneGroup:insert(mainGroup)
