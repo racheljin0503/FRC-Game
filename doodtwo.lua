@@ -15,6 +15,8 @@ physics.setGravity(0, 4)
 local background
 local player 
 local block
+local msg
+
 local deathLimit = 900
 local scrollSpeed = 100
 
@@ -93,16 +95,17 @@ local function updateText()
 	jumpText.text = "Jumps Available: "..canJump
 	energyText.text = "Energy collected: "..energyScore
 	
-
 end
 
 
 local function death()
 	if (player.y >= deathLimit) then
+		timer.cancel(gameLoopTimer)
 		display.remove(player)
+		display.remove(msg)
 		physics.pause()
 		timer.cancel(passTimer)
-		timer.cancel(gameLoopTimer)
+		
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		timer.cancel(winTimer)
@@ -123,6 +126,7 @@ local function death()
 
 		-- removeAllBlocks()
 		Runtime:removeEventListener("collision", onCollision)
+		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
 		composer.removeScene("doodtwo")
 		print("Dead")
@@ -261,9 +265,45 @@ end
 -- 	end
 -- end
 
+
+local function onGyroscopeUpdate( event )
+	
+	-- print(event.yRotation)
+	local nextX = player.x + (event.yRotation * 10)
+	if nextX < 0 then
+		nextX = 0
+	elseif nextX > display.contentWidth then
+		nextX = display.contentWidth
+	end
+
+	-- if event.yRotation > 0 then
+	-- 	player.x = 100
+	-- else
+	-- 	player.x = 500
+	-- end
+
+	player.x = nextX 
+
+	-- Rotate the object based based on the degrees rotated around the z-axis.
+	-- local deltaRadians = event.zRotation * event.deltaTime
+	-- local deltaDegrees = deltaRadians * (180 / math.pi)
+	-- player:rotate(deltaDegrees)
+end
+
+local function checkGyro()
+	if not system.hasEventSource("gyroscope") then
+		local msg = display.newText( "Gyroscope events not supported on this device", 0, display.contentCenterY, native.systemFontBold, 20 )
+		msg.x = display.contentWidth/2		-- center title
+		msg:setFillColor( 1,1,1 )
+	end
+end
+
+
 local function uwu()
 	display.remove(player)
 	physics.pause()
+	display.remove(msg)
+
 	timer.cancel(passTimer)
 	timer.cancel(gameLoopTimer)
 	timer.cancel(scrollTimer)
@@ -287,9 +327,9 @@ local function uwu()
 	end
 	-- removeAllBlocks()
 	Runtime:removeEventListener("collision", onCollision)
+	Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
 	composer.removeScene("doodtwo")
-	print("won")
 	composer.gotoScene("asteroid shooter 2")
 end
 
@@ -365,6 +405,7 @@ function scene:create( event )
 
 	player.myName = "player"
 
+	checkGyro()
 end
 
 -- show()
@@ -385,6 +426,9 @@ function scene:show( event )
 		spawnTimer = timer.performWithDelay(300, spawnBlock, 0)
 		winTimer = timer.performWithDelay(60100, uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
+		Runtime:addEventListener("gyroscope", onGyroscopeUpdate)
+
+
 	end
 end
 
@@ -406,6 +450,8 @@ function scene:hide( event )
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		Runtime:removeEventListener("collision", onCollision)
+		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
+
 		composer.removeScene("doodtwo")
 
 	end

@@ -27,6 +27,7 @@ local backGroup
 local mainGroup
 local uiGroup
 
+local msg
 local blockTable = {}
 local coinTable = {}
 -- local astTable = {}
@@ -111,6 +112,8 @@ local function death()
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		timer.cancel(winTimer)
+		display.remove(msg)
+
 
 		for i = #blockTable, 1, -1 do
 			local thisBlock = blockTable[i]
@@ -125,25 +128,10 @@ local function death()
 				table.remove(coinTable, i)
 				print("coin deleted")
 		end
-
-		-- for i = #astTable, 1, -1 do
-		-- 	local thisAst = astTable[i]
-		-- 		display.remove(thisAst)
-		-- 		table.remove(thisAst, i)
-		-- 		print("asteroid deleted")
-		-- end
-
-		-- for i = #redTable, 1, -1 do
-		-- 	local thisRed = redTable[i]
-		-- 		display.remove(thisRed)
-		-- 		table.remove(thisRed, i)
-		-- 		print("red block deleted")
-		-- end
-		-- removeAllBlocks()
 		Runtime:removeEventListener("collision", onCollision)
+		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
 		composer.removeScene("doodone")
-		print("Dead")
 		composer.gotoScene("menu")
 	end
 end
@@ -186,30 +174,6 @@ local function spawnBlock()
 	end
 end
 
--- local function spawnAst()
--- 	asteroid = display.newImageRect(mainGroup, "doodast.png", 100, 100)
--- 	table.insert(astTable, asteroid)
--- 	physics.addBody(asteroid, "dynamic", {bounce = 0})
--- 	asteroid:setLinearVelocity(-200, 325)
--- 	asteroid.x = math.random(100, 600)
--- 	asteroid.y = math.random(-200, -100)
--- 	asteroid.isSensor = true
--- 	asteroid.gravityScale = 0
--- 	asteroid:toBack()
--- 	asteroid.myName = "Ast"
--- end
-
--- local function changeBlock()
--- 	for i = #blockTable, 1, -1 do
--- 		local thisBlock = blockTable[i]
--- 		local x, y = thisBlock:getLinearVelocity()
---         if (thisBlock.x < 0 or thisBlock.x > display.actualContentWidth) 
---         then 
---             thisBlock:setLinearVelocity(-1 * x, y)
---         end
--- 	end
--- end
-
 local function playerThru()
 	local jumpx, jumpy = player:getLinearVelocity()
 	if (jumpy < 0) then
@@ -226,6 +190,39 @@ local function gameLoop()
 	-- playerThru()
 	-- changeBlock()
 	-- removeBlock()
+end
+
+
+local function onGyroscopeUpdate( event )
+	
+	-- print(event.yRotation)
+	local nextX = player.x + (event.yRotation * 10)
+	if nextX < 0 then
+		nextX = 0
+	elseif nextX > display.contentWidth then
+		nextX = display.contentWidth
+	end
+
+	-- if event.yRotation > 0 then
+	-- 	player.x = 100
+	-- else
+	-- 	player.x = 500
+	-- end
+
+	player.x = nextX 
+
+	-- Rotate the object based based on the degrees rotated around the z-axis.
+	-- local deltaRadians = event.zRotation * event.deltaTime
+	-- local deltaDegrees = deltaRadians * (180 / math.pi)
+	-- player:rotate(deltaDegrees)
+end
+
+local function checkGyro()
+	if not system.hasEventSource("gyroscope") then
+		msg = display.newText( "Gyroscope events not supported on this device", 0, display.contentCenterY, native.systemFontBold, 20 )
+		msg.x = display.contentWidth/2		-- center title
+		msg:setFillColor( 1,1,1 )
+	end
 end
 
 
@@ -246,30 +243,9 @@ local function pushPlayer()
 	end
 end
 
--- local function removeBlock()
--- 	for i = #blockTable, 1, -1 do
---         local thisBlock = blockTable[i]
-        
---         if (thisBlock.x < -100 or
---             thisBlock.x > display.contentWidth + 100 or 
---             thisBlock.y > display.actualContentHeight + 100)
---         then 
---             display.remove(thisBlock)
---             table.remove(blockTable, i)
---         end
--- 	end
--- end
-
--- local function removeAllBlocks()
--- 	for i = #blockTable, 1, -1 do
--- 		local thisBlock = blockTable[i]
--- 		display.remove(thisBlock)
--- 		table.remove(blockTable, i)
--- 	end
--- end
-
 local function uwu()
 	display.remove(player)
+	display.remove(msg)
 	physics.pause()
 	timer.cancel(passTimer)
 	timer.cancel(gameLoopTimer)
@@ -293,14 +269,8 @@ local function uwu()
 			print("coin deleted")
 	end
 
-	-- for i = #astTable, 1, -1 do
-	-- 	local thisAst = astTable[i]
-	-- 		display.remove(thisAst)
-	-- 		table.remove(thisAst, i)
-	-- 		print("asteroid deleted")
-	-- end
-	-- removeAllBlocks()
 	Runtime:removeEventListener("collision", onCollision)
+	Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
 	composer.removeScene("doodone")
 	print("won")
@@ -392,6 +362,9 @@ function scene:create( event )
 
 	player.myName = "player"
 
+	checkGyro()
+
+
 end
 
 -- show()
@@ -410,9 +383,10 @@ function scene:show( event )
 		passTimer = timer.performWithDelay(10, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(800, spawnBlock, 0)
-		-- astTimer = timer.performWithDelay(math.random(5000, 10000), spawnAst, 0)
-		winTimer = timer.performWithDelay(5010,uwu , 1)
+		winTimer = timer.performWithDelay(50100,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
+		Runtime:addEventListener("gyroscope", onGyroscopeUpdate)
+
 	end
 end
 
@@ -434,6 +408,8 @@ function scene:hide( event )
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		Runtime:removeEventListener("collision", onCollision)
+		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
+
 		composer.removeScene("doodone")
 
 	end

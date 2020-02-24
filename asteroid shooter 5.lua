@@ -57,9 +57,8 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = 25 -- energyScore
---composer.getVariable("energyScore")
--- local totalEnergy = 5
+local totalEnergy = composer.getVariable("energyScore")
+
 local energy = totalEnergy
 local asteroidsTable = {}
 
@@ -204,6 +203,7 @@ display.setStatusBar( display.HiddenStatusBar )
     display.remove(spaceLaser3)
     display.remove(pup)
     composer.removeScene("asteroid shooter 5")
+    composer.setVariable("finalScore", score)
    composer.gotoScene("highscores")
     
 end
@@ -312,6 +312,8 @@ glt1 =  timer.performWithDelay( 10000, createPup, 25 )
         display.remove(pup)
         composer.removeScene("asteroid shooter 5")
        composer.gotoScene("menu")
+       composer.setVariable("finalScore", score)
+
         
         
     end
@@ -456,6 +458,8 @@ local function onCollision( event )
                     display.remove(spaceLaser3)
                     display.remove(pup)
                     composer.removeScene("asteroid shooter 5")
+                    composer.setVariable("finalScore", score)
+
                    composer.gotoScene("menu")
                     
                 else
@@ -502,6 +506,8 @@ local function onCollision( event )
             display.remove(spaceLaser3)
             display.remove(pup)
             composer.removeScene("asteroid shooter 5")
+            composer.setVariable("finalScore", score)
+
            composer.gotoScene("menu")
             
             
@@ -532,6 +538,8 @@ local function onCollision( event )
             display.remove(spaceLaser3)
             display.remove(pup)
             composer.removeScene("asteroid shooter 5")
+            composer.setVariable("finalScore", score)
+
            composer.gotoScene("menu")
             
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun") or (obj1.myName == "spaceGun" and obj2.myName == "laser") 
@@ -583,6 +591,8 @@ local function onCollision( event )
           display.remove(pup)
           composer.removeScene("asteroid shooter 5")
          composer.gotoScene("menu")
+         composer.setVariable("finalScore", score)
+
           
           
         elseif  (obj1.myName == "slaser3" and obj2.myName == "ship") or
@@ -613,6 +623,8 @@ local function onCollision( event )
           display.remove(pup)
           composer.removeScene("asteroid shooter 5")
          composer.gotoScene("menu")
+         composer.setVariable("finalScore", score)
+
           
 
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun2") or (obj1.myName == "spaceGun2" and obj2.myName == "laser") 
@@ -871,7 +883,7 @@ function scene:hide( event )
         -- Code here runs immediately after the scene goes entirely off screen
         physics.pause()
 
-        composer.removeScene("game")
+        composer.removeScene("asteroid shooter 5")
 
     end
 end

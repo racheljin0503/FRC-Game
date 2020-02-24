@@ -57,9 +57,10 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = composer.getVariable("energyScore")
+local totalEnergy = 10--composer.getVariable("energyScore")
 local energy = totalEnergy
 local asteroidsTable = {}
+local powerTable = {}
 
 local ship
 local gameLoopTimer
@@ -73,10 +74,16 @@ local winText
 local f = true
 local f1 = true
 
+local powerup
+local bigLaser
+local powerTimer
+
 local spaceGun
 local spaceGun1
 local spaceLaser
 local spaceLaser1
+
+
 
 -- Set up display groups
 local backGroup = display.newGroup()  -- Display group for the background image
@@ -86,8 +93,28 @@ local uiGroup = display.newGroup()    -- Display group for UI objects like the s
 -- Load the background
 
 
+local function spawnPower()
+	powerup = display.newCircle(math.random(100, 500), 0, 25)
+	powerup:setFillColor(0, 1, 0)
+    physics.addBody(powerup, "dynamic")
+    powerup:setLinearVelocity(0, 70)
+    powerup.myName = "powerup"
+    table.insert(powerTable, powerup)
+end
 
-
+local function LASER()
+    bigLaser = display.newImageRect(mainGroup, "laserf.png", 250, 350)
+    -- bigLaser:rotate(100)
+    bigLaser.myName = "BIG"
+    bigLaser.xScale = 1
+    bigLaser.yScale = 1
+    bigLaser.x = ship.x
+    bigLaser.y = ship.y
+    transition.to( bigLaser, { x = display.contentCenterX, y= -1000, time=1000,
+        onComplete = function() display.remove( newLaser ) end
+    } )
+end
+    
 -- create()
 function scene:create( event )
 
@@ -95,7 +122,6 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
     backGroup = display.newGroup() 
     sceneGroup:insert(backGroup) 
-
 
     mainGroup = display.newGroup() 
     sceneGroup:insert(mainGroup)
@@ -109,6 +135,7 @@ function scene:create( event )
 
 
 end
+
 
 -- function tapMenu (event)
 --     composer.gotoScene("menu")
@@ -139,7 +166,7 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         physics.start()
-
+        powerTimer = timer.performWithDelay(100, spawnPower, 0)
 --     end
 -- end
         
@@ -193,6 +220,8 @@ display.setStatusBar( display.HiddenStatusBar )
 
         background:removeEventListener( "tap", fireLaser )
         composer.gotoScene("highscores")
+        composer.setVariable("finalScore", score)
+
 end
 
 
@@ -276,6 +305,7 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
     if (energy == 0 ) then
         timer.cancel(gm)
         timer.cancel(gm1)
+        timer.cancel(powerTimer)
         display.remove( ship )
         display.remove (prButton)
         display.remove (resumeButton) 
@@ -288,6 +318,14 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
         background:removeEventListener("tap", fireLaser)
          composer.removeScene("asteroid shooter 3")
         composer.gotoScene("menu")
+        composer.setVariable("finalScore", score)
+        
+	for i = #powerTable, 1, -1 do
+		local thispower = powerTable[i]
+			display.remove(thispower)
+			table.remove(powerTable, i)
+			print("power dies")
+	end
 
     end
    
@@ -408,6 +446,7 @@ then
 
           timer.cancel(gm)
             timer.cancel(gm1)
+            timer.cancel(powerTimer)
            display.remove( ship )
            display.remove (prButton)
            display.remove (resumeButton) 
@@ -420,6 +459,15 @@ then
            background:removeEventListener("tap", fireLaser)
             composer.removeScene("asteroid shooter 3")
            composer.gotoScene("menu")
+           composer.setVariable("finalScore", score)
+
+
+           for i = #powerTable, 1, -1 do
+            local thispower = powerTable[i]
+                display.remove(thispower)
+                table.remove(powerTable, i)
+                print("power dies")
+        end
 
 
        else
@@ -448,6 +496,8 @@ then
 
             display.remove(ship)
             background:removeEventListener("tap", fireLaser)
+            timer.cancel(powerTimer)
+
             timer.cancel(gm)
             timer.cancel(gm1)
             timer.cancel(glt1)
@@ -460,8 +510,17 @@ then
             display.remove(spaceGun)
             display.remove(spaceGun1)
             display.remove(pup)
-            composer.removeScene("asteroid shooter 4")
+            composer.removeScene("asteroid shooter 3")
            composer.gotoScene("menu")
+           composer.setVariable("finalScore", score)
+
+
+           for i = #powerTable, 1, -1 do
+            local thispower = powerTable[i]
+                display.remove(thispower)
+                table.remove(powerTable, i)
+                print("power dies")
+        end
             
 
             
@@ -472,6 +531,7 @@ then
 
             display.remove(ship)
             background:removeEventListener("tap", fireLaser)
+            timer.cancel(powerTimer)
             timer.cancel(gm)
             timer.cancel(gm1)
             timer.cancel(glt1)
@@ -484,10 +544,17 @@ then
             display.remove(spaceGun)
             display.remove(spaceGun1)
             display.remove(pup)
-            composer.removeScene("asteroid shooter 4")
+            composer.removeScene("asteroid shooter 3")
            composer.gotoScene("menu")
-            
+           composer.setVariable("finalScore", score)
 
+            
+           for i = #powerTable, 1, -1 do
+            local thispower = powerTable[i]
+                display.remove(thispower)
+                table.remove(powerTable, i)
+                print("power dies")
+        end
   
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun") or (obj1.myName == "spaceGun" and obj2.myName == "laser") 
         then
@@ -509,6 +576,22 @@ then
             score = score + 200            
             updateText()
             
+        end
+
+        if (obj1.myName == "powerup" and obj2.myName == "ship") then
+            LASER()
+            display.remove(obj1)
+        elseif (obj1.myName == "ship" and obj2.myName == "powerup") then
+            LASER()
+            display.remove(obj2)
+        end
+
+        if (obj1.myName == "BIG" and obj2.myName == "asteroid") then
+            print("OWEHRODHFUSDF")
+            display.remove(obj2)
+        elseif(obj1.myName == "asteroid" and obj2.myName == "BIG") then
+            display.remove(obj1)
+            print("WEIRHOIDHF")
         end
     end
 end
@@ -656,7 +739,7 @@ function scene:hide( event )
         -- Code here runs immediately after the scene goes entirely off screen
         physics.pause()
 
-        composer.removeScene("game")
+        composer.removeScene("asteroid shooter 3")
 
     end
 end

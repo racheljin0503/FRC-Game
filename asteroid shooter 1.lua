@@ -1,3 +1,4 @@
+
 -----------------------------------------------------------------------------------------
 --
 -- main.lua
@@ -57,9 +58,7 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = 25 --energyScore
---composer.getVariable("energyScore")
--- local totalEnergy = 5
+local totalEnergy = composer.getVariable("energyScore")
 local energy = totalEnergy
 local asteroidsTable = {}
 
@@ -83,8 +82,8 @@ local uiGroup = display.newGroup()    -- Display group for UI objects like the s
 
 -- Load the background
 
-local function goToLevels()
-    composer.gotoScene("lvlmenu2")
+local function gotoMenu()
+    composer.gotoScene("lvlmenu1")
 end
 
 
@@ -206,7 +205,9 @@ display.setStatusBar( display.HiddenStatusBar )
 
         -- background:removeEventListener( "tap", fireLaser )
         composer.removeScene("astroid shooter 1")
-        composer.gotoScene("highscores")
+        composer.gotoScene("lvlmenu1")
+        composer.setVariable("finalScore", score)
+
 end
 
 
@@ -279,10 +280,10 @@ local function fireLaser( event )
         display.remove (prButton)
         display.remove(Bar)
         timer.cancel(gameLoopTimer)
-        composer.gotoScene("youdied")
+        composer.gotoScene("menu")
         composer.removeScene("asteroid shooter 1")
         background:removeEventListener( "tap", fireLaser )
-        composer.setVariable("finalScore", energy)
+        composer.setVariable("finalScore", score)
 
     end
    
@@ -292,10 +293,10 @@ local function fireLaser( event )
         display.remove (prButton)
         display.remove(Bar)
         timer.cancel(gameLoopTimer)
-        composer.gotoScene("lvlmenu2")
+        composer.gotoScene("lvlmenu1")
         composer.removeScene("asteroid shooter 1")
         background:removeEventListener( "tap", fireLaser )
-        composer.setVariable("finalScore", energy)
+        composer.setVariable("finalScore", score)
 
     end
 end
@@ -421,8 +422,9 @@ local function onCollision( event )
                     timer.cancel(gameLoopTimer)
                     -- timer.performWithDelay(1000, gotoMenu)
                     background:removeEventListener("tap", fireLaser)
-                    -- composer.removeScene("asteroid shooter 1")
+                    composer.removeScene("asteroid shooter 1")
                     composer.gotoScene("highscores")
+
 
                 else
                     ship.alpha = 0

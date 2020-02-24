@@ -57,9 +57,8 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = 25 --energyScore
---composer.getVariable("energyScore")
--- local totalEnergy = 5
+local totalEnergy = composer.getVariable("energyScore")
+
 local energy = totalEnergy
 local asteroidsTable = {}
 
@@ -168,6 +167,8 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove(bird)
         background:removeEventListener( "tap", fireLaser )
         composer.gotoScene("highscores")
+        composer.setVariable("finalScore", score)
+
 end
 
 
@@ -283,8 +284,9 @@ glt2 = timer.performWithDelay(100, checkwin, 10000)
         display.remove(bird)
         display.remove(pup)
         background:removeEventListener( "tap", fireLaser )
-      --  composer.removeScene("asteroid shooter 2")
+       composer.removeScene("asteroid shooter 2")
         composer.gotoScene("menu")
+        composer.setVariable("finalScore", score)
 
     end
    
@@ -419,6 +421,8 @@ local function onCollision( event )
                     --print("dead")
                     background:removeEventListener("tap", fireLaser)
                     composer.gotoScene("menu")
+                    composer.setVariable("finalScore", score)
+
 
                 else
                     ship.alpha = 0
@@ -438,6 +442,7 @@ local function onCollision( event )
                     display.remove(bird)
                     background:removeEventListener("tap", fireLaser)
                     composer.gotoScene("menu")
+
 
                 elseif (obj1.myName == "laser" and obj2.myName == "pup") or
                         (obj1.myName == "pup" and obj2.myName == "laser") then
@@ -535,7 +540,7 @@ function scene:hide( event )
         -- Code here runs immediately after the scene goes entirely off screen
         physics.pause()
 
-        composer.removeScene("game")
+        composer.removeScene("asteroid shooter 2")
 
     end
 end
