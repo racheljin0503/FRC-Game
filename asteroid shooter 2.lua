@@ -165,7 +165,7 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove(energyText)
         display.remove (prButton)
         display.remove(bird)
-        background:removeEventListener( "tap", fireLaser )
+        --background:removeEventListener( "tap", fireLaser )
         composer.gotoScene("highscores")
         composer.setVariable("finalScore", score)
 
