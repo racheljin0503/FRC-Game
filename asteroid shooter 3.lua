@@ -103,11 +103,11 @@ local function spawnPower()
 end
 
 local function LASER()
-    bigLaser = display.newImageRect(mainGroup, "laserf.png", 500, 500)
+    bigLaser = display.newImageRect(mainGroup, "laserf.png", 250, 350)
     -- bigLaser:rotate(100)
     bigLaser.myName = "BIG"
-    bigLaser.xScale = 2
-    bigLaser.yScale = 2
+    bigLaser.xScale = 1
+    bigLaser.yScale = 1
     bigLaser.x = ship.x
     bigLaser.y = ship.y
     transition.to( bigLaser, { x = display.contentCenterX, y= -1000, time=1000,
@@ -220,6 +220,8 @@ display.setStatusBar( display.HiddenStatusBar )
 
         background:removeEventListener( "tap", fireLaser )
         composer.gotoScene("highscores")
+        composer.setVariable("finalScore", score)
+
 end
 
 
@@ -316,7 +318,7 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
         background:removeEventListener("tap", fireLaser)
          composer.removeScene("asteroid shooter 3")
         composer.gotoScene("menu")
-
+        composer.setVariable("finalScore", score)
         
 	for i = #powerTable, 1, -1 do
 		local thispower = powerTable[i]
@@ -457,6 +459,8 @@ then
            background:removeEventListener("tap", fireLaser)
             composer.removeScene("asteroid shooter 3")
            composer.gotoScene("menu")
+           composer.setVariable("finalScore", score)
+
 
            for i = #powerTable, 1, -1 do
             local thispower = powerTable[i]
@@ -506,8 +510,10 @@ then
             display.remove(spaceGun)
             display.remove(spaceGun1)
             display.remove(pup)
-            composer.removeScene("asteroid shooter 4")
+            composer.removeScene("asteroid shooter 3")
            composer.gotoScene("menu")
+           composer.setVariable("finalScore", score)
+
 
            for i = #powerTable, 1, -1 do
             local thispower = powerTable[i]
@@ -538,8 +544,10 @@ then
             display.remove(spaceGun)
             display.remove(spaceGun1)
             display.remove(pup)
-            composer.removeScene("asteroid shooter 4")
+            composer.removeScene("asteroid shooter 3")
            composer.gotoScene("menu")
+           composer.setVariable("finalScore", score)
+
             
            for i = #powerTable, 1, -1 do
             local thispower = powerTable[i]
