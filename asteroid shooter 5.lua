@@ -80,9 +80,11 @@ local backGroup = display.newGroup()  -- Display group for the background image
 local mainGroup = display.newGroup()  -- Display group for the ship, asteroids, lasers, etc.
 local uiGroup = display.newGroup()    -- Display group for UI objects like the score
 
--- Load the background
 
 
+local function gotoYouWin()
+	composer.gotoScene( "youwin")-- { time=800, effect="crossFade" } )
+end
 
 
 -- create()
@@ -111,18 +113,19 @@ end
 --     composer.gotoScene("menu")
 -- end
 
--- function win()
+function win()
 
---     display.remove( ship )
---     display.remove(energyBar)
---     display.remove (prButton)
---     background:removeEventListener( "tap", fireLaser )
---     winText = display.newText("Congractulation! you unclocked level 2", 500, 300, native.systemFont, 36)
---     menu = display.newText("menu", 500, 500, native.systemFont, 36)
+    display.remove( ship )
+    display.remove(energyBar)
+    display.remove (prButton)
+    background:removeEventListener( "tap", fireLaser )
+    winText = display.newText("Congractulation! you unclocked level 2", 500, 300, native.systemFont, 36)
+    menu = display.newText("menu", 500, 500, native.systemFont, 36)
 
---     menu:addEventListener("tap", tapMenu)
+    menu:addEventListener("tap", tapMenu)
+    gotoYouWin()
 
--- end
+end
 
 -- show()
 function scene:show( event )
@@ -236,9 +239,9 @@ local function createAsteroid()
 end
 
 local function checkwin()
-if (score >= 4000) then
-win()
-end
+    if (score >= 4000) then
+        win()
+    end
 end
 
 glt = timer.performWithDelay(100, checkwin, 10000)
