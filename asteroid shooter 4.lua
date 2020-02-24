@@ -57,7 +57,8 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local energy = composer.getVariable("totalEnergy", energy)
+local totalEnergy = composer.getVariable("energyScore")
+local energy = totalEnergy
 local asteroidsTable = {}
 
 local ship
@@ -187,7 +188,10 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove (prButton)
 
         background:removeEventListener( "tap", fireLaser )
+        composer.setVariable("finalScore", score)
+
         composer.gotoScene("highscores")
+
 end
 
 
@@ -285,6 +289,8 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
         display.remove(pup)
         composer.removeScene("asteroid shooter 4")
        composer.gotoScene("menu")
+       composer.setVariable("finalScore", score)
+
 
     end
    
@@ -419,6 +425,7 @@ local function onCollision( event )
                    background:removeEventListener("tap", fireLaser)
                     composer.removeScene("asteroid shooter 4")
                    composer.gotoScene("menu")
+                   composer.setVariable("finalScore", score)
         
                 else
                     ship.alpha = 0
@@ -456,6 +463,8 @@ local function onCollision( event )
             display.remove(pup)
             composer.removeScene("asteroid shooter 4")
            composer.gotoScene("menu")
+           composer.setVariable("finalScore", score)
+
             
         elseif (obj1.myName == "slaser1" and obj2.myName == "ship") or (obj1.myName == "ship" and obj2.myName == "slaser1") 
         then
@@ -477,6 +486,8 @@ local function onCollision( event )
             display.remove(pup)
             composer.removeScene("asteroid shooter 4")
            composer.gotoScene("menu")
+           composer.setVariable("finalScore", score)
+
 
 
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun") or (obj1.myName == "spaceGun" and obj2.myName == "laser") 

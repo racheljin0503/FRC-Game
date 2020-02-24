@@ -101,7 +101,6 @@ local function spawnPower()
     powerup:setLinearVelocity(0, 70)
     powerup.myName = "powerup"
     table.insert(powerTable, powerup)
-    -- time.performWithDelay(10000, spawnPower)
 end
 
 local function LASER()
