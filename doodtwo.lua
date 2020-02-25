@@ -292,7 +292,7 @@ end
 
 local function checkGyro()
 	if not system.hasEventSource("gyroscope") then
-		local msg = display.newText( "Gyroscope events not supported on this device", 0, display.contentCenterY, native.systemFontBold, 20 )
+		local msg = display.newText( "Gyroscope events not supported on this device", 0, display.contentCenterY, UbuntuBold, 20 )
 		msg.x = display.contentWidth/2		-- center title
 		msg:setFillColor( 1,1,1 )
 	end
@@ -377,10 +377,10 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = -4500 + display.actualContentHeight
 
-	energyText = display.newText(uiGroup, "Energy Collected: "..energyScore, 150, 50, native.systemFont, 30)
+	energyText = display.newText(uiGroup, "Energy Collected: "..energyScore, 150, 50, Ubuntu, 30)
 	energyText:setFillColor(0, .1, 0)
 
-	jumpText = display.newText(uiGroup, "Jumps Available: "..canJump, 150, 100, native.systemFont, 30)
+	jumpText = display.newText(uiGroup, "Jumps Available: "..canJump, 150, 100, Ubuntu, 30)
 	jumpText:setFillColor(0, .1, 0)
 	
 	player = display.newImageRect(mainGroup, "bot.png", 50, 80)

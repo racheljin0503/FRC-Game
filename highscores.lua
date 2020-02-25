@@ -86,24 +86,24 @@ function scene:create( event )
     background.x = display.contentCenterX
     background.y = display.contentCenterY
 
-	local highScoresHeader = display.newText( sceneGroup, "Personal High Score", display.contentCenterX, 100, native.systemFont, 44 )
+	local highScoresHeader = display.newText( sceneGroup, "Personal High Score", display.contentCenterX, 100, Ubuntu, 44 )
 	highScoresHeader:setFillColor( 0, 0, 1 )
 
     -- for i = 1, 10 do
         -- if ( scoresTable[i] ) then
             local yPos = display.contentCenterY
 
-            -- local rankNum = display.newText( sceneGroup, 1 .. ")", display.contentCenterX-50, yPos, native.systemFont, 60)
+            -- local rankNum = display.newText( sceneGroup, 1 .. ")", display.contentCenterX-50, yPos, Ubuntu, 60)
             -- rankNum:setFillColor( 0 )
             -- rankNum.anchorX = 1
 
-			local thisScore = display.newText( sceneGroup, scoresTable[1], display.contentCenterX-50, yPos, native.systemFont, 60)
+			local thisScore = display.newText( sceneGroup, scoresTable[1], display.contentCenterX-50, yPos, Ubuntu, 60)
 			thisScore: setFillColor(0)
             thisScore.anchorX = 0
         -- end
     -- end
 
-    local menuButton = display.newText( sceneGroup, "Menu", display.contentCenterX, 810, native.systemFont, 44 )
+    local menuButton = display.newText( sceneGroup, "Menu", display.contentCenterX, 810, Ubuntu, 44 )
     menuButton:setFillColor( 0, 0, 1 )
     menuButton:addEventListener( "tap", gotoMenu )
 end
