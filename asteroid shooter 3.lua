@@ -104,7 +104,7 @@ local function spawnPower()
 end
 
 local function LASER()
-    bigLaser = display.newImageRect(mainGroup, "laserA.png", 500, 500)
+    bigLaser = display.newImageRect(mainGroup, "LaserA.png", 500, 500)
     bigLaser:rotate(100)
     bigLaser.myName = "BIG"
     bigLaser.xScale = 2
@@ -581,10 +581,9 @@ then
             display.remove(obj2)
         end
 
-        if (obj1.myName == "BIG" and obj2.myName == "asteroid") or
-        (obj1.myName == "asteroid" and obj2.myName == "BIG") then
-            display.remove(obj1
-    )
+        if (obj1.myName == "BIG" and obj2.myName == "asteroid") or (obj1.myName == "asteroid" and obj2.myName == "BIG") then
+            display.remove(obj1)
+            display.remove(obj2)
         end
     end
 end
@@ -651,7 +650,7 @@ Runtime:addEventListener( "collision", onCollision )
     
     function bangBang ()
 
-       spaceGun = display.newImageRect("spaceinvader.png", 100, 100)
+       spaceGun = display.newImageRect("enemy.png", 100, 100)
         spaceGun.x = 200
         spaceGun.y = -500    
         physics.addBody(spaceGun, "static", { isSensor = true} )
@@ -681,7 +680,7 @@ Runtime:addEventListener( "collision", onCollision )
  
  function bangBang1 ()
 
-     spaceGun1 = display.newImageRect("spaceinvader.png", 100, 100)
+     spaceGun1 = display.newImageRect("enemy.png", 100, 100)
       spaceGun1.x = 500
       spaceGun1.y = -500    
       physics.addBody(spaceGun1, "static", { isSensor = true} )
