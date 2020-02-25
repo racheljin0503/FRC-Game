@@ -245,6 +245,8 @@ local function pushPlayer()
 end
 
 local function uwu()
+	Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
+
 	display.remove(player)
 	display.remove(msg)
 	physics.pause()
@@ -271,7 +273,6 @@ local function uwu()
 	end
 
 	Runtime:removeEventListener("collision", onCollision)
-	Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
 	print("won")
 	composer.gotoScene("asteroid shooter 1")
