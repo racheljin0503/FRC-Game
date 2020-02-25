@@ -57,7 +57,8 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = 10--composer.getVariable("energyScore")
+local energy = composer.getVariable("energyScore")
+local totalEnergy = 25-- composer.getVariable("energyScore")
 local energy = totalEnergy
 local asteroidsTable = {}
 local powerTable = {}
@@ -682,7 +683,7 @@ Runtime:addEventListener( "collision", onCollision )
     
     function bangBang ()
 
-       spaceGun = display.newImageRect("spaceinvader.png", 100, 100)
+       spaceGun = display.newImageRect("enemy.png", 100, 100)
         spaceGun.x = 200
         spaceGun.y = -500    
         physics.addBody(spaceGun, "static", { isSensor = true} )
@@ -712,7 +713,7 @@ Runtime:addEventListener( "collision", onCollision )
  
  function bangBang1 ()
 
-     spaceGun1 = display.newImageRect("spaceinvader.png", 100, 100)
+     spaceGun1 = display.newImageRect("enemy.png", 100, 100)
       spaceGun1.x = 500
       spaceGun1.y = -500    
       physics.addBody(spaceGun1, "static", { isSensor = true} )

@@ -131,8 +131,9 @@ local function death()
 		Runtime:removeEventListener("collision", onCollision)
 		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
-		composer.removeScene("doodone")
 		composer.gotoScene("menu")
+		composer.removeScene("doodone")
+
 	end
 end
 
@@ -229,16 +230,16 @@ end
 local function pushPlayer()
 	local jumpx, jumpy = player:getLinearVelocity()
 	if (canJump > 0 and jumpy > 150) then
-		player:applyLinearImpulse(0, -.3, player.x, player.y)
+		player:applyLinearImpulse(0, -1.2, player.x, player.y)
 		canJump = canJump - 1
 	elseif (canJump > 0 and jumpy > 0) then
-		player:applyLinearImpulse(0, -.19, player.x, player.y)
+		player:applyLinearImpulse(0, -.75, player.x, player.y)
 		canJump = canJump - 1
 	elseif (canJump > 0 and jumpy > -150) then
-		player:applyLinearImpulse(0, -.1, player.x, player.y)
+		player:applyLinearImpulse(0, -.4, player.x, player.y)
 		canJump = canJump - 1
 	elseif (canJump > 0) then
-		player:applyLinearImpulse(0, -.05, player.x, player.y)
+		player:applyLinearImpulse(0, -.3, player.x, player.y)
 		canJump = canJump - 1
 	end
 end
@@ -272,9 +273,10 @@ local function uwu()
 	Runtime:removeEventListener("collision", onCollision)
 	Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
-	composer.removeScene("doodone")
 	print("won")
 	composer.gotoScene("asteroid shooter 1")
+	composer.removeScene("doodone")
+
 end
 
 
@@ -340,9 +342,14 @@ function scene:create( event )
 	jumpText = display.newText(uiGroup, "Jumps Available: "..canJump, 150, 100, native.systemFont, 30)
 	jumpText:setFillColor(0, .1, 0)
 	
-	player = display.newCircle(display.contentCenterX, display.contentCenterY, 25)
-	player:setFillColor(0, .2, .9)
+	player = display.newImageRect(mainGroup, "bot.png", 50, 80)
+	player.x = display.contentCenterX
+	player.y = display.contentCenterY
+	player.xScale = 1.6
+	player.yScale = 1.6
 	player:toFront()
+	physics.addBody(player, "dynamic", {bounce = 0, radius = 55})
+
 
 
 	block = display.newRect(mainGroup, display.contentCenterX, player.y + 150, 100, 30)
@@ -356,14 +363,12 @@ function scene:create( event )
 	block.myName = "block"
 
 
-	physics.addBody(player, "dynamic", {bounce = 0})
 	-- player:addEventListener("touch", dragPlayer)
 	backGroup:addEventListener("tap", pushPlayer)
 
 	player.myName = "player"
 
 	checkGyro()
-
 
 end
 
@@ -383,7 +388,7 @@ function scene:show( event )
 		passTimer = timer.performWithDelay(10, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(800, spawnBlock, 0)
-		winTimer = timer.performWithDelay(5010,uwu , 1)
+		winTimer = timer.performWithDelay(50100,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
 		Runtime:addEventListener("gyroscope", onGyroscopeUpdate)
 

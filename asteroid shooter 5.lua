@@ -57,9 +57,8 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = 25 -- energyScore
---composer.getVariable("energyScore")
--- local totalEnergy = 5
+local totalEnergy = composer.getVariable("energyScore")
+
 local energy = totalEnergy
 local asteroidsTable = {}
 
@@ -81,9 +80,11 @@ local backGroup = display.newGroup()  -- Display group for the background image
 local mainGroup = display.newGroup()  -- Display group for the ship, asteroids, lasers, etc.
 local uiGroup = display.newGroup()    -- Display group for UI objects like the score
 
--- Load the background
 
 
+local function gotoYouWin()
+	composer.gotoScene( "youwin")-- { time=800, effect="crossFade" } )
+end
 
 
 -- create()
@@ -112,18 +113,19 @@ end
 --     composer.gotoScene("menu")
 -- end
 
--- function win()
+function win()
 
---     display.remove( ship )
---     display.remove(energyBar)
---     display.remove (prButton)
---     background:removeEventListener( "tap", fireLaser )
---     winText = display.newText("Congractulation! you unclocked level 2", 500, 300, native.systemFont, 36)
---     menu = display.newText("menu", 500, 500, native.systemFont, 36)
+    display.remove( ship )
+    display.remove(energyBar)
+    display.remove (prButton)
+    background:removeEventListener( "tap", fireLaser )
+    winText = display.newText("Congractulation! you unclocked level 2", 500, 300, native.systemFont, 36)
+    menu = display.newText("menu", 500, 500, native.systemFont, 36)
 
---     menu:addEventListener("tap", tapMenu)
+    menu:addEventListener("tap", tapMenu)
+    gotoYouWin()
 
--- end
+end
 
 -- show()
 function scene:show( event )
@@ -204,6 +206,7 @@ display.setStatusBar( display.HiddenStatusBar )
     display.remove(spaceLaser3)
     display.remove(pup)
     composer.removeScene("asteroid shooter 5")
+    composer.setVariable("finalScore", score)
    composer.gotoScene("highscores")
     
 end
@@ -236,9 +239,9 @@ local function createAsteroid()
 end
 
 local function checkwin()
-if (score >= 4000) then
-win()
-end
+    if (score >= 4000) then
+        win()
+    end
 end
 
 glt = timer.performWithDelay(100, checkwin, 10000)
@@ -312,6 +315,8 @@ glt1 =  timer.performWithDelay( 10000, createPup, 25 )
         display.remove(pup)
         composer.removeScene("asteroid shooter 5")
        composer.gotoScene("menu")
+       composer.setVariable("finalScore", score)
+
         
         
     end
@@ -456,6 +461,8 @@ local function onCollision( event )
                     display.remove(spaceLaser3)
                     display.remove(pup)
                     composer.removeScene("asteroid shooter 5")
+                    composer.setVariable("finalScore", score)
+
                    composer.gotoScene("menu")
                     
                 else
@@ -502,6 +509,8 @@ local function onCollision( event )
             display.remove(spaceLaser3)
             display.remove(pup)
             composer.removeScene("asteroid shooter 5")
+            composer.setVariable("finalScore", score)
+
            composer.gotoScene("menu")
             
             
@@ -532,6 +541,8 @@ local function onCollision( event )
             display.remove(spaceLaser3)
             display.remove(pup)
             composer.removeScene("asteroid shooter 5")
+            composer.setVariable("finalScore", score)
+
            composer.gotoScene("menu")
             
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun") or (obj1.myName == "spaceGun" and obj2.myName == "laser") 
@@ -583,6 +594,8 @@ local function onCollision( event )
           display.remove(pup)
           composer.removeScene("asteroid shooter 5")
          composer.gotoScene("menu")
+         composer.setVariable("finalScore", score)
+
           
           
         elseif  (obj1.myName == "slaser3" and obj2.myName == "ship") or
@@ -613,6 +626,8 @@ local function onCollision( event )
           display.remove(pup)
           composer.removeScene("asteroid shooter 5")
          composer.gotoScene("menu")
+         composer.setVariable("finalScore", score)
+
           
 
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun2") or (obj1.myName == "spaceGun2" and obj2.myName == "laser") 
