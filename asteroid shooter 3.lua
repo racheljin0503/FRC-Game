@@ -57,8 +57,8 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local energy = composer.getVariable("energyScore")
-local totalEnergy = composer.getVariable("energyScore")
+local energy = totalEnergy
+local totalEnergy =10  --composer.getVariable("energyScore")
 local energy = totalEnergy
 local asteroidsTable = {}
 local powerTable = {}
@@ -104,7 +104,7 @@ local function spawnPower()
 end
 
 local function LASER()
-    bigLaser = display.newImageRect(mainGroup, "laserf.png", 500, 500)
+    bigLaser = display.newImageRect(mainGroup, "laserA.png", 500, 500)
     bigLaser:rotate(100)
     bigLaser.myName = "BIG"
     bigLaser.xScale = 2
@@ -550,7 +550,8 @@ then
                 print("power dies")
         end
   
-        elseif (obj1.myName == "laser" and obj2.myName == "spaceGun") or (obj1.myName == "spaceGun" and obj2.myName == "laser") 
+        elseif ((obj1.myName == "laser" and obj2.myName == "spaceGun") or
+         (obj1.myName == "spaceGun" and obj2.myName == "laser")) 
         then
 
             display.remove(spaceGun)
@@ -580,12 +581,10 @@ then
             display.remove(obj2)
         end
 
-        if (obj1.myName == "BIG" and obj2.myName == "asteroid") then
-            print("OWEHRODHFUSDF")
-            display.remove(obj2)
-        elseif(obj1.myName == "asteroid" and obj2.myName == "BIG") then
-            display.remove(obj1)
-            print("WEIRHOIDHF")
+        if (obj1.myName == "BIG" and obj2.myName == "asteroid") or
+        (obj1.myName == "asteroid" and obj2.myName == "BIG") then
+            display.remove(obj1
+    )
         end
     end
 end
