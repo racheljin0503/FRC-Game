@@ -45,16 +45,16 @@ function scene:create( event )
 	background.y = display.contentCenterY
 
 
-	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY - 375, native.systemFont, 100)
+	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY - 375, Ubuntu, 100)
 	playButton:setFillColor(0, 0, .7)
 
-	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY - 275, native.systemFont, 50)
+	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY - 275, Ubuntu, 50)
 	colorWheel:setFillColor(0, 0, .7)
   
-	local highscoresButton = display.newText(sceneGroup, "HIGHSCORE", display.contentCenterX, display.contentCenterY - 200, native.systemFont, 50)
+	local highscoresButton = display.newText(sceneGroup, "HIGHSCORE", display.contentCenterX, display.contentCenterY - 200, Ubuntu, 50)
 	highscoresButton:setFillColor(0, 0, .7)
 
-	local about = display.newText(sceneGroup, "ABOUT", display.contentCenterX, 650, native.systemFont, 50)
+	local about = display.newText(sceneGroup, "ABOUT", display.contentCenterX, 650, Ubuntu, 50)
 	about:setFillColor(0, 0, .7)
 
 	playButton:addEventListener("tap", gotoGame)

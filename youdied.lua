@@ -29,13 +29,13 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local deathmessage = display.newText(sceneGroup, "YOU DIED!", display.contentCenterX, display.contentCenterY - 375, native.systemFont, 100)
+	local deathmessage = display.newText(sceneGroup, "YOU DIED!", display.contentCenterX, display.contentCenterY - 375, Ubuntu, 100)
 	deathmessage:setFillColor(0, 0, .7)
 
-	local menuButton = display.newText( sceneGroup, "BACK TO MENU", display.contentCenterX, display.contentCenterY - 275, native.systemFont, 50)
+	local menuButton = display.newText( sceneGroup, "BACK TO MENU", display.contentCenterX, display.contentCenterY - 275, Ubuntu, 50)
     menuButton:setFillColor( 0, 0, .7)
   
-	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, display.contentCenterY - 200, native.systemFont, 50)
+	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, display.contentCenterY - 200, Ubuntu, 50)
 	highscoresButton:setFillColor(0, 0, .7)
 
 	menuButton:addEventListener("tap", gotoMenu1)

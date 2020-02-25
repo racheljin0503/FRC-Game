@@ -10,7 +10,7 @@ yAxis = display.newLine(display.contentWidth / 2, 0, display.contentWidth / 2, d
 yAxis:setStrokeColor( 0, 1, 1, 128/255 )
 
 -- Displays App title
-title = display.newText( "Gyroscope", 0, 35, native.systemFontBold, 20 )
+title = display.newText( "Gyroscope", 0, 35, UbuntuBold, 20 )
 title.x = display.contentWidth / 2
 title:setFillColor( 1, 1, 0 )
 
@@ -18,7 +18,7 @@ title:setFillColor( 1, 1, 0 )
 -- Check that the current platform supports a gyroscope
 --
 if not system.hasEventSource("gyroscope") then
-	msg = display.newText( "Gyroscope events not supported on this device", 0, 70, native.systemFontBold, 13 )
+	msg = display.newText( "Gyroscope events not supported on this device", 0, 70, UbuntuBold, 13 )
 	msg.x = display.contentWidth/2		-- center title
 	msg:setFillColor( 1,1,1 )
 end
@@ -36,26 +36,26 @@ local fontSize = 24
 
 local frameUpdate = false					-- used to update our Text Color (once per frame)
 
-local xHeaderLabel = display.newText( "x rotation = ", labelx, y, native.systemFont, fontSize ) 
+local xHeaderLabel = display.newText( "x rotation = ", labelx, y, Ubuntu, fontSize ) 
 xHeaderLabel:setFillColor(1,1,1)
 xHeaderLabel.anchorX = 0.0
 
-local xValueLabel = display.newText( "0.0", x, y, native.systemFont, fontSize ) 
+local xValueLabel = display.newText( "0.0", x, y, Ubuntu, fontSize ) 
 xValueLabel:setFillColor(1,1,1)
 y = y + 25
 
-local yHeaderLabel = display.newText( "y rotation = ", labelx, y, native.systemFont, fontSize ) 
+local yHeaderLabel = display.newText( "y rotation = ", labelx, y, Ubuntu, fontSize ) 
 yHeaderLabel.anchorX = 0.0
 
-local yValueLabel = display.newText( "0.0", x, y, native.systemFont, fontSize ) 
+local yValueLabel = display.newText( "0.0", x, y, Ubuntu, fontSize ) 
 yHeaderLabel:setFillColor(1,1,1)
 yValueLabel:setFillColor(1,1,1)
 y = y + 25
 
-local zHeaderLabel = display.newText( "z rotation = ", labelx, y, native.systemFont, fontSize ) 
+local zHeaderLabel = display.newText( "z rotation = ", labelx, y, Ubuntu, fontSize ) 
 zHeaderLabel.anchorX = 0.0
 
-local zValueLabel = display.newText( "0.0", x, y, native.systemFont, fontSize ) 
+local zValueLabel = display.newText( "0.0", x, y, Ubuntu, fontSize ) 
 zHeaderLabel:setFillColor(1,1,1)
 zValueLabel:setFillColor(1,1,1)
 
@@ -86,7 +86,7 @@ local textMessage = function( str, location, scrTime, size, color, font )
 	
 	size = tonumber(size) or 24
 	color = color or {1, 1, 1}
-	font = font or native.systemFont
+	font = font or Ubuntu
 
 	-- Determine where to position the text on the screen
 	if "string" == type(location) then

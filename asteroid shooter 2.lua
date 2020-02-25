@@ -144,9 +144,9 @@ physics.addBody( ship, "static", { radius=30,  isSensor=true } )
 ship.myName = "ship"
 
 -- Display lives and score
---livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, native.systemFont, 36 )
-scoreText = display.newText( uiGroup, "Score: " .. score, 300, 0, native.systemFont, 36 )
-energyText = display.newText( uiGroup, "" .. energy, 97, 210, native.systemFont, 36 )
+--livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, Ubuntu, 36 )
+scoreText = display.newText( uiGroup, "Score: " .. score, 300, 0, Ubuntu, 36 )
+energyText = display.newText( uiGroup, "" .. energy, 97, 210, Ubuntu, 36 )
 
 
 

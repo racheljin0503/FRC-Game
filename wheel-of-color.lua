@@ -100,13 +100,13 @@ function scene:create( event )
 	wheel.x = display.contentCenterX
 	wheel.y = display.contentCenterY
 
-	local menuButton = display.newText(uiGroup, "Menu", display.contentCenterX, display.contentCenterY, native.systemFont, 50)
+	local menuButton = display.newText(uiGroup, "Menu", display.contentCenterX, display.contentCenterY, Ubuntu, 50)
 	menuButton.x = display.contentCenterX - 80
 	menuButton.y = 25
 	menuButton:setFillColor(0, 0, .7)
 	menuButton:addEventListener("tap", gotoMenu)
 
-	spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 50)
+	spinButton = display.newText(uiGroup, "Spin", display.contentCenterX, display.contentCenterY + 200, Ubuntu, 50)
 	spinButton:addEventListener("tap", spin)
 	spinButton:setFillColor(0, .45, 0)
 

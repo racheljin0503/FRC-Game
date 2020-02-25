@@ -52,12 +52,12 @@ function scene:show( event )
     about1.x = display.contentCenterX 
     about1.y = display.contentCenterY 
 
-    menu = display.newText(uiGroup, "Menu", display.contentCenterX - 200, display.contentCenterY - 440, native.systemFont, 50)
+    menu = display.newText(uiGroup, "Menu", display.contentCenterX - 200, display.contentCenterY - 440, Ubuntu, 50)
 
-    -- inspireText = display.newText(uiGroup, '  www.firstinspires.org', display.contentCenterX + 120, display.contentCenterY - 201, native.systemFont, 26)
+    -- inspireText = display.newText(uiGroup, '  www.firstinspires.org', display.contentCenterX + 120, display.contentCenterY - 201, Ubuntu, 26)
     -- inspireText:setFillColor(0, 0, .7)
 
-    back = display.newText(uiGroup, 'Back', display.contentCenterX + 200, display.contentCenterY - 440, native.systemFont, 50)
+    back = display.newText(uiGroup, 'Back', display.contentCenterX + 200, display.contentCenterY - 440, Ubuntu, 50)
     
     function createCredit() 
   
