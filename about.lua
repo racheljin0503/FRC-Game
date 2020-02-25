@@ -106,7 +106,7 @@ end
 
     inspireText = display.newText(uiGroup, '  www.firstinspires.org', display.contentCenterX - 100, display.contentCenterY - 150, native.systemFont, 30)
     inspireText:setFillColor(0, 0, .7)
-    print(native.getFonts())
+    --print(native.getFonts())
 
    -- credits = display.newText(uiGroup, 'credits', display.contentCenterX + 200, display.contentCenterY - 440, native.systemFont, 50)
     
@@ -131,6 +131,7 @@ end
     donate:addEventListener("tap", gotolink1)
 
     back:addEventListener("tap", gotoMenu)
+   
     end
 end
 

@@ -103,18 +103,25 @@ local function spawnPower()
 end
 
 local function LASER()
-    bigLaser = display.newImageRect(mainGroup, "laserf.png", 500, 500)
-    bigLaser:rotate(100)
+    bigLaser = display.newImageRect(mainGroup, "laserA.png", 500, 500)
+    physics.addBody(bigLaser, "dynamic")
     bigLaser.myName = "BIG"
     bigLaser.xScale = 2
     bigLaser.yScale = 2
-    bigLaser.x = ship.x
-    bigLaser.y = ship.y
-    transition.to( bigLaser, { x = display.contentCenterX, y= -1000, time=1000,
-        onComplete = function() display.remove( newLaser ) end
+    bigLaser.x = 0
+    bigLaser.y = 1000
+
+    transition.to( bigLaser, { x = 500, y= -1000, time=1000,
+        onComplete = function() display.remove( newLaser )  end
     } )
+
+
+
+    --transition.to( bigLaser, { x = 500, y = -100, time = 1000, onComplete = function() composer.gotoScene(highscores) end })
 end
-    
+
+
+
 -- create()
 function scene:create( event )
 
@@ -167,6 +174,8 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         physics.start()
+
+       -- physics.addBody(bigLaser)
         powerTimer = timer.performWithDelay(100, spawnPower, 0)
 --     end
 -- end
@@ -193,7 +202,8 @@ Bar:rotate(180)
 
 ship = display.newImageRect( mainGroup, objectSheet, 4, 98, 79 )
 ship.x = display.contentCenterX
-ship.y = display.contentHeight - 100
+ship.y =
+ display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )
 ship.myName = "ship"
 
@@ -218,8 +228,9 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove(newAsteroid)
         display.remove(energyText)
         display.remove (prButton)
-
-        background:removeEventListener( "tap", fireLaser )
+        display.remove( bigLaser )
+        display.remove( powerup )
+        --background:removeEventListener( "tap", fireLaser )
         composer.gotoScene("highscores")
 end
 
@@ -273,6 +284,8 @@ function createPup()
  end
 
 glt1 =  timer.performWithDelay( 10000, createPup, 10 )
+
+
 
 
 
@@ -431,6 +444,11 @@ local function onCollision( event )
             score = score + 100
             scoreText.text = "Score: " .. score
 
+        elseif (obj1.myName == "asteroid" and obj2 == "BIG") or (obj1.myName == "BIG" and obj2.myName == "asteroid") then
+            display.remove(obj2)
+            display.remove(obj1)
+
+
         elseif ( ( obj1.myName == "ship" and obj2.myName == "asteroid" ) or
         ( obj1.myName == "asteroid" and obj2.myName == "ship" ) )
 then
@@ -463,7 +481,7 @@ then
             local thispower = powerTable[i]
                 display.remove(thispower)
                 table.remove(powerTable, i)
-                print("power dies")
+               -- print("power dies")
         end
 
 
@@ -473,7 +491,17 @@ then
        end
    end
 
+--   elseif((obj1.myName == "powerup" and obj2.myName == "ship") or
+--         ( obj1.myName == "ship" and obj2.myName == "powerup")) then
 
+--             LASER()
+
+--             display.remove(obj1)
+--             display.remove(obj2)
+--         --end
+
+
+            
 
 
         elseif (obj1.myName == "laser" and obj2.myName == "pup") or
@@ -514,7 +542,7 @@ then
             local thispower = powerTable[i]
                 display.remove(thispower)
                 table.remove(powerTable, i)
-                print("power dies")
+               -- print("power dies")
         end
             
 
@@ -561,6 +589,7 @@ then
             updateText()
             
 
+
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun1") or (obj1.myName == "spaceGun1" and obj2.myName == "laser") 
         then
             display.remove(spaceGun1)
@@ -568,7 +597,16 @@ then
             timer.cancel(gm1)
             score = score + 200            
             updateText()
-            
+
+        end
+
+
+        if (obj1.myName == "BIG" and obj2.myName == "asteroid") then
+            print("OWEHRODHFUSDF")
+            display.remove(obj2)
+        elseif(obj1.myName == "asteroid" and obj2.myName == "BIG") then
+            display.remove(obj1)
+            print("WEIRHOIDHF")
         end
 
         if (obj1.myName == "powerup" and obj2.myName == "ship") then
@@ -579,13 +617,6 @@ then
             display.remove(obj2)
         end
 
-        if (obj1.myName == "BIG" and obj2.myName == "asteroid") then
-            print("OWEHRODHFUSDF")
-            display.remove(obj2)
-        elseif(obj1.myName == "asteroid" and obj2.myName == "BIG") then
-            display.remove(obj1)
-            print("WEIRHOIDHF")
-        end
     end
 end
 
@@ -673,7 +704,7 @@ Runtime:addEventListener( "collision", onCollision )
     --spaceGun:toFront()
     spaceLaser.myName = "slaser"
 
-    transition.to( spaceLaser, { x = 500, y = 1000, time = 500} )
+    transition.to( spaceLaser, { x = 500, y = 1200, time = 500} )
  
  end
 
@@ -703,7 +734,7 @@ function spaceLaser1 ()
   --spaceGun:toFront()
   spaceLaser1.myName = "slaser1"
 
-  transition.to( spaceLaser1, { x = 200, y = 1000, time = 500} )
+  transition.to( spaceLaser1, { x = 200, y = 1200, time = 500} )
 
 end
 
