@@ -57,7 +57,7 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = composer.getVariable("energyScore")
+local totalEnergy = 25--composer.getVariable("energyScore")
 local energy = totalEnergy
 local asteroidsTable = {}
 
@@ -159,7 +159,7 @@ Bar:setFillColor(255, 0, 0)
 Bar:rotate(180)
 
 
-ship = display.newImageRect( mainGroup, objectSheet, 4, 98, 79 )
+ship = display.newImageRect( mainGroup, "bot.png", 140, 170)
 ship.x = display.contentCenterX
 ship.y = display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )
