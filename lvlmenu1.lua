@@ -25,7 +25,7 @@ function gotoThree()
 	display.remove(level1)
 	display.remove(button3)
 	composer.removeScene("lvlmenu1")
-	composer.gotoScene("doodthree")
+	composer.gotoScene("asteroid shooter 3")
 end
 function gotoFour()
 	display.remove(level1)

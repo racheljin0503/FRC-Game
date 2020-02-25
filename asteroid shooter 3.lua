@@ -57,8 +57,8 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local energy = composer.getVariable("energyScore")
-local totalEnergy = composer.getVariable("energyScore")
+local energy = totalEnergy
+local totalEnergy =10  --composer.getVariable("energyScore")
 local energy = totalEnergy
 local asteroidsTable = {}
 local powerTable = {}
@@ -104,14 +104,15 @@ local function spawnPower()
 end
 
 local function LASER()
-    bigLaser = display.newImageRect(mainGroup, "laserf.png", 500, 500)
-    bigLaser:rotate(100)
-    bigLaser.myName = "BIG"
+    bigLaser = display.newImageRect(mainGroup, "laserA.png", 100, 100)
+    physics.addBody(bigLaser, "dynamic", {radius = 100})
+    -- bigLaser:rotate(100)
+    bigLaser.myName = "bigLaser"
     bigLaser.xScale = 2
     bigLaser.yScale = 2
-    bigLaser.x = ship.x
-    bigLaser.y = ship.y
-    transition.to( bigLaser, { x = display.contentCenterX, y= -1000, time=1000,
+    bigLaser.x = 0
+    bigLaser.y = 1000
+    transition.to( bigLaser, { x = 500, y= -1000, time=1000,
         onComplete = function() display.remove( newLaser ) end
     } )
 end
@@ -124,7 +125,7 @@ function scene:create( event )
     backGroup = display.newGroup() 
     sceneGroup:insert(backGroup) 
 
-
+    
     mainGroup = display.newGroup() 
     sceneGroup:insert(mainGroup)
 
@@ -550,7 +551,8 @@ then
                 print("power dies")
         end
   
-        elseif (obj1.myName == "laser" and obj2.myName == "spaceGun") or (obj1.myName == "spaceGun" and obj2.myName == "laser") 
+        elseif ((obj1.myName == "laser" and obj2.myName == "spaceGun") or
+         (obj1.myName == "spaceGun" and obj2.myName == "laser")) 
         then
 
             display.remove(spaceGun)
@@ -580,12 +582,10 @@ then
             display.remove(obj2)
         end
 
-        if (obj1.myName == "BIG" and obj2.myName == "asteroid") then
-            print("OWEHRODHFUSDF")
+        if (obj1.myName == "bigLaser" and obj2.myName == "asteroid") then
             display.remove(obj2)
-        elseif(obj1.myName == "asteroid" and obj2.myName == "BIG") then
+        elseif (obj1.myName == "asteroid" and obj2.myName == "bigLaser") then
             display.remove(obj1)
-            print("WEIRHOIDHF")
         end
     end
 end
