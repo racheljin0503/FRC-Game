@@ -284,8 +284,8 @@ glt2 = timer.performWithDelay(100, checkwin, 10000)
         display.remove(bird)
         display.remove(pup)
         background:removeEventListener( "tap", fireLaser )
-       composer.removeScene("asteroid shooter 2")
         composer.gotoScene("menu")
+       composer.removeScene("asteroid shooter 2")
         composer.setVariable("finalScore", score)
 
     end
