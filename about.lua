@@ -131,6 +131,7 @@ end
     donate:addEventListener("tap", gotolink1)
 
     back:addEventListener("tap", gotoMenu)
+   
     end
 end
 

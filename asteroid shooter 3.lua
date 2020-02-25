@@ -195,7 +195,8 @@ Bar:rotate(180)
 
 ship = display.newImageRect( mainGroup, objectSheet, 4, 98, 79 )
 ship.x = display.contentCenterX
-ship.y = display.contentHeight - 100
+ship.y =
+ display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )
 ship.myName = "ship"
 
@@ -220,8 +221,9 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove(newAsteroid)
         display.remove(energyText)
         display.remove (prButton)
-
-        background:removeEventListener( "tap", fireLaser )
+        display.remove( bigLaser )
+        display.remove( powerup )
+        --background:removeEventListener( "tap", fireLaser )
         composer.gotoScene("highscores")
 end
 
@@ -275,6 +277,8 @@ function createPup()
  end
 
 glt1 =  timer.performWithDelay( 10000, createPup, 10 )
+
+
 
 
 
@@ -433,6 +437,11 @@ local function onCollision( event )
             score = score + 100
             scoreText.text = "Score: " .. score
 
+        elseif (obj1.myName == "asteroid" and obj2 == "BIG") or (obj1.myName == "BIG" and obj2.myName == "asteroid") then
+            display.remove(obj2)
+            display.remove(obj1)
+
+
         elseif ( ( obj1.myName == "ship" and obj2.myName == "asteroid" ) or
         ( obj1.myName == "asteroid" and obj2.myName == "ship" ) )
 then
@@ -459,13 +468,14 @@ then
            timer.cancel(glt1)
            background:removeEventListener("tap", fireLaser)
             composer.removeScene("asteroid shooter 3")
-           composer.gotoScene("menu")
+                composer.gotoScene("menu")
+
 
            for i = #powerTable, 1, -1 do
             local thispower = powerTable[i]
                 display.remove(thispower)
                 table.remove(powerTable, i)
-                print("power dies")
+               -- print("power dies")
         end
 
 
@@ -475,7 +485,17 @@ then
        end
    end
 
+--   elseif((obj1.myName == "powerup" and obj2.myName == "ship") or
+--         ( obj1.myName == "ship" and obj2.myName == "powerup")) then
 
+--             LASER()
+
+--             display.remove(obj1)
+--             display.remove(obj2)
+--         --end
+
+
+            
 
 
         elseif (obj1.myName == "laser" and obj2.myName == "pup") or
@@ -516,7 +536,7 @@ then
             local thispower = powerTable[i]
                 display.remove(thispower)
                 table.remove(powerTable, i)
-                print("power dies")
+               -- print("power dies")
         end
             
 
@@ -564,6 +584,7 @@ then
             updateText()
             
 
+
         elseif (obj1.myName == "laser" and obj2.myName == "spaceGun1") or (obj1.myName == "spaceGun1" and obj2.myName == "laser") 
         then
             display.remove(spaceGun1)
@@ -571,7 +592,13 @@ then
             timer.cancel(gm1)
             score = score + 200            
             updateText()
-            
+
+        end
+
+        if (obj1.myName == "bigLaser" and obj2.myName == "asteroid") then
+            display.remove(obj2)
+        elseif (obj1.myName == "asteroid" and obj2.myName == "bigLaser") then
+            display.remove(obj1)
         end
 
         -- if (obj1.myName == "powerup" and obj2.myName == "ship") then
@@ -652,7 +679,7 @@ Runtime:addEventListener( "collision", onCollision )
     
     function bangBang ()
 
-       spaceGun = display.newImageRect("spaceinvader.png", 100, 100)
+       spaceGun = display.newImageRect("enemy.png", 100, 100)
         spaceGun.x = 200
         spaceGun.y = -500    
         physics.addBody(spaceGun, "static", { isSensor = true} )
@@ -674,7 +701,7 @@ Runtime:addEventListener( "collision", onCollision )
     --spaceGun:toFront()
     spaceLaser.myName = "slaser"
 
-    transition.to( spaceLaser, { x = 500, y = 1000, time = 500} )
+    transition.to( spaceLaser, { x = 500, y = 1200, time = 500} )
  
  end
 
@@ -682,7 +709,7 @@ Runtime:addEventListener( "collision", onCollision )
  
  function bangBang1 ()
 
-     spaceGun1 = display.newImageRect("spaceinvader.png", 100, 100)
+     spaceGun1 = display.newImageRect("enemy.png", 100, 100)
       spaceGun1.x = 500
       spaceGun1.y = -500    
       physics.addBody(spaceGun1, "static", { isSensor = true} )
@@ -704,7 +731,7 @@ function spaceLaser1 ()
   --spaceGun:toFront()
   spaceLaser1.myName = "slaser1"
 
-  transition.to( spaceLaser1, { x = 200, y = 1000, time = 500} )
+  transition.to( spaceLaser1, { x = 200, y = 1200, time = 500} )
 
 end
 
