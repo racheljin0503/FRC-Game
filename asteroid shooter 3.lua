@@ -173,8 +173,7 @@ function scene:show( event )
 --     end
 -- end
 
-
-background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
+        background = display.newImageRect( backGroup, "levelbg.png", 800, 1400 )
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 
@@ -609,11 +608,10 @@ then
         --     display.remove(obj2)
         -- end
 
-        -- if (obj1.myName == "bigLaser" and obj2.myName == "asteroid") then
-        --     display.remove(obj2)
-        -- elseif (obj1.myName == "asteroid" and obj2.myName == "bigLaser") then
-        --     display.remove(obj1)
-        -- end
+        if (obj1.myName == "BIG" and obj2.myName == "asteroid") or (obj1.myName == "asteroid" and obj2.myName == "BIG") then
+            display.remove(obj1)
+            display.remove(obj2)
+        end
     end
 end
 
