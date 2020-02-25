@@ -124,7 +124,7 @@ function scene:create( event )
     backGroup = display.newGroup() 
     sceneGroup:insert(backGroup) 
 
-
+    
     mainGroup = display.newGroup() 
     sceneGroup:insert(mainGroup)
 
