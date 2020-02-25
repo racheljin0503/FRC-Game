@@ -108,7 +108,7 @@ end
 
     -- background:removeEventListener( "tap", fireLaser )
     composer.removeScene("asteroid shooter 1")
-    composer.gotoScene("highscores")
+    composer.gotoScene("menu")
     
 end
 
@@ -440,7 +440,7 @@ local function onCollision( event )
                     -- timer.performWithDelay(1000, gotoMenu)
                     background:removeEventListener("tap", fireLaser)
                     composer.removeScene("asteroid shooter 1")
-                    composer.gotoScene("highscores")
+                    composer.gotoScene("menu")
 
 
                 else

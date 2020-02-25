@@ -190,7 +190,7 @@ display.setStatusBar( display.HiddenStatusBar )
         background:removeEventListener( "tap", fireLaser )
         composer.setVariable("finalScore", score)
 
-        composer.gotoScene("highscores")
+        composer.gotoScene("menu")
 
 end
 

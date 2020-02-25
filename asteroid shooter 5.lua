@@ -207,7 +207,7 @@ display.setStatusBar( display.HiddenStatusBar )
     display.remove(pup)
     composer.removeScene("asteroid shooter 5")
     composer.setVariable("finalScore", score)
-   composer.gotoScene("highscores")
+   composer.gotoScene("menu")
     
 end
 

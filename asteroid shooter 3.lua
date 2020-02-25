@@ -223,7 +223,7 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove( bigLaser )
         display.remove( powerup )
         --background:removeEventListener( "tap", fireLaser )
-        composer.gotoScene("highscores")
+        composer.gotoScene("menu")
 end
 
 
@@ -528,7 +528,7 @@ then
             display.remove(spaceGun)
             display.remove(spaceGun1)
             display.remove(pup)
-            composer.removeScene("asteroid shooter 4")
+            composer.removeScene("asteroid shooter 3")
            composer.gotoScene("menu")
 
            for i = #powerTable, 1, -1 do
