@@ -105,13 +105,14 @@ end
 
 local function LASER()
     bigLaser = display.newImageRect(mainGroup, "laserA.png", 500, 500)
-    bigLaser:rotate(100)
+    physics.addBody(bigLaser, "dynamic")
+    -- bigLaser:rotate(100)
     bigLaser.myName = "BIG"
     bigLaser.xScale = 2
     bigLaser.yScale = 2
-    bigLaser.x = ship.x
-    bigLaser.y = ship.y
-    transition.to( bigLaser, { x = display.contentCenterX, y= -1000, time=1000,
+    bigLaser.x = 0
+    bigLaser.y = 1000
+    transition.to( bigLaser, { x = 500, y= -1000, time=1000,
         onComplete = function() display.remove( newLaser ) end
     } )
 end
@@ -581,10 +582,10 @@ then
             display.remove(obj2)
         end
 
-        if (obj1.myName == "BIG" and obj2.myName == "asteroid") or
-        (obj1.myName == "asteroid" and obj2.myName == "BIG") then
-            display.remove(obj1
-    )
+        if (obj1.myName == "BIG" and obj2.myName == "asteroid") then
+            display.remove(obj2)
+        elseif (obj1.myName == "asteroid" and obj2.myName == "BIG") then
+            display.remove(obj1)
         end
     end
 end
