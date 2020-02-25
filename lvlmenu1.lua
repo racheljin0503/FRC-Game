@@ -56,60 +56,69 @@ function scene:create( event )
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
-	level1 = display.newImageRect(sceneGroup, "lvl5.png", display.actualContentWidth, display.actualContentHeight)
+	
+
+	level1 = display.newImageRect(sceneGroup, "levelbg.png", display.actualContentWidth, display.actualContentHeight)
 	level1.x = display.contentCenterX
 	level1.y = display.contentCenterY
 
+	local chooseButton = display.newText(sceneGroup, "CLICK YOUR LEVEL", display.contentCenterX, display.contentCenterY - 400, native.systemFont, 50)
+	chooseButton:setFillColor(1, 1, 1)
 	
-	button1 = display.newImageRect(sceneGroup, "circle button.png", 130, 130)
+	button1 = display.newImageRect(sceneGroup, "level1.png", 400, 200)
 	button1.x = 100
-	button1.y = 850
-	button1:toBack()
+	button1.y = 825
+	button1:toFront()
 	button1:addEventListener("tap", gotoOne)
 
 	
-	button2 = display.newImageRect(sceneGroup, "circle button.png", 130, 130)
-	button2.x = 500
-	button2.y = 675
-	button2:toBack()
+	button2 = display.newImageRect(sceneGroup, "level2.png", 350, 200)
+	button2.x = 150
+	button2.y = 500
+	button2:toFront()
 	button2:addEventListener("tap", gotoTwo)
 
 	
-	button3 = display.newImageRect(sceneGroup, "circle button.png", 130, 130)
-	button3.x = 225
-	button3.y = 450
-	button3:toBack()
+	button3 = display.newImageRect(sceneGroup, "level3.png", 325, 210)
+	button3.x = 330
+	button3.y = 675
+	button3:toFront()
 	button3:addEventListener("tap", gotoThree)
 
 	
-	button4 = display.newImageRect(sceneGroup, "circle button.png", 130, 130)
-	button4.x = 500
-	button4.y = 225
-	button4:toBack()
+	button4 = display.newImageRect(sceneGroup, "level4.png", 350, 200)
+	button4.x = 450
+	button4.y = 500
+	button4:toFront()
 	button4:addEventListener("tap", gotoFour)
 
-	button5 = display.newImageRect(sceneGroup, "circle button.png", 130, 130)
-	button5.x = 100
-	button5.y = 50
-	button5:toBack()
+	button5 = display.newImageRect(sceneGroup, "level5.png", 370, 210)
+	button5.x = 550
+	button5.y = 825
+	button5:toFront()
 	button5:addEventListener("tap", gotoFive)
 
-	-- local function fitImage( displayObject, fitWidth, fitHeight, enlarge )
+	local function fitImage( displayObject, fitWidth, fitHeight, enlarge )
 
-	-- 	-- first determine which edge is out of bounds
-	-- 	local scaleFactor = fitHeight / displayObject.height 
-	-- 	local newWidth = displayObject.width * scaleFactor
+		-- first determine which edge is out of bounds
+		local scaleFactor = fitHeight / displayObject.height 
+		local newWidth = displayObject.width * scaleFactor
 
-	-- 	if newWidth == fitWidth then
-	-- 		scaleFactor = fitWidth / displayObject.width 
-	-- 	end
-	-- 	if not enlarge and scaleFactor > 1 then
-	-- 		return
-	-- 	end
-	-- 	displayObject:scale( scaleFactor, scaleFactor )
-	-- end
+		if newWidth == fitWidth then
+			scaleFactor = fitWidth / displayObject.width 
+		end
+		if not enlarge and scaleFactor > 1 then
+			return
+		end
+		displayObject:scale( scaleFactor, scaleFactor )
+	end
 
-	-- fitImage( level1, 800, 1400, false )
+	fitImage( button1, 800, 1400, false )
+	fitImage( button2, 800, 1400, false )
+	fitImage( button3, 800, 1400, false )
+	fitImage( button4, 800, 1400, false )
+	fitImage( button5, 800, 1400, false )
+
 
 
 end
