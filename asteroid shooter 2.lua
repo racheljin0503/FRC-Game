@@ -121,7 +121,7 @@ function scene:show( event )
 
         
 
-        background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
+        background = display.newImageRect( backGroup, "levelbg.png", 800, 1400 )
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 
@@ -137,7 +137,7 @@ Bar:setFillColor(255, 0, 0)
 Bar:rotate(270)
 
 
-ship = display.newImageRect( mainGroup, objectSheet, 4, 98, 79 )
+ship = display.newImageRect( mainGroup, "bot.png", 90, 120)
 ship.x = display.contentCenterX
 ship.y = display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )
