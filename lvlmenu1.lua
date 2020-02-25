@@ -62,7 +62,7 @@ function scene:create( event )
 	level1.x = display.contentCenterX
 	level1.y = display.contentCenterY
 
-	local chooseButton = display.newText(sceneGroup, "CLICK YOUR LEVEL", display.contentCenterX, display.contentCenterY - 400, native.systemFont, 50)
+	local chooseButton = display.newText(sceneGroup, "CLICK YOUR LEVEL", display.contentCenterX, display.contentCenterY - 400, Ubuntu, 50)
 	chooseButton:setFillColor(1, 1, 1)
 	
 	button1 = display.newImageRect(sceneGroup, "level1.png", 400, 200)

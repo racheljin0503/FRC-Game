@@ -150,8 +150,8 @@ end
 --     display.remove(energyBar)
 --     display.remove (prButton)
 --     background:removeEventListener( "tap", fireLaser )
---     winText = display.newText("Congractulation! you unclocked level 2", 500, 300, native.systemFont, 36)
---     menu = display.newText("menu", 500, 500, native.systemFont, 36)
+--     winText = display.newText("Congractulation! you unclocked level 2", 500, 300, Ubuntu, 36)
+--     menu = display.newText("menu", 500, 500, Ubuntu, 36)
 
 --     menu:addEventListener("tap", tapMenu)
 
@@ -199,9 +199,9 @@ physics.addBody( ship, "static", { radius=30,  isSensor=true } )
 ship.myName = "ship"
 
 -- Display lives and score
---livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, native.systemFont, 36 )
-scoreText = display.newText( uiGroup, "Score: " .. score, 300, 0, native.systemFont, 36 )
-energyText = display.newText( uiGroup, "" .. energy, 450, 70, native.systemFont, 36 )
+--livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, Ubuntu, 36 )
+scoreText = display.newText( uiGroup, "Score: " .. score, 300, 0, Ubuntu, 36 )
+energyText = display.newText( uiGroup, "" .. energy, 450, 70, Ubuntu, 36 )
 
 
 
@@ -222,7 +222,7 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove( bigLaser )
         display.remove( powerup )
         --background:removeEventListener( "tap", fireLaser )
-        composer.gotoScene("highscores")
+        composer.gotoScene("menu")
 end
 
 
@@ -527,7 +527,7 @@ then
             display.remove(spaceGun)
             display.remove(spaceGun1)
             display.remove(pup)
-            composer.removeScene("asteroid shooter 4")
+            composer.removeScene("asteroid shooter 3")
            composer.gotoScene("menu")
 
            for i = #powerTable, 1, -1 do
@@ -724,7 +724,7 @@ bangBang1()
 function spaceLaser1 ()
 
 
-   spaceLaser1 = display.newImageRect("laser .png", 100, 50)
+    spaceLaser1 = display.newImageRect("laser .png", 100, 50)
   spaceLaser1.x = spaceGun1.x
   spaceLaser1.y = spaceGun1.y
   physics.addBody( spaceLaser1, "dynamic", { isSensor=true } )

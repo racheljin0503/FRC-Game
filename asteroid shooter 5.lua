@@ -119,8 +119,8 @@ function win()
     display.remove(energyBar)
     display.remove (prButton)
     background:removeEventListener( "tap", fireLaser )
-    winText = display.newText("Congractulation! you unclocked level 2", 500, 300, native.systemFont, 36)
-    menu = display.newText("menu", 500, 500, native.systemFont, 36)
+    winText = display.newText("Congractulation! you unclocked level 2", 500, 300, Ubuntu, 36)
+    menu = display.newText("menu", 500, 500, Ubuntu, 36)
 
     menu:addEventListener("tap", tapMenu)
     gotoYouWin()
@@ -163,16 +163,16 @@ Bar:setFillColor(255, 0, 0)
 Bar:rotate(180)
 
 
-ship = display.newImageRect( mainGroup, objectSheet, 4, 98, 79 )
+ship = display.newImageRect( mainGroup, "bot.png", 90, 120)
 ship.x = display.contentCenterX
 ship.y = display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )
 ship.myName = "ship"
 
 -- Display lives and score
---livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, native.systemFont, 36 )
-scoreText = display.newText( uiGroup, "Score: " .. score, 300, 0, native.systemFont, 36 )
-energyText = display.newText( uiGroup, "" .. energy, 450, 70, native.systemFont, 36 )
+--livesText = display.newText( uiGroup, "lives: " .. lives, 100, 80, Ubuntu, 36 )
+scoreText = display.newText( uiGroup, "Score: " .. score, 300, 0, Ubuntu, 36 )
+energyText = display.newText( uiGroup, "" .. energy, 450, 70, Ubuntu, 36 )
 
 
 
@@ -207,7 +207,7 @@ display.setStatusBar( display.HiddenStatusBar )
     display.remove(pup)
     composer.removeScene("asteroid shooter 5")
     composer.setVariable("finalScore", score)
-   composer.gotoScene("highscores")
+   composer.gotoScene("menu")
     
 end
 
