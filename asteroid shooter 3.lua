@@ -476,7 +476,8 @@ then
            timer.cancel(glt1)
            background:removeEventListener("tap", fireLaser)
             composer.removeScene("asteroid shooter 3")
-           composer.gotoScene("menu")
+                composer.gotoScene("menu")
+
 
            for i = #powerTable, 1, -1 do
             local thispower = powerTable[i]
