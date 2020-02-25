@@ -193,7 +193,7 @@ Bar:setFillColor(255, 0, 0)
 Bar:rotate(180)
 
 
-ship = display.newImageRect( mainGroup, objectSheet, 4, 98, 79 )
+ship = display.newImageRect( mainGroup, "bot.png", 90, 120)
 ship.x = display.contentCenterX
 ship.y =
  display.contentHeight - 100
@@ -724,7 +724,7 @@ bangBang1()
 function spaceLaser1 ()
 
 
-   spaceLaser1 = display.newImageRect("laser .png", 100, 50)
+    spaceLaser1 = display.newImageRect("laser .png", 100, 50)
   spaceLaser1.x = spaceGun1.x
   spaceLaser1.y = spaceGun1.y
   physics.addBody( spaceLaser1, "dynamic", { isSensor=true } )
