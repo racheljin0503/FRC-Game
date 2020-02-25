@@ -144,7 +144,7 @@ function scene:show( event )
 -- end
         
 
-        background = display.newImageRect( backGroup, "background STR.png", 800, 1400 )
+        background = display.newImageRect( backGroup, "levelbg.png", 800, 1400 )
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 
