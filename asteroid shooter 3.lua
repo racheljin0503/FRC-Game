@@ -104,10 +104,10 @@ local function spawnPower()
 end
 
 local function LASER()
-    bigLaser = display.newImageRect(mainGroup, "laserA.png", 500, 500)
-    physics.addBody(bigLaser, "dynamic")
+    bigLaser = display.newImageRect(mainGroup, "laserA.png", 100, 100)
+    physics.addBody(bigLaser, "dynamic", {radius = 100})
     -- bigLaser:rotate(100)
-    bigLaser.myName = "BIG"
+    bigLaser.myName = "bigLaser"
     bigLaser.xScale = 2
     bigLaser.yScale = 2
     bigLaser.x = 0
@@ -582,9 +582,9 @@ then
             display.remove(obj2)
         end
 
-        if (obj1.myName == "BIG" and obj2.myName == "asteroid") then
+        if (obj1.myName == "bigLaser" and obj2.myName == "asteroid") then
             display.remove(obj2)
-        elseif (obj1.myName == "asteroid" and obj2.myName == "BIG") then
+        elseif (obj1.myName == "asteroid" and obj2.myName == "bigLaser") then
             display.remove(obj1)
         end
     end
