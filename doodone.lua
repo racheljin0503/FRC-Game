@@ -131,8 +131,9 @@ local function death()
 		Runtime:removeEventListener("collision", onCollision)
 		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
-		composer.removeScene("doodone")
 		composer.gotoScene("menu")
+		composer.removeScene("doodone")
+
 	end
 end
 
@@ -272,9 +273,10 @@ local function uwu()
 	Runtime:removeEventListener("collision", onCollision)
 	Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
-	composer.removeScene("doodone")
 	print("won")
 	composer.gotoScene("asteroid shooter 1")
+	composer.removeScene("doodone")
+
 end
 
 
@@ -386,7 +388,7 @@ function scene:show( event )
 		passTimer = timer.performWithDelay(10, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(800, spawnBlock, 0)
-		winTimer = timer.performWithDelay(5010,uwu , 1)
+		winTimer = timer.performWithDelay(50100,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
 		Runtime:addEventListener("gyroscope", onGyroscopeUpdate)
 

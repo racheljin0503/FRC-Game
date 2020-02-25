@@ -10,18 +10,25 @@ local scene = composer.newScene()
 
 local function gotoGame()
 	composer.gotoScene("lvlmenu1")
+	composer.removeScene("menu")
 end
 
 local function gotoWheel()
 	composer.gotoScene("wheel-of-color")
+	composer.removeScene("menu")
+
 end
 
 local function gotoHighscores()
 	composer.gotoScene("highscores")
+	composer.removeScene("menu")
+
 end
 
 local function gotoAbout()
 	composer.gotoScene("about")
+	composer.removeScene("menu")
+
 end
 
 -- -----------------------------------------------------------------------------------
@@ -44,7 +51,7 @@ function scene:create( event )
 	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY - 275, native.systemFont, 50)
 	colorWheel:setFillColor(0, 0, .7)
   
-	local highscoresButton = display.newText(sceneGroup, "HIGHSCORES", display.contentCenterX, display.contentCenterY - 200, native.systemFont, 50)
+	local highscoresButton = display.newText(sceneGroup, "HIGHSCORE", display.contentCenterX, display.contentCenterY - 200, native.systemFont, 50)
 	highscoresButton:setFillColor(0, 0, .7)
 
 	local about = display.newText(sceneGroup, "ABOUT", display.contentCenterX, 650, native.systemFont, 50)

@@ -86,7 +86,7 @@ function scene:create( event )
     background.x = display.contentCenterX
     background.y = display.contentCenterY
 
-	local highScoresHeader = display.newText( sceneGroup, "High Scores", display.contentCenterX, 100, native.systemFont, 44 )
+	local highScoresHeader = display.newText( sceneGroup, "Personal High Score", display.contentCenterX, 100, native.systemFont, 44 )
 	highScoresHeader:setFillColor( 0, 0, 1 )
 
     -- for i = 1, 10 do
@@ -136,7 +136,6 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		composer.removeScene( "highscores" )
 	end
 end
 
