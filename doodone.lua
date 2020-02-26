@@ -128,12 +128,9 @@ local function death()
 				table.remove(coinTable, i)
 				print("coin deleted")
 		end
-		Runtime:removeEventListener("collision", onCollision)
-		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
+
 
 		composer.gotoScene("menu")
-		composer.removeScene("doodone")
-
 	end
 end
 
@@ -245,7 +242,6 @@ local function pushPlayer()
 end
 
 local function uwu()
-	Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
 	display.remove(player)
 	display.remove(msg)
@@ -272,12 +268,8 @@ local function uwu()
 			print("coin deleted")
 	end
 
-	Runtime:removeEventListener("collision", onCollision)
-
 	print("won")
 	composer.gotoScene("asteroid shooter 1")
-	composer.removeScene("doodone")
-
 end
 
 

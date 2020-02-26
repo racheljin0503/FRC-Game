@@ -277,7 +277,7 @@ glt2 = timer.performWithDelay(100, checkwin, 10000)
     if (energy == 0 ) then
         timer.cancel(glt)
         timer.cancel(glt1)
-        physics.removeBody(bird)
+        -- physics.removeBody(bird)
         display.remove( ship )
         display.remove(energyBar)
         display.remove (prButton)

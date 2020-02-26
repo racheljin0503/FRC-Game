@@ -125,10 +125,6 @@ local function death()
 		end
 
 		-- removeAllBlocks()
-		Runtime:removeEventListener("collision", onCollision)
-		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
-
-		composer.removeScene("doodtwo")
 		print("Dead")
 		composer.gotoScene("menu")
 	end
@@ -326,10 +322,6 @@ local function uwu()
 			print("coin deleted")
 	end
 	-- removeAllBlocks()
-	Runtime:removeEventListener("collision", onCollision)
-	Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
-
-	composer.removeScene("doodtwo")
 	composer.gotoScene("asteroid shooter 2")
 end
 

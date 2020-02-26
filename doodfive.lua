@@ -187,10 +187,6 @@ local function death()
             print("spike dies")
         end
 		-- removeAllBlocks()
-		Runtime:removeEventListener("collision", onCollision)
-		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
-
-		composer.removeScene("doodfive")
 		print("Dead")
 		composer.gotoScene("menu")
 	end
@@ -384,10 +380,6 @@ local function uwu()
 			print("asteroid deleted")
 	end
 	-- removeAllBlocks()
-	Runtime:removeEventListener("collision", onCollision)
-	Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
-
-	composer.removeScene("doodfive")
 	print("won")
 	composer.gotoScene("asteroid shooter 5")
 end
@@ -451,9 +443,7 @@ local function onCollision(event)
 					print("spike dies")
 			end
 			-- removeAllBlocks()
-			Runtime:removeEventListener("collision", onCollision)
 	
-			composer.removeScene("doodfive")
 			print("Dead")
 			composer.gotoScene("menu")
 		end
