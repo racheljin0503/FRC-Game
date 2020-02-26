@@ -119,11 +119,11 @@ function win()
     display.remove(energyBar)
     display.remove (prButton)
     background:removeEventListener( "tap", fireLaser )
-    winText = display.newText("Congractulation! you unclocked level 2", 500, 300, Ubuntu, 36)
-    menu = display.newText("menu", 500, 500, Ubuntu, 36)
-
-    menu:addEventListener("tap", tapMenu)
-    gotoYouWin()
+    -- winText = display.newText("Congractulation! you unclocked level 2", 500, 300, Ubuntu, 36)
+    -- menu = display.newText("menu", 500, 500, Ubuntu, 36)
+    composer.gotoScene("menu")
+    -- menu:addEventListener("tap", tapMenu)
+    -- gotoYouWin()
 
 end
 
