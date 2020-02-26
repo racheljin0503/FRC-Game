@@ -221,6 +221,8 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove (prButton)
         display.remove( bigLaser )
         display.remove( powerup )
+        composer.setVariable( "finalScore", score )
+
         --background:removeEventListener( "tap", fireLaser )
         composer.gotoScene("menu")
 end
@@ -276,10 +278,6 @@ function createPup()
 
 glt1 =  timer.performWithDelay( 10000, createPup, 10 )
 
-
-
-
-
  function fireLaser( event )
 
     local newLaser = display.newImageRect( mainGroup, objectSheet, 5, 14, 40 )
@@ -311,6 +309,8 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
         -- timer.cancel(powerTimer)
         display.remove( ship )
         display.remove (prButton)
+        timer.cancel(gameLoopTimer)
+
         display.remove (resumeButton) 
         display.remove(energyBar)
         display.remove(Bar)
@@ -320,6 +320,8 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
         timer.cancel(glt1)
         background:removeEventListener("tap", fireLaser)
          composer.removeScene("asteroid shooter 3")
+         composer.setVariable( "finalScore", score )
+
         composer.gotoScene("menu")
 
         
@@ -460,12 +462,16 @@ then
            display.remove (resumeButton) 
            display.remove(energyBar)
            display.remove(Bar)
+           timer.cancel(gameLoopTimer)
+
            display.remove(pup)
            display.remove(spaceGun)
            display.remove (spaceGun1)
            timer.cancel(glt1)
            background:removeEventListener("tap", fireLaser)
             composer.removeScene("asteroid shooter 3")
+            composer.setVariable( "finalScore", score )
+
                 composer.gotoScene("menu")
 
 
@@ -526,8 +532,12 @@ then
             display.remove(Bar)
             display.remove(spaceGun)
             display.remove(spaceGun1)
+            timer.cancel(gameLoopTimer)
+
             display.remove(pup)
             composer.removeScene("asteroid shooter 3")
+            composer.setVariable( "finalScore", score )
+
            composer.gotoScene("menu")
 
            for i = #powerTable, 1, -1 do
@@ -553,6 +563,8 @@ then
             display.remove(obj1)
             display.remove(obj2)
             display.remove(energyBar)
+            timer.cancel(gameLoopTimer)
+
             display.remove(prButton)
             display.remove(resumeButton)
             display.remove(Bar)
@@ -560,6 +572,8 @@ then
             display.remove(spaceGun1)
             display.remove(pup)
             composer.removeScene("asteroid shooter 4")
+            composer.setVariable( "finalScore", score )
+
            composer.gotoScene("menu")
             
            for i = #powerTable, 1, -1 do
@@ -607,10 +621,10 @@ then
         --     display.remove(obj2)
         -- end
 
-        if (obj1.myName == "BIG" and obj2.myName == "asteroid") or (obj1.myName == "asteroid" and obj2.myName == "BIG") then
-            display.remove(obj1)
-            display.remove(obj2)
-        end
+        -- if (obj1.myName == "BIG" and obj2.myName == "asteroid") or (obj1.myName == "asteroid" and obj2.myName == "BIG") then
+        --     display.remove(obj1)
+        --     display.remove(obj2)
+        -- end
     end
 end
 
