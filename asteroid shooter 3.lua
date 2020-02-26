@@ -58,7 +58,7 @@ local score = 0
 local died = false
 local width =  200
 local energy = totalEnergy
-local totalEnergy =10  --composer.getVariable("energyScore")
+local totalEnergy = composer.getVariable("energyScore")
 local energy = totalEnergy
 local asteroidsTable = {}
 local powerTable = {}
@@ -192,10 +192,9 @@ Bar:setFillColor(255, 0, 0)
 Bar:rotate(180)
 
 
-ship = display.newImageRect( mainGroup, "bot.png", 90, 120)
+ship = display.newImageRect( mainGroup, "bot.png", 140, 170)
 ship.x = display.contentCenterX
-ship.y =
- display.contentHeight - 100
+ship.y = display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )
 ship.myName = "ship"
 
@@ -636,7 +635,8 @@ Runtime:addEventListener( "collision", onCollision )
        
         physics.pause()
         transition.pause()
-
+        timer.pause(gm)
+        timer.pause(gm1)
        background:removeEventListener( "tap", fireLaser )
         
         -- if(pause == true) then
@@ -661,6 +661,8 @@ Runtime:addEventListener( "collision", onCollision )
        
         physics.start()
         transition.resume()
+        timer.resume(gm)
+        timer.resume(gm1)
         background:addEventListener("tap", fireLaser )
         
         -- if(pause == false) then

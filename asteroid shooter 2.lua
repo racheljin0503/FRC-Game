@@ -57,7 +57,7 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = composer.getVariable("energyScore")
+local totalEnergy = 25 --composer.getVariable("energyScore")
 
 local energy = totalEnergy
 local asteroidsTable = {}
@@ -137,7 +137,7 @@ Bar:setFillColor(255, 0, 0)
 Bar:rotate(270)
 
 
-ship = display.newImageRect( mainGroup, "bot.png", 90, 120)
+ship = display.newImageRect( mainGroup, "bot.png", 140, 170)
 ship.x = display.contentCenterX
 ship.y = display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )
@@ -167,7 +167,7 @@ display.setStatusBar( display.HiddenStatusBar )
         display.remove(bird)
         --background:removeEventListener( "tap", fireLaser )
         composer.gotoScene("menu")
-        composer.setVariable("finalScore", score)
+      --  composer.setVariable("finalScore", score)
 
 end
 
