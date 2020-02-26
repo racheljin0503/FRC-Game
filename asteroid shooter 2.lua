@@ -263,7 +263,7 @@ glt2 = timer.performWithDelay(100, checkwin, 0)
     newLaser.y = ship.y
     newLaser:toBack()
 
-    transition.to( newLaser, { x=event.x, y=event.y, time=300,
+    transition.to( newLaser, { x=ship.x, y=-500, time=500,
         onComplete = function() display.remove( newLaser ) end
     } )
 
@@ -302,32 +302,32 @@ function update()
  background:addEventListener( "tap", fireLaser )
 
 
--- local function dragShip( event )
+local function dragShip( event )
 
---     local ship = event.target
---     local phase = event.phase
+    local ship = event.target
+    local phase = event.phase
 
---     if ( "began" == phase ) then
---         -- Set touch focus on the ship
---         display.currentStage:setFocus( ship )
---         -- Store initial offset position
---         ship.touchOffsetX = event.x - ship.x
---        -- ship.touchOffsetY = event.y - ship.y
+    if ( "began" == phase ) then
+        -- Set touch focus on the ship
+        display.currentStage:setFocus( ship )
+        -- Store initial offset position
+        ship.touchOffsetX = event.x - ship.x
+       -- ship.touchOffsetY = event.y - ship.y
 
---     elseif ( "moved" == phase ) then
---         -- Move the ship to the new touch position
---         ship.x = event.x - ship.touchOffsetX
---         --hip.y = event.y - ship.touchOffsetY
+    elseif ( "moved" == phase ) then
+        -- Move the ship to the new touch position
+        ship.x = event.x - ship.touchOffsetX
+        --hip.y = event.y - ship.touchOffsetY
 
---     elseif ( "ended" == phase or "cancelled" == phase ) then
---         -- Release touch focus on the ship
---         display.currentStage:setFocus( nil )
---     end
+    elseif ( "ended" == phase or "cancelled" == phase ) then
+        -- Release touch focus on the ship
+        display.currentStage:setFocus( nil )
+    end
 
---     return true  -- Prevents touch propagation to underlying objects
--- end
+    return true  -- Prevents touch propagation to underlying objects
+end
 
--- ship:addEventListener( "touch", dragShip )
+ship:addEventListener( "touch", dragShip )
 
 
 local function gameLoop()

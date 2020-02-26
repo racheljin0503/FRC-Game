@@ -260,7 +260,7 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
     newLaser.y = ship.y
     newLaser:toBack()
 
-    transition.to( newLaser, { x=event.x, y=event.y, time=300,
+    transition.to( newLaser, { x=ship.x, y=-500, time=500,
         onComplete = function() display.remove( newLaser ) end
     } )
 
