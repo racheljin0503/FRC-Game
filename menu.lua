@@ -13,11 +13,11 @@ local function gotoGame()
 	composer.removeScene("menu")
 end
 
-local function gotoWheel()
-	composer.gotoScene("wheel-of-color")
-	composer.removeScene("menu")
+-- local function gotoWheel()
+-- 	composer.gotoScene("wheel-of-color")
+-- 	composer.removeScene("menu")
 
-end
+-- end
 
 local function gotoHighscores()
 	composer.gotoScene("highscores")
@@ -45,20 +45,20 @@ function scene:create( event )
 	background.y = display.contentCenterY
 
 
-	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY - 375, native.systemFont, 100)
+	local playButton = display.newText(sceneGroup, "PLAY", display.contentCenterX, display.contentCenterY - 350, native.systemFont, 100)
 	playButton:setFillColor(0, 0, .7)
 
-	local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY - 275, Ubuntu, 50)
-	colorWheel:setFillColor(0, 0, .7)
+	-- local colorWheel = display.newText(sceneGroup, "DAILY SPINNER", display.contentCenterX, display.contentCenterY - 275, Ubuntu, 50)
+	-- colorWheel:setFillColor(0, 0, .7)
   
 	local highscoresButton = display.newText(sceneGroup, "HIGHSCORE", display.contentCenterX, display.contentCenterY - 200, Ubuntu, 50)
 	highscoresButton:setFillColor(0, 0, .7)
 
-	local about = display.newText(sceneGroup, "ABOUT", display.contentCenterX, 650, Ubuntu, 50)
+	local about = display.newText(sceneGroup, "ABOUT", display.contentCenterX, display.contentCenterY - 100, native.systemFont, 50)
 	about:setFillColor(0, 0, .7)
 
 	playButton:addEventListener("tap", gotoGame)
-	colorWheel:addEventListener("tap", gotoWheel)
+	-- colorWheel:addEventListener("tap", gotoWheel)
 	highscoresButton:addEventListener("tap", gotoHighscores)
 	about:addEventListener("tap", gotoAbout)
 end

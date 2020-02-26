@@ -255,7 +255,7 @@ end
 local function spawnSpike()
     local random = math.random(10, 60)
     
-    spike = display.newImageRect (mainGroup, "spike.png", 100, 100)
+    spike = display.newImageRect (mainGroup, "spike.png", 60, 70)
     spike.x = random * 10
 	spike.y = 0
 	table.insert(spikeTable, spike)
@@ -309,16 +309,16 @@ end
 local function pushPlayer()
 	local jumpx, jumpy = player:getLinearVelocity()
 	if (canJump > 0 and jumpy > 150) then
-		player:applyLinearImpulse(0, -1.2, player.x, player.y)
+		player:applyLinearImpulse(0, -1.4, player.x, player.y)
 		canJump = canJump - 1
 	elseif (canJump > 0 and jumpy > 0) then
-		player:applyLinearImpulse(0, -.75, player.x, player.y)
+		player:applyLinearImpulse(0, -.9, player.x, player.y)
 		canJump = canJump - 1
 	elseif (canJump > 0 and jumpy > -150) then
-		player:applyLinearImpulse(0, -.4, player.x, player.y)
+		player:applyLinearImpulse(0, -.6, player.x, player.y)
 		canJump = canJump - 1
 	elseif (canJump > 0) then
-		player:applyLinearImpulse(0, -.3, player.x, player.y)
+		player:applyLinearImpulse(0, -.45, player.x, player.y)
 		canJump = canJump - 1
 	end
 end
@@ -349,6 +349,7 @@ local function uwu()
 	display.remove(player)
 	physics.pause()
 	timer.cancel(passTimer)
+	timer.cancel(astTimer)
 	display.remove(msg)
 
 	timer.cancel(gameLoopTimer)
@@ -406,6 +407,7 @@ local function onCollision(event)
 			timer.cancel(scrollTimer)
 			timer.cancel(spawnTimer)
 			timer.cancel(winTimer)
+			timer.cancel(astTimer)
 			timer.cancel(spikeTimer)
 	
 			for i = #blockTable, 1, -1 do
@@ -601,6 +603,7 @@ function scene:hide( event )
 		-- Code here runs immediately after the scene goes entirely off screen
 		physics.pause()
 		timer.cancel(passTimer)
+		timer.cancel(astTimer)
 		timer.cancel(gameLoopTimer)
 		timer.cancel(scrollTimer)
         timer.cancel(spawnTimer)

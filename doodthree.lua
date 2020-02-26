@@ -493,6 +493,7 @@ function scene:hide( event )
 		timer.cancel(gameLoopTimer)
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
+		timer.cancel(astTimer)
 		Runtime:removeEventListener("collision", onCollision)
 		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
 
