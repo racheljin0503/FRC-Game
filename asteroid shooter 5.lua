@@ -58,7 +58,6 @@ local score = 0
 local died = false
 local width =  200
 local totalEnergy = composer.getVariable("energyScore")
-
 local energy = totalEnergy
 local asteroidsTable = {}
 

@@ -57,7 +57,7 @@ local lives = 1
 local score = 0
 local died = false
 local width =  200
-local totalEnergy = 25 --composer.getVariable("energyScore")
+local totalEnergy = composer.getVariable("energyScore")
 
 local energy = totalEnergy
 local asteroidsTable = {}
@@ -202,8 +202,7 @@ function createBird()
 
  --createBird()
        
-glt =  timer.performWithDelay( 15000, createBird, 100 )
-
+glt =  timer.performWithDelay( math.random(20000, 100000), createBird, 100 )
 
 
 function createPup()
@@ -248,7 +247,7 @@ win()
 end
 end
 
-glt2 = timer.performWithDelay(100, checkwin, 10000)
+glt2 = timer.performWithDelay(100, checkwin, 0)
 
 
  function fireLaser( event )
