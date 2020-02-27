@@ -159,7 +159,7 @@ Bar:setFillColor(255, 0, 0)
 Bar:rotate(180)
 
 
-ship = display.newImageRect( mainGroup, "bot.png", 140, 170)
+ship = display.newImageRect( mainGroup, "bot.png", 130, 160)
 ship.x = display.contentCenterX
 ship.y = display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )
@@ -580,7 +580,7 @@ Runtime:addEventListener( "collision", onCollision )
 
    -- function bangBang ()
 
-        spaceGun = display.newImageRect("spaceinvader.png", 100, 100)
+        spaceGun = display.newImageRect("enemy.png", 120, 100)
           spaceGun.x = -600
           spaceGun.y = 80    
           physics.addBody(spaceGun, "static", { isSensor = true} )
@@ -613,7 +613,7 @@ Runtime:addEventListener( "collision", onCollision )
    
    --function bangBang1 ()
   
-      spaceGun1 = display.newImageRect("spaceinvader.png", 100, 100)
+      spaceGun1 = display.newImageRect("enemy.png", 120, 100)
         spaceGun1.x = 1000
         spaceGun1.y = 80   
         physics.addBody(spaceGun1, "static", { isSensor = true} )

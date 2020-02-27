@@ -381,7 +381,7 @@ function scene:show( event )
 		passTimer = timer.performWithDelay(10, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(850, spawnBlock, 0)
-		winTimer = timer.performWithDelay(5010,uwu , 1)
+		winTimer = timer.performWithDelay(50100,uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
 		Runtime:addEventListener("gyroscope", onGyroscopeUpdate)
 

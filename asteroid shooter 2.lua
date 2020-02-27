@@ -137,7 +137,7 @@ Bar:setFillColor(255, 0, 0)
 Bar:rotate(270)
 
 
-ship = display.newImageRect( mainGroup, "bot.png", 140, 170)
+ship = display.newImageRect( mainGroup, "bot.png", 130, 160)
 ship.x = display.contentCenterX
 ship.y = display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )

@@ -191,7 +191,7 @@ Bar:setFillColor(255, 0, 0)
 Bar:rotate(180)
 
 
-ship = display.newImageRect( mainGroup, "bot.png", 140, 170)
+ship = display.newImageRect( mainGroup, "bot.png", 130, 160)
 ship.x = display.contentCenterX
 ship.y = display.contentHeight - 100
 physics.addBody( ship, "static", { radius=30,  isSensor=true } )
@@ -318,7 +318,6 @@ glt1 =  timer.performWithDelay( 10000, createPup, 10 )
         display.remove (spaceGun1)
         timer.cancel(glt1)
         background:removeEventListener("tap", fireLaser)
-         composer.removeScene("asteroid shooter 3")
          composer.setVariable( "finalScore", score )
 
         composer.gotoScene("menu")
@@ -468,10 +467,8 @@ then
            display.remove (spaceGun1)
            timer.cancel(glt1)
            background:removeEventListener("tap", fireLaser)
-            composer.removeScene("asteroid shooter 3")
             composer.setVariable( "finalScore", score )
-
-                composer.gotoScene("menu")
+            composer.gotoScene("menu")
 
 
            for i = #powerTable, 1, -1 do
@@ -534,7 +531,6 @@ then
             timer.cancel(gameLoopTimer)
 
             display.remove(pup)
-            composer.removeScene("asteroid shooter 3")
             composer.setVariable( "finalScore", score )
 
            composer.gotoScene("menu")
@@ -570,7 +566,6 @@ then
             display.remove(spaceGun)
             display.remove(spaceGun1)
             display.remove(pup)
-            composer.removeScene("asteroid shooter 4")
             composer.setVariable( "finalScore", score )
 
            composer.gotoScene("menu")
@@ -586,8 +581,8 @@ then
          (obj1.myName == "spaceGun" and obj2.myName == "laser")) 
         then
 
-            display.remove(spaceGun)
-            display.remove(spaceLaser)
+            display.remove(obj2)
+            display.remove(obj1)
             timer.cancel(gm)
             score = score + 200
             
@@ -692,7 +687,7 @@ Runtime:addEventListener( "collision", onCollision )
     
     function bangBang ()
 
-       spaceGun = display.newImageRect("enemy.png", 100, 100)
+       spaceGun = display.newImageRect("enemy.png", 120, 100)
         spaceGun.x = 200
         spaceGun.y = -500    
         physics.addBody(spaceGun, "static", { isSensor = true} )
@@ -714,7 +709,7 @@ Runtime:addEventListener( "collision", onCollision )
     --spaceGun:toFront()
     spaceLaser.myName = "slaser"
 
-    transition.to( spaceLaser, { x = 500, y = 1200, time = 500} )
+    transition.to( spaceLaser, { x = 500, y = 1200, time = 1000} )
  
  end
 
@@ -722,7 +717,7 @@ Runtime:addEventListener( "collision", onCollision )
  
  function bangBang1 ()
 
-     spaceGun1 = display.newImageRect("enemy.png", 100, 100)
+     spaceGun1 = display.newImageRect("enemy.png", 120, 100)
       spaceGun1.x = 500
       spaceGun1.y = -500    
       physics.addBody(spaceGun1, "static", { isSensor = true} )
@@ -737,14 +732,14 @@ bangBang1()
 function spaceLaser1 ()
 
 
-    spaceLaser1 = display.newImageRect("laser .png", 100, 50)
+  spaceLaser1 = display.newImageRect("laser .png", 100, 50)
   spaceLaser1.x = spaceGun1.x
   spaceLaser1.y = spaceGun1.y
   physics.addBody( spaceLaser1, "dynamic", { isSensor=true } )
   --spaceGun:toFront()
   spaceLaser1.myName = "slaser1"
 
-  transition.to( spaceLaser1, { x = 200, y = 1200, time = 500} )
+  transition.to( spaceLaser1, { x = 200, y = 1200, time = 1000} )
 
 end
 
@@ -772,7 +767,7 @@ function scene:hide( event )
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
         physics.pause()
-
+        
         composer.removeScene("asteroid shooter 3")
 
     end
