@@ -37,7 +37,7 @@ local passTimer
 local gameLoopTimer
 local scrollTimer
 local spawnTimer
-
+local canGyro = false
 
 --Temporary
 local winTimer
@@ -102,6 +102,24 @@ local function updateText()
 	energyText.text = "Energy collected: "..energyScore
 end
 
+local function movement( event )
+
+    local player = event.target
+    local phase = event.phase
+
+    if ( "began" == phase ) then
+        display.currentStage:setFocus( player )
+        player.touchOffsetX = event.x - player.x
+
+    elseif ( "moved" == phase ) then
+        player.x = event.x - player.touchOffsetX
+
+    elseif ( "ended" == phase or "cancelled" == phase ) then
+        display.currentStage:setFocus( nil )
+    end
+
+    return true  
+end
 
 local function death()
 	if (player.y >= deathLimit) then
@@ -220,6 +238,7 @@ local function checkGyro()
 		msg = display.newText( "Gyroscope events not supported on this device", 0, display.contentCenterY, UbuntuBold, 20 )
 		msg.x = display.contentWidth/2		-- center title
 		msg:setFillColor( 1,1,1 )
+		canGyro = true
 	end
 end
 
@@ -382,9 +401,12 @@ function scene:show( event )
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(850, spawnBlock, 0)
 		winTimer = timer.performWithDelay(50100,uwu , 1)
-		Runtime:addEventListener("collision", onCollision)
+		if canGryo == true then 
 		Runtime:addEventListener("gyroscope", onGyroscopeUpdate)
-
+		else
+			player:addEventListener("touch", movement)
+		end
+		Runtime:addEventListener("collision", onCollision)
 	end
 end
 
@@ -406,7 +428,11 @@ function scene:hide( event )
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		Runtime:removeEventListener("collision", onCollision)
+		if canGryo == true then
 		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
+		else
+			player:removeEventListener("touch", movement)
+		end
 
 		composer.removeScene("doodone")
 

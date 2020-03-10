@@ -28,6 +28,8 @@ local uiGroup
 
 local blockTable = {}
 local coinTable = {}
+local canGyro = false
+
 
 local passTimer
 local gameLoopTimer
@@ -97,6 +99,25 @@ local function updateText()
 	
 end
 
+
+local function movement( event )
+
+    local player = event.target
+    local phase = event.phase
+
+    if ( "began" == phase ) then
+        display.currentStage:setFocus( player )
+        player.touchOffsetX = event.x - player.x
+
+    elseif ( "moved" == phase ) then
+        player.x = event.x - player.touchOffsetX
+
+    elseif ( "ended" == phase or "cancelled" == phase ) then
+        display.currentStage:setFocus( nil )
+    end
+
+    return true  
+end
 
 local function death()
 	if (player.y >= deathLimit) then
@@ -291,6 +312,7 @@ local function checkGyro()
 		local msg = display.newText( "Gyroscope events not supported on this device", 0, display.contentCenterY, UbuntuBold, 20 )
 		msg.x = display.contentWidth/2		-- center title
 		msg:setFillColor( 1,1,1 )
+		canGyro = true
 	end
 end
 
@@ -419,9 +441,13 @@ function scene:show( event )
 		passTimer = timer.performWithDelay(50, playerThru, 0)
 		scrollTimer = timer.performWithDelay(100, screenScroll, 1)
 		spawnTimer = timer.performWithDelay(300, spawnBlock, 0)
-		winTimer = timer.performWithDelay(6010, uwu , 1)
+		winTimer = timer.performWithDelay(60100, uwu , 1)
 		Runtime:addEventListener("collision", onCollision)
-		Runtime:addEventListener("gyroscope", onGyroscopeUpdate)
+		if canGryo == true then 
+			Runtime:addEventListener("gyroscope", onGyroscopeUpdate)
+		else
+			player:addEventListener("touch", movement)
+		end
 
 
 	end
@@ -445,8 +471,11 @@ function scene:hide( event )
 		timer.cancel(scrollTimer)
 		timer.cancel(spawnTimer)
 		Runtime:removeEventListener("collision", onCollision)
-		Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
-
+		if canGryo == true then
+			Runtime:removeEventListener("gyroscope", onGyroscopeUpdate)
+			else
+				player:removeEventListener("touch", movement)
+			end
 		composer.removeScene("doodtwo")
 
 	end
